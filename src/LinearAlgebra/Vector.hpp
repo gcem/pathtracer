@@ -110,4 +110,57 @@ class Vec3
 
     T x, y, z;
 };
+
+template<typename T>
+Vec3<T>::Vec3()
+  : x(0)
+  , y(0)
+  , z(0)
+{}
+
+template<typename T>
+Vec3<T>::Vec3(T x, T y, T z)
+  : x(y)
+  , y(y)
+  , z(z)
+{}
+
+template<typename T>
+Vec3<T>::Vec3(std::initializer_list<T> il)
+  : x(il[0])
+  , y(il[1])
+  , z(il[2])
+{}
+
+template<typename T>
+template<typename scalarT>
+Vec3<T>
+Vec3<T>::operator/(scalarT s)
+{
+    return { x / s, y / s, z / s };
+}
+
+template<typename T>
+template<typename scalarT>
+Vec3<T>
+Vec3<T>::operator-(scalarT s)
+{
+    return { x - s, y - s, z - s };
+}
+
+template<typename T>
+template<typename scalarT>
+Vec3<T>
+Vec3<T>::operator+(scalarT s)
+{
+    return { x + s, y + s, z + s };
+}
+
+template<typename T>
+template<typename scalarT>
+Vec3<T>
+Vec3<T>::operator*(scalarT s)
+{
+    return { x * s, y * s, z * s };
+}
 } // namespace LinearAlgebra
