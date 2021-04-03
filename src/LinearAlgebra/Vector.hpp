@@ -1,17 +1,24 @@
 #pragma once
 
-#include <initializer_list>
+#include <array>
 
 namespace LinearAlgebra {
-template<typename T = float>
-class Vec3
+/**
+ * @brief 3-dimensional vector
+ *
+ * @tparam T Type of the components of vector
+ * @tparam ScalarT Scalar type for operations like addition. (Not the type of
+ * field on which this vector is defined. Otherwise this would be same as T)
+ */
+template<typename T, typename ScalarT>
+class Vec3Template
 {
   public:
     /**
      * @brief Construct a zero-vector
      *
      */
-    Vec3();
+    Vec3Template();
 
     /**
      * @brief Construct a new Vec 3 object with given components
@@ -20,14 +27,7 @@ class Vec3
      * @param y
      * @param z
      */
-    Vec3(T x, T y, T z);
-
-    /**
-     * @brief Construct a new Vec 3 object from an initializer list
-     *
-     * @param il Initializer list
-     */
-    Vec3(std::initializer_list<T> il);
+    Vec3Template(T x, T y, T z);
 
     /**
      * @brief Calculate the norm (size) of this vector
@@ -40,127 +40,131 @@ class Vec3
      * @brief Calculate a unit vector with the same direction as this one.
      * Behavior is undefined if this is a zero-vector
      *
-     * @return Vec3 this vector divided by its norm
+     * @return Vec3Template this vector divided by its norm
      */
-    Vec3 normalize();
+    Vec3Template normalize();
 
     /**
      * @brief Divide each component by scalar
      *
-     * @tparam scalarT
-     * @return Vec3
+     * @tparam ScalarT
+     * @return Vec3Template
      */
-    template<typename scalarT>
-    Vec3 operator/(scalarT);
+    Vec3Template operator/(ScalarT);
 
     /**
      * @brief Multiply each component by scalar
      *
-     * @tparam scalarT
-     * @return Vec3
+     * @tparam ScalarT
+     * @return Vec3Template
      */
-    template<typename scalarT>
-    Vec3 operator*(scalarT);
+    Vec3Template operator*(ScalarT);
 
     /**
      * @brief Add a scalar to each component
      *
-     * @tparam scalarT
-     * @return Vec3
+     * @tparam ScalarT
+     * @return Vec3Template
      */
-    template<typename scalarT>
-    Vec3 operator+(scalarT);
+    Vec3Template operator+(ScalarT);
 
     /**
      * @brief Subtract a scalar from each component
      *
-     * @tparam scalarT
-     * @return Vec3
+     * @tparam ScalarT
+     * @return Vec3Template
      */
-    template<typename scalarT>
-    Vec3 operator-(scalarT);
+    Vec3Template operator-(ScalarT);
 
     /**
      * @brief Vector addition
      *
-     * @return Vec3
+     * @return Vec3Template
      */
-    Vec3 operator+(Vec3);
+    Vec3Template operator+(Vec3Template);
 
     /**
      * @brief Vector subtraction
      *
-     * @return Vec3
+     * @return Vec3Template
      */
-    Vec3 operator-(Vec3);
+    Vec3Template operator-(Vec3Template);
 
     /**
      * @brief Vector addition
      *
-     * @return Vec3& A reference to this object
+     * @return Vec3Template& A reference to this object
      */
-    Vec3& operator+=(Vec3);
+    Vec3Template& operator+=(Vec3Template);
 
     /**
      * @brief Vector subtraction
      *
-     * @return Vec3& A reference to this object
+     * @return Vec3Template& A reference to this object
      */
-    Vec3& operator-=(Vec3);
+    Vec3Template& operator-=(Vec3Template);
 
     T x, y, z;
 };
 
-template<typename T>
-Vec3<T>::Vec3()
+using Vec3 = Vec3Template<float, float>;
+using Vec3f = Vec3Template<float, float>;
+using Vec3d = Vec3Template<double, double>;
+using Vec3i = Vec3Template<int, float>;
+
+template<typename T, typename ScalarT>
+Vec3Template<T, ScalarT>::Vec3Template()
   : x(0)
   , y(0)
   , z(0)
 {}
 
-template<typename T>
-Vec3<T>::Vec3(T x, T y, T z)
-  : x(y)
+template<typename T, typename ScalarT>
+Vec3Template<T, ScalarT>::Vec3Template(T x, T y, T z)
+  : x(x)
   , y(y)
   , z(z)
 {}
 
-template<typename T>
-Vec3<T>::Vec3(std::initializer_list<T> il)
-  : x(il[0])
-  , y(il[1])
-  , z(il[2])
-{}
-
-template<typename T>
-template<typename scalarT>
-Vec3<T>
-Vec3<T>::operator/(scalarT s)
+template<typename T, typename ScalarT>
+Vec3Template<T, ScalarT>
+Vec3Template<T, ScalarT>::operator/(ScalarT s)
 {
     return { x / s, y / s, z / s };
 }
 
-template<typename T>
-template<typename scalarT>
-Vec3<T>
-Vec3<T>::operator-(scalarT s)
+template<typename T, typename ScalarT>
+Vec3Template<T, ScalarT>
+Vec3Template<T, ScalarT>::operator-(ScalarT s)
 {
     return { x - s, y - s, z - s };
 }
 
-template<typename T>
-template<typename scalarT>
-Vec3<T>
-Vec3<T>::operator+(scalarT s)
+template<typename T, typename ScalarT>
+Vec3Template<T, ScalarT>
+Vec3Template<T, ScalarT>::operator+(ScalarT s)
 {
     return { x + s, y + s, z + s };
 }
 
-template<typename T>
-template<typename scalarT>
-Vec3<T>
-Vec3<T>::operator*(scalarT s)
+template<typename T, typename ScalarT>
+Vec3Template<T, ScalarT>
+Vec3Template<T, ScalarT>::operator*(ScalarT s)
 {
     return { x * s, y * s, z * s };
+}
+
+template<typename T, typename ScalarT>
+Vec3Template<T, ScalarT>
+Vec3Template<T, ScalarT>::operator+(Vec3Template<T, ScalarT> other)
+{
+    return { x + other.x, y + other.y, z + other.z };
+}
+
+template<typename T, typename ScalarT>
+Vec3Template<T, ScalarT>
+Vec3Template<T, ScalarT>::operator-(Vec3Template<T, ScalarT> other)
+{
+    return { x - other.x, y - other.y, z - other.z };
 }
 } // namespace LinearAlgebra

@@ -3,7 +3,6 @@
 #include "Vector.hpp"
 
 namespace PathTracer {
-template<typename T = float>
 class Ray
 {
     /**
@@ -18,8 +17,8 @@ class Ray
      * @param origin
      * @param direction
      */
-    Ray(LinearAlgebra::Vec3<T> origin, LinearAlgebra::Vec3<T> direction);
+    Ray(LinearAlgebra::Vec3 origin, LinearAlgebra::Vec3 direction);
 
-    LinearAlgebra::Vec3<T> origin, direction;
+    LinearAlgebra::Vec3 origin, direction;
 };
 } // namespace PathTracer

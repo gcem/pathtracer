@@ -1,11 +1,7 @@
 #include "Ray.hpp"
 
 namespace PathTracer {
-template<typename T>
-Ray<T>::Ray()
-{}
+Ray::Ray() {}
 
-template<typename T>
-Ray<T>::Ray(LinearAlgebra::Vec3<T> origin, LinearAlgebra::Vec3<T> direction)
-{}
+Ray::Ray(LinearAlgebra::Vec3 origin, LinearAlgebra::Vec3 direction) {}
 } // namespace PathTracer

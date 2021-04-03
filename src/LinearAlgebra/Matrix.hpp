@@ -4,14 +4,19 @@
 #include <initializer_list>
 
 namespace LinearAlgebra {
-template<typename T = float>
-class Mat3
+/**
+ * @brief 3x3 matrix
+ *
+ * @tparam T Column type
+ */
+template<typename T>
+class Mat3Template
 {
     /**
      * @brief Construct a new identity matrix
      *
      */
-    Mat3();
+    Mat3Template();
 
     /**
      * @brief Construct a new matrix with given vectors as columns
@@ -20,7 +25,7 @@ class Mat3
      * @param col2
      * @param col3
      */
-    Mat3(Vec3<T> col1, Vec3<T> col2, Vec3<T> col3);
+    Mat3Template(T col1, T col2, T col3);
 
     /**
      * @brief Construct a new Mat 3 object with given elements
@@ -28,7 +33,7 @@ class Mat3
      * @param il Elements of the matrix in row-major order (i.e. a11, a12,
      * a13, a21, ...)
      */
-    Mat3(std::initializer_list<T> il);
+    Mat3Template(std::initializer_list<T> il);
 
     /**
      * @brief Calculates the determinant of this matrix
@@ -41,45 +46,49 @@ class Mat3
      * @brief Matrix multiplication
      *
      * @param other
-     * @return Mat3<T> this * other
+     * @return Mat3Template<T> this * other
      */
-    Mat3<T> operator*(Mat3<T>& other);
+    Mat3Template<T> operator*(Mat3Template<T>& other);
 
     /**
      * @brief Matrix-Vector multiplication
      *
      * @param vec
-     * @return Vec3<T> this * vec
+     * @return T this * vec
      */
-    Vec3<T> operator*(Vec3<T>& vec);
+    T operator*(T& vec);
 
-    Vec3<T> col1, col2, col3;
+    T col1, col2, col3;
 };
 
 template<typename T>
-Mat3<T>::Mat3()
+Mat3Template<T>::Mat3Template()
 {}
 
 template<typename T>
-Mat3<T>::Mat3(Vec3<T> col1, Vec3<T> col2, Vec3<T> col3)
+Mat3Template<T>::Mat3Template(T col1, T col2, T col3)
 {}
 
 template<typename T>
-Mat3<T>::Mat3(std::initializer_list<T> il)
+Mat3Template<T>::Mat3Template(std::initializer_list<T> il)
 {}
 
 template<typename T>
 T
-Mat3<T>::determinant()
+Mat3Template<T>::determinant()
 {}
 
 template<typename T>
-Vec3<T>
-Mat3<T>::operator*(Vec3<T>& vec)
+T
+Mat3Template<T>::operator*(T& vec)
 {}
 
 template<typename T>
-Mat3<T>
-Mat3<T>::operator*(Mat3<T>& other)
+Mat3Template<T>
+Mat3Template<T>::operator*(Mat3Template<T>& other)
 {}
+
+using Mat3 = Mat3Template<Vec3>;
+using Mat3f = Mat3Template<Vec3f>;
+using Mat3d = Mat3Template<Vec3d>;
 } // namespace LinearAlgebra
