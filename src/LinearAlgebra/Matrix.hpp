@@ -41,9 +41,9 @@ class Mat3
      * @brief Matrix multiplication
      *
      * @param other
-     * @return Mat3 this * other
+     * @return Mat3<T> this * other
      */
-    Mat3 operator*(Mat3<T>& other);
+    Mat3<T> operator*(Mat3<T>& other);
 
     /**
      * @brief Matrix-Vector multiplication

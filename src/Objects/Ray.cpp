@@ -6,6 +6,6 @@ Ray<T>::Ray()
 {}
 
 template<typename T>
-Ray<T>::Ray(Vec3<T> origin, Vec3<T> direction)
+Ray<T>::Ray(LinearAlgebra::Vec3<T> origin, LinearAlgebra::Vec3<T> direction)
 {}
 } // namespace PathTracer

@@ -18,8 +18,8 @@ class Ray
      * @param origin
      * @param direction
      */
-    Ray(Vec3<T> origin, Vec3<T> direction);
+    Ray(LinearAlgebra::Vec3<T> origin, LinearAlgebra::Vec3<T> direction);
 
-    Vec3<T> origin, direction;
+    LinearAlgebra::Vec3<T> origin, direction;
 };
 } // namespace PathTracer

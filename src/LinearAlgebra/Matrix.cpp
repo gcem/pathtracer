@@ -24,7 +24,7 @@ Mat3<T>::operator*(Vec3<T>& vec)
 {}
 
 template<typename T>
-Mat3
+Mat3<T>
 Mat3<T>::operator*(Mat3<T>& other)
 {}
 
