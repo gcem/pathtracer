@@ -106,8 +106,8 @@ Mat3Template<ColumnT>::transpose() const
                                    col2.x,
                                    col3.x,
                                    col1.y,
-                                   col2.y,
-                                   col3.y,
+                                   col1.y,
+                                   col1.y,
                                    col1.z,
                                    col2.z,
                                    col3.z });
