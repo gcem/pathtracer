@@ -183,22 +183,38 @@ Vec3Template<T, ScalarT>::operator-(Vec3Template<T, ScalarT> other)
 }
 
 template<typename T, typename ScalarT>
-Vec3Template<T, ScalarT>& Vec3Template<T, ScalarT>::operator-=(
-  Vec3Template<T, ScalarT>)
-{}
+Vec3Template<T, ScalarT>&
+Vec3Template<T, ScalarT>::operator-=(Vec3Template<T, ScalarT> other)
+{
+    x -= other.x;
+    y -= other.y;
+    z -= other.z;
+    return *this;
+}
 
 template<typename T, typename ScalarT>
-Vec3Template<T, ScalarT>& Vec3Template<T, ScalarT>::operator+=(
-  Vec3Template<T, ScalarT>)
-{}
+Vec3Template<T, ScalarT>&
+Vec3Template<T, ScalarT>::operator+=(Vec3Template<T, ScalarT> other)
+{
+    x += other.x;
+    y += other.y;
+    z += other.z;
+    return *this;
+}
 
 template<typename T, typename ScalarT>
 Vec3Template<T, ScalarT>
 Vec3Template<T, ScalarT>::cross(Vec3Template<T, ScalarT> other)
-{}
+{
+    return { y * other.z - z * other.y,
+             z * other.x - x * other.z,
+             x * other.y - y * other.x };
+}
 
 template<typename T, typename ScalarT>
 ScalarT
 Vec3Template<T, ScalarT>::dot(Vec3Template<T, ScalarT> other)
-{}
+{
+    return x * other.x + y * other.y + z * other.z;
+}
 } // namespace LinearAlgebra

@@ -108,7 +108,7 @@ TEST(VectorTest, SubtractionAssignment)
 {
     Vec3 v1{ 5.7f, 7, -3 };
     Vec3 v2{ 3.3f, 17, 5 };
-    auto& result = (v1 += v2);
+    auto& result = (v1 -= v2);
 
     EXPECT_FLOAT_EQ(2.4, result.x);
     EXPECT_EQ(-10, result.y);
