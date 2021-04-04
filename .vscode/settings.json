@@ -6,6 +6,11 @@
         "chrono": "cpp",
         "complex": "cpp",
         "string": "cpp",
-        "ranges": "cpp"
+        "ranges": "cpp",
+        "*.tcc": "cpp",
+        "bitset": "cpp",
+        "system_error": "cpp",
+        "typeindex": "cpp",
+        "typeinfo": "cpp"
     }
 }

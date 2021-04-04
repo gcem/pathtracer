@@ -7,11 +7,12 @@ namespace LinearAlgebra {
 /**
  * @brief 3x3 matrix
  *
- * @tparam T Column type
+ * @tparam ColumnT Column type
  */
-template<typename T>
+template<typename ColumnT>
 class Mat3Template
 {
+  public:
     /**
      * @brief Construct a new identity matrix
      *
@@ -25,68 +26,106 @@ class Mat3Template
      * @param col2
      * @param col3
      */
-    Mat3Template(T col1, T col2, T col3);
+    Mat3Template(ColumnT col1, ColumnT col2, ColumnT col3);
 
     /**
      * @brief Construct a new Mat 3 object with given elements
      *
-     * @param il Elements of the matrix in row-major order (i.e. a11, a12,
-     * a13, a21, ...)
+     * @param il Elements of the matrix in column-major order (i.e. a11, a21,
+     * a31, a12, ...)
      */
-    Mat3Template(std::array<T, 9> il);
+    Mat3Template(const std::array<typename ColumnT::ComponentType, 9>& il);
 
     /**
      * @brief Calculates the determinant of this matrix
      *
      * @return T determinant
      */
-    T determinant();
+    typename ColumnT::ComponentType determinant() const;
 
     /**
      * @brief Matrix multiplication
      *
      * @param other
-     * @return Mat3Template<T> this * other
+     * @return Mat3Template<ColumnT> this * other
      */
-    Mat3Template<T> operator*(Mat3Template<T>& other);
+    Mat3Template<ColumnT> operator*(const Mat3Template<ColumnT>& other) const;
+
+    /**
+     * @brief Transpose operation
+     *
+     * @return Mat3Template<ColumnT> Transpose of this matrix
+     */
+    Mat3Template<ColumnT> transpose() const;
 
     /**
      * @brief Matrix-Vector multiplication
      *
      * @param vec
-     * @return T this * vec
+     * @return ColumnT this * vec
      */
-    T operator*(T& vec);
+    ColumnT operator*(const ColumnT& vec) const;
 
-    T col1, col2, col3;
+    ColumnT col1, col2, col3;
 };
 
-template<typename T>
-Mat3Template<T>::Mat3Template()
+template<typename ColumnT>
+Mat3Template<ColumnT>::Mat3Template()
+  : Mat3Template({ 1, 0, 0 }, { 0, 1, 0 }, { 0, 0, 1 })
 {}
 
-template<typename T>
-Mat3Template<T>::Mat3Template(T col1, T col2, T col3)
+template<typename ColumnT>
+Mat3Template<ColumnT>::Mat3Template(ColumnT col1, ColumnT col2, ColumnT col3)
+  : col1(col1)
+  , col2(col2)
+  , col3(col3)
 {}
 
-template<typename T>
-Mat3Template<T>::Mat3Template(std::array<T, 9> il)
+template<typename ColumnT>
+Mat3Template<ColumnT>::Mat3Template(
+  const std::array<typename ColumnT::ComponentType, 9>& il)
+  : col1({ il[0], il[1], il[2] })
+  , col2({ il[3], il[4], il[5] })
+  , col3({ il[6], il[7], il[8] })
 {}
 
-template<typename T>
-T
-Mat3Template<T>::determinant()
-{}
+template<typename ColumnT>
+typename ColumnT::ComponentType
+Mat3Template<ColumnT>::determinant() const
+{
+    return col1.x * (col2.y * col3.z - col2.z * col3.y) -
+           col1.y * (col2.x * col3.z - col2.z * col3.x) +
+           col1.z * (col2.x * col3.y - col2.y * col3.x);
+}
 
-template<typename T>
-T
-Mat3Template<T>::operator*(T& vec)
-{}
+template<typename ColumnT>
+Mat3Template<ColumnT>
+Mat3Template<ColumnT>::transpose() const
+{
+    return Mat3Template<ColumnT>({ col1.x,
+                                   col2.x,
+                                   col3.x,
+                                   col1.y,
+                                   col2.y,
+                                   col3.y,
+                                   col1.z,
+                                   col2.z,
+                                   col3.z });
+}
 
-template<typename T>
-Mat3Template<T>
-Mat3Template<T>::operator*(Mat3Template<T>& other)
-{}
+template<typename ColumnT>
+ColumnT
+Mat3Template<ColumnT>::operator*(const ColumnT& vec) const
+{
+    return vec.x * col1 + vec.y * col2 + vec.z * col3;
+}
+
+template<typename ColumnT>
+Mat3Template<ColumnT>
+Mat3Template<ColumnT>::operator*(const Mat3Template<ColumnT>& other) const
+{
+    return { *this * other.col1, *this * other.col2, *this * other.col3 };
+}
 
 using Mat3 = Mat3Template<Vec3>;
 using Mat3f = Mat3Template<Vec3f>;

@@ -32,7 +32,7 @@ class Vec3Template
      *
      * @return ScalarT
      */
-    ScalarT norm();
+    ScalarT norm() const;
 
     /**
      * @brief Calculate a unit vector with the same direction as this one.
@@ -40,7 +40,7 @@ class Vec3Template
      *
      * @return Vec3Template<T, ScalarT> this vector divided by its norm
      */
-    Vec3Template<T, ScalarT> normalize();
+    Vec3Template<T, ScalarT> normalize() const;
 
     /**
      * @brief Divide each component by scalar
@@ -48,7 +48,7 @@ class Vec3Template
      * @tparam ScalarT
      * @return Vec3Template<T, ScalarT>
      */
-    Vec3Template<T, ScalarT> operator/(ScalarT);
+    Vec3Template<T, ScalarT> operator/(ScalarT) const;
 
     /**
      * @brief Multiply each component by scalar
@@ -56,7 +56,16 @@ class Vec3Template
      * @tparam ScalarT
      * @return Vec3Template<T, ScalarT>
      */
-    Vec3Template<T, ScalarT> operator*(ScalarT);
+    Vec3Template<T, ScalarT> operator*(ScalarT) const;
+
+    /**
+     * @brief Scalar multiplication, from the left (same as the member function)
+     *
+     * @return Vec3Template<T, ScalarT>
+     */
+    template<typename T2, typename ScalarT2>
+    friend Vec3Template<T2, ScalarT2> operator*(ScalarT2,
+                                                Vec3Template<T2, ScalarT2>);
 
     /**
      * @brief Add a scalar to each component
@@ -64,7 +73,7 @@ class Vec3Template
      * @tparam ScalarT
      * @return Vec3Template<T, ScalarT>
      */
-    Vec3Template<T, ScalarT> operator+(ScalarT);
+    Vec3Template<T, ScalarT> operator+(ScalarT) const;
 
     /**
      * @brief Subtract a scalar from each component
@@ -72,35 +81,35 @@ class Vec3Template
      * @tparam ScalarT
      * @return Vec3Template<T, ScalarT>
      */
-    Vec3Template<T, ScalarT> operator-(ScalarT);
+    Vec3Template<T, ScalarT> operator-(ScalarT) const;
 
     /**
      * @brief Vector addition
      *
      * @return Vec3Template<T, ScalarT>
      */
-    Vec3Template<T, ScalarT> operator+(Vec3Template<T, ScalarT>);
+    Vec3Template<T, ScalarT> operator+(const Vec3Template<T, ScalarT>&) const;
 
     /**
      * @brief Vector subtraction
      *
      * @return Vec3Template<T, ScalarT>
      */
-    Vec3Template<T, ScalarT> operator-(Vec3Template<T, ScalarT>);
+    Vec3Template<T, ScalarT> operator-(const Vec3Template<T, ScalarT>&) const;
 
     /**
      * @brief Vector addition
      *
      * @return Vec3Template<T, ScalarT>& A reference to this object
      */
-    Vec3Template<T, ScalarT>& operator+=(Vec3Template<T, ScalarT>);
+    Vec3Template<T, ScalarT>& operator+=(const Vec3Template<T, ScalarT>&);
 
     /**
      * @brief Vector subtraction
      *
      * @return Vec3Template<T, ScalarT>& A reference to this object
      */
-    Vec3Template<T, ScalarT>& operator-=(Vec3Template<T, ScalarT>);
+    Vec3Template<T, ScalarT>& operator-=(const Vec3Template<T, ScalarT>&);
 
     /**
      * @brief Right-handed cross product
@@ -108,7 +117,7 @@ class Vec3Template
      * @param other
      * @return Vec3Template<T, ScalarT> this X other
      */
-    Vec3Template<T, ScalarT> cross(Vec3Template<T, ScalarT> other);
+    Vec3Template<T, ScalarT> cross(const Vec3Template<T, ScalarT>& other) const;
 
     /**
      * @brief Dot product
@@ -116,9 +125,22 @@ class Vec3Template
      * @param other
      * @return ScalarT Sum of the components of component-wise multiplication
      */
-    ScalarT dot(Vec3Template<T, ScalarT> other);
+    ScalarT dot(const Vec3Template<T, ScalarT>& other) const;
+
+    /**
+     * @brief Compares each element using ==. I am not sure if I should include
+     * this as it may cause more problems than it solves.
+     *
+     * @param other
+     * @return true All elements compare equal using ==
+     * @return false Some elements are not equal
+     */
+    bool operator==(const Vec3Template<T, ScalarT>& other) const;
 
     T x, y, z;
+
+    using ComponentType = T;
+    using ScalarType = ScalarT;
 };
 
 using Vec3 = Vec3Template<float, float>;
@@ -142,49 +164,56 @@ Vec3Template<T, ScalarT>::Vec3Template(T x, T y, T z)
 
 template<typename T, typename ScalarT>
 Vec3Template<T, ScalarT>
-Vec3Template<T, ScalarT>::operator/(ScalarT s)
+Vec3Template<T, ScalarT>::operator/(ScalarT s) const
 {
     return { x / s, y / s, z / s };
 }
 
 template<typename T, typename ScalarT>
 Vec3Template<T, ScalarT>
-Vec3Template<T, ScalarT>::operator-(ScalarT s)
+Vec3Template<T, ScalarT>::operator-(ScalarT s) const
 {
     return { x - s, y - s, z - s };
 }
 
 template<typename T, typename ScalarT>
 Vec3Template<T, ScalarT>
-Vec3Template<T, ScalarT>::operator+(ScalarT s)
+Vec3Template<T, ScalarT>::operator+(ScalarT s) const
 {
     return { x + s, y + s, z + s };
 }
 
 template<typename T, typename ScalarT>
 Vec3Template<T, ScalarT>
-Vec3Template<T, ScalarT>::operator*(ScalarT s)
+Vec3Template<T, ScalarT>::operator*(ScalarT s) const
 {
     return { x * s, y * s, z * s };
 }
 
 template<typename T, typename ScalarT>
 Vec3Template<T, ScalarT>
-Vec3Template<T, ScalarT>::operator+(Vec3Template<T, ScalarT> other)
+operator*(ScalarT s, Vec3Template<T, ScalarT> vec)
+{
+    return vec * s;
+}
+
+template<typename T, typename ScalarT>
+Vec3Template<T, ScalarT>
+Vec3Template<T, ScalarT>::operator+(const Vec3Template<T, ScalarT>& other) const
 {
     return { x + other.x, y + other.y, z + other.z };
 }
 
 template<typename T, typename ScalarT>
 Vec3Template<T, ScalarT>
-Vec3Template<T, ScalarT>::operator-(Vec3Template<T, ScalarT> other)
+Vec3Template<T, ScalarT>::operator-(const Vec3Template<T, ScalarT>& other) const
 {
     return { x - other.x, y - other.y, z - other.z };
 }
 
 template<typename T, typename ScalarT>
 Vec3Template<T, ScalarT>&
-Vec3Template<T, ScalarT>::operator-=(Vec3Template<T, ScalarT> other)
+Vec3Template<T, ScalarT>::operator-=(const Vec3Template<T, ScalarT>& other)
 {
     x -= other.x;
     y -= other.y;
@@ -194,7 +223,7 @@ Vec3Template<T, ScalarT>::operator-=(Vec3Template<T, ScalarT> other)
 
 template<typename T, typename ScalarT>
 Vec3Template<T, ScalarT>&
-Vec3Template<T, ScalarT>::operator+=(Vec3Template<T, ScalarT> other)
+Vec3Template<T, ScalarT>::operator+=(const Vec3Template<T, ScalarT>& other)
 {
     x += other.x;
     y += other.y;
@@ -204,7 +233,7 @@ Vec3Template<T, ScalarT>::operator+=(Vec3Template<T, ScalarT> other)
 
 template<typename T, typename ScalarT>
 Vec3Template<T, ScalarT>
-Vec3Template<T, ScalarT>::cross(Vec3Template<T, ScalarT> other)
+Vec3Template<T, ScalarT>::cross(const Vec3Template<T, ScalarT>& other) const
 {
     return { y * other.z - z * other.y,
              z * other.x - x * other.z,
@@ -213,8 +242,16 @@ Vec3Template<T, ScalarT>::cross(Vec3Template<T, ScalarT> other)
 
 template<typename T, typename ScalarT>
 ScalarT
-Vec3Template<T, ScalarT>::dot(Vec3Template<T, ScalarT> other)
+Vec3Template<T, ScalarT>::dot(const Vec3Template<T, ScalarT>& other) const
 {
     return x * other.x + y * other.y + z * other.z;
+}
+
+template<typename T, typename ScalarT>
+bool
+Vec3Template<T, ScalarT>::operator==(
+  const Vec3Template<T, ScalarT>& other) const
+{
+    return x == other.x && y == other.y && z == other.z;
 }
 } // namespace LinearAlgebra
