@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cmath>
+
 namespace LinearAlgebra {
 /**
  * @brief 3-dimensional vector
@@ -30,9 +32,16 @@ class Vec3Template
     /**
      * @brief Calculate the norm (size) of this vector
      *
-     * @return ScalarT
+     * @return T
      */
-    ScalarT norm() const;
+    T norm() const;
+
+    /**
+     * @brief Calculates the square of this vector's norm
+     *
+     * @return T norm of this vector squared
+     */
+    T squaredNorm() const;
 
     /**
      * @brief Calculate a unit vector with the same direction as this one.
@@ -137,6 +146,15 @@ class Vec3Template
      */
     bool operator==(const Vec3Template<T, ScalarT>& other) const;
 
+    /**
+     * @brief Opposite of operator==
+     *
+     * @param other
+     * @return true
+     * @return false
+     */
+    bool operator!=(const Vec3Template<T, ScalarT>& other) const;
+
     T x, y, z;
 
     using ComponentType = T;
@@ -161,6 +179,27 @@ Vec3Template<T, ScalarT>::Vec3Template(T x, T y, T z)
   , y(y)
   , z(z)
 {}
+
+template<typename T, typename ScalarT>
+T
+Vec3Template<T, ScalarT>::norm() const
+{
+    return sqrt(x * x + y * y + z * z);
+}
+
+template<typename T, typename ScalarT>
+T
+Vec3Template<T, ScalarT>::squaredNorm() const
+{
+    return x * x + y * y + z * z;
+}
+
+template<typename T, typename ScalarT>
+Vec3Template<T, ScalarT>
+Vec3Template<T, ScalarT>::normalize() const
+{
+    return *this / norm();
+}
 
 template<typename T, typename ScalarT>
 Vec3Template<T, ScalarT>
@@ -253,5 +292,13 @@ Vec3Template<T, ScalarT>::operator==(
   const Vec3Template<T, ScalarT>& other) const
 {
     return x == other.x && y == other.y && z == other.z;
+}
+
+template<typename T, typename ScalarT>
+bool
+Vec3Template<T, ScalarT>::operator!=(
+  const Vec3Template<T, ScalarT>& other) const
+{
+    return !(*this == other);
 }
 } // namespace LinearAlgebra

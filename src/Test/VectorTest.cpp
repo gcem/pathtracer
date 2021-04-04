@@ -1,4 +1,5 @@
 #include "Vector.hpp"
+#include "LinearAlgebraTestCommon.hpp"
 #include <gtest/gtest.h>
 
 namespace LinearAlgebra {
@@ -164,6 +165,20 @@ TEST(VectorTest, CrossProduct4)
     EXPECT_FLOAT_EQ(0, result.x);
     EXPECT_FLOAT_EQ(0, result.y);
     EXPECT_FLOAT_EQ(0, result.z);
+}
+
+TEST(VectorTest, Norm)
+{
+    Vec3 vec{ 3, -2, 5 };
+    EXPECT_FLOAT_EQ(6.164414002968977, vec.norm());
+}
+
+TEST(VectorTest, Normalize)
+{
+    Vec3 vec{ 1, 2, 3 };
+    auto nor = vec.normalize();
+    LinearAlgebra::Test::EXPECT_VECTOR_EQ(
+      { 0.267261241912424, 0.534522483824849, 0.801783725737273 }, nor);
 }
 }
 }
