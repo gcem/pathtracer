@@ -16,6 +16,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    
+    - name: Install GTest
+      working-directory: '~'
+      shell: bash
+      run: git clone https://github.com/google/googletest.git && mkdir gtestbuild && cd gtestbuild && cmake ../googletest && cmake --build . && sudo cmake --install .
 
     - name: Create Build Environment
       # Some projects don't allow in-source building, so create a separate build directory
