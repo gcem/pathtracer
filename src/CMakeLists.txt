@@ -8,6 +8,8 @@ set(COMPILER)
 
 configure_file(Config.h.in Config.h)
 
+enable_testing()
+
 add_subdirectory(LinearAlgebra)
 add_subdirectory(Objects)
 add_subdirectory(Test)
