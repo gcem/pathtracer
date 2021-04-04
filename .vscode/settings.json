@@ -1,6 +1,11 @@
 {
     "cmake.sourceDirectory": "${workspaceFolder}/src",
     "files.associations": {
-        "initializer_list": "cpp"
+        "initializer_list": "cpp",
+        "atomic": "cpp",
+        "chrono": "cpp",
+        "complex": "cpp",
+        "string": "cpp",
+        "ranges": "cpp"
     }
 }

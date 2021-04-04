@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Vector.hpp"
-#include <initializer_list>
+#include <array>
 
 namespace LinearAlgebra {
 /**
@@ -33,7 +33,7 @@ class Mat3Template
      * @param il Elements of the matrix in row-major order (i.e. a11, a12,
      * a13, a21, ...)
      */
-    Mat3Template(std::initializer_list<T> il);
+    Mat3Template(std::array<T, 9> il);
 
     /**
      * @brief Calculates the determinant of this matrix
@@ -70,7 +70,7 @@ Mat3Template<T>::Mat3Template(T col1, T col2, T col3)
 {}
 
 template<typename T>
-Mat3Template<T>::Mat3Template(std::initializer_list<T> il)
+Mat3Template<T>::Mat3Template(std::array<T, 9> il)
 {}
 
 template<typename T>

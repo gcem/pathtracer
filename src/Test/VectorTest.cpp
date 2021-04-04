@@ -79,5 +79,91 @@ TEST(VectorTest, VectorAddition)
     EXPECT_EQ(24, result.y);
     EXPECT_EQ(2, result.z);
 }
+
+TEST(VectorTest, VectorSubtraction)
+{
+    Vec3 v1{ 5.7f, 7, -3 };
+    Vec3 v2{ 3.3f, 17, 5 };
+    auto result = v1 - v2;
+    EXPECT_FLOAT_EQ(2.4, result.x);
+    EXPECT_EQ(-10, result.y);
+    EXPECT_EQ(-8, result.z);
+}
+
+TEST(VectorTest, AdditionAssignment)
+{
+    Vec3 v1{ 5.7f, 7, -3 };
+    Vec3 v2{ 3.3f, 17, 5 };
+    auto& result = (v1 += v2);
+
+    EXPECT_FLOAT_EQ(9, v1.x);
+    EXPECT_EQ(24, v1.y);
+    EXPECT_EQ(2, v1.z);
+
+    v1.x = 300;
+    EXPECT_EQ(300, result.x) << "Should return a reference to itself";
+}
+
+TEST(VectorTest, SubtractionAssignment)
+{
+    Vec3 v1{ 5.7f, 7, -3 };
+    Vec3 v2{ 3.3f, 17, 5 };
+    auto& result = (v1 += v2);
+
+    EXPECT_FLOAT_EQ(2.4, result.x);
+    EXPECT_EQ(-10, result.y);
+    EXPECT_EQ(-8, result.z);
+
+    v1.x = 300;
+    EXPECT_EQ(300, result.x) << "Should return a reference to itself";
+}
+
+TEST(VectorTest, DotProduct)
+{
+    Vec3 v1{ 5.7f, 7, -3 };
+    Vec3 v2{ 3.3f, 17, 5 };
+    auto result = v1.dot(v2);
+    EXPECT_FLOAT_EQ(122.81, result);
+}
+
+TEST(VectorTest, CrossProduct1)
+{
+    Vec3 v1{ 1, 0, 0 };
+    Vec3 v2{ 0, 1, 0 };
+    auto result = v1.cross(v2);
+    EXPECT_EQ(0, result.x);
+    EXPECT_EQ(0, result.y);
+    EXPECT_EQ(1, result.z);
+}
+
+TEST(VectorTest, CrossProduct2)
+{
+    Vec3 v1{ 0, 1, 0 };
+    Vec3 v2{ 1, 0, 0 };
+    auto result = v1.cross(v2);
+    EXPECT_EQ(0, result.x);
+    EXPECT_EQ(0, result.y);
+    EXPECT_EQ(-1, result.z);
+}
+
+TEST(VectorTest, CrossProduct3)
+{
+    Vec3 v1{ 0, 1, 0 };
+    Vec3 v2{ 0, 0, 1 };
+    auto result = v1.cross(v2);
+    EXPECT_EQ(1, result.x);
+    EXPECT_EQ(0, result.y);
+    EXPECT_EQ(0, result.z);
+}
+
+TEST(VectorTest, CrossProduct4)
+{
+    Vec3 v1{ 1, 1, 1 };
+    Vec3 v2{ 2, 2, 2 };
+    auto result = v1.cross(v2);
+    EXPECT_FLOAT_EQ(0, result.x);
+    EXPECT_FLOAT_EQ(0, result.y);
+    EXPECT_FLOAT_EQ(0, result.z);
+}
 }
 }

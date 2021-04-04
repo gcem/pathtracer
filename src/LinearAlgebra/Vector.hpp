@@ -1,12 +1,10 @@
 #pragma once
 
-#include <array>
-
 namespace LinearAlgebra {
 /**
  * @brief 3-dimensional vector
  *
- * @tparam T Type of the components of vector
+ * @tparam T Stored type of the components of vector
  * @tparam ScalarT Scalar type for operations like addition. (Not the type of
  * field on which this vector is defined. Otherwise this would be same as T)
  */
@@ -32,77 +30,93 @@ class Vec3Template
     /**
      * @brief Calculate the norm (size) of this vector
      *
-     * @return float
+     * @return ScalarT
      */
-    float norm();
+    ScalarT norm();
 
     /**
      * @brief Calculate a unit vector with the same direction as this one.
      * Behavior is undefined if this is a zero-vector
      *
-     * @return Vec3Template this vector divided by its norm
+     * @return Vec3Template<T, ScalarT> this vector divided by its norm
      */
-    Vec3Template normalize();
+    Vec3Template<T, ScalarT> normalize();
 
     /**
      * @brief Divide each component by scalar
      *
      * @tparam ScalarT
-     * @return Vec3Template
+     * @return Vec3Template<T, ScalarT>
      */
-    Vec3Template operator/(ScalarT);
+    Vec3Template<T, ScalarT> operator/(ScalarT);
 
     /**
      * @brief Multiply each component by scalar
      *
      * @tparam ScalarT
-     * @return Vec3Template
+     * @return Vec3Template<T, ScalarT>
      */
-    Vec3Template operator*(ScalarT);
+    Vec3Template<T, ScalarT> operator*(ScalarT);
 
     /**
      * @brief Add a scalar to each component
      *
      * @tparam ScalarT
-     * @return Vec3Template
+     * @return Vec3Template<T, ScalarT>
      */
-    Vec3Template operator+(ScalarT);
+    Vec3Template<T, ScalarT> operator+(ScalarT);
 
     /**
      * @brief Subtract a scalar from each component
      *
      * @tparam ScalarT
-     * @return Vec3Template
+     * @return Vec3Template<T, ScalarT>
      */
-    Vec3Template operator-(ScalarT);
+    Vec3Template<T, ScalarT> operator-(ScalarT);
 
     /**
      * @brief Vector addition
      *
-     * @return Vec3Template
+     * @return Vec3Template<T, ScalarT>
      */
-    Vec3Template operator+(Vec3Template);
+    Vec3Template<T, ScalarT> operator+(Vec3Template<T, ScalarT>);
 
     /**
      * @brief Vector subtraction
      *
-     * @return Vec3Template
+     * @return Vec3Template<T, ScalarT>
      */
-    Vec3Template operator-(Vec3Template);
+    Vec3Template<T, ScalarT> operator-(Vec3Template<T, ScalarT>);
 
     /**
      * @brief Vector addition
      *
-     * @return Vec3Template& A reference to this object
+     * @return Vec3Template<T, ScalarT>& A reference to this object
      */
-    Vec3Template& operator+=(Vec3Template);
+    Vec3Template<T, ScalarT>& operator+=(Vec3Template<T, ScalarT>);
 
     /**
      * @brief Vector subtraction
      *
-     * @return Vec3Template& A reference to this object
+     * @return Vec3Template<T, ScalarT>& A reference to this object
      */
-    Vec3Template& operator-=(Vec3Template);
+    Vec3Template<T, ScalarT>& operator-=(Vec3Template<T, ScalarT>);
+
+    /**
+     * @brief Right-handed cross product
+     *
+     * @param other
+     * @return Vec3Template<T, ScalarT> this X other
+     */
+    Vec3Template<T, ScalarT> cross(Vec3Template<T, ScalarT> other);
+
+    /**
+     * @brief Dot product
+     *
+     * @param other
+     * @return ScalarT Sum of the components of component-wise multiplication
+     */
+    ScalarT dot(Vec3Template<T, ScalarT> other);
 
     T x, y, z;
 };
@@ -167,4 +181,24 @@ Vec3Template<T, ScalarT>::operator-(Vec3Template<T, ScalarT> other)
 {
     return { x - other.x, y - other.y, z - other.z };
 }
+
+template<typename T, typename ScalarT>
+Vec3Template<T, ScalarT>& Vec3Template<T, ScalarT>::operator-=(
+  Vec3Template<T, ScalarT>)
+{}
+
+template<typename T, typename ScalarT>
+Vec3Template<T, ScalarT>& Vec3Template<T, ScalarT>::operator+=(
+  Vec3Template<T, ScalarT>)
+{}
+
+template<typename T, typename ScalarT>
+Vec3Template<T, ScalarT>
+Vec3Template<T, ScalarT>::cross(Vec3Template<T, ScalarT> other)
+{}
+
+template<typename T, typename ScalarT>
+ScalarT
+Vec3Template<T, ScalarT>::dot(Vec3Template<T, ScalarT> other)
+{}
 } // namespace LinearAlgebra

@@ -6,3 +6,7 @@ target_link_libraries(PathTracerUnitTests
     PRIVATE
     gtest gtest_main gmock pthread
 )
+
+enable_testing()
+include(GoogleTest)
+gtest_discover_tests(PathTracerUnitTests)
