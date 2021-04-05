@@ -1,3 +1,14 @@
+/**
+ * @file Matrix.hpp
+ * @author Cem Gundogdu
+ * @brief 3 by 3 matrix templates
+ * @version 1.0
+ * @date 2021-04-05
+ *
+ * @copyright Copyright (c) 2021
+ *
+ */
+
 #pragma once
 
 #include "Vector.hpp"

@@ -1,3 +1,14 @@
+/**
+ * @file Ray.hpp
+ * @author Cem Gundogdu
+ * @brief Ray class
+ * @version 1.0
+ * @date 2021-04-05
+ *
+ * @copyright Copyright (c) 2021
+ *
+ */
+
 #pragma once
 
 #include "Vector.hpp"

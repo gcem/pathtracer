@@ -1,4 +1,13 @@
-#pragma once
+/**
+ * @file Vector.hpp
+ * @author Cem Gundogdu
+ * @brief 3-component Vector templates
+ * @version 1.0
+ * @date 2021-04-05
+ *
+ * @copyright Copyright (c) 2021
+ *
+ */
 
 #include "Config.hpp"
 #include <cmath>
@@ -162,9 +171,28 @@ public:
     using ScalarType = ScalarT;
 };
 
+/**
+ * @brief 3-component vector with configured floating point type
+ *
+ */
 using Vec3 = Vec3Template<FloatT, FloatT>;
+
+/**
+ * @brief Vector defined on float
+ *
+ */
 using Vec3f = Vec3Template<float, float>;
+
+/**
+ * @brief Vector defined on double
+ *
+ */
 using Vec3d = Vec3Template<double, double>;
+
+/**
+ * @brief Holds three integers
+ *
+ */
 using Vec3i = Vec3Template<int, float>;
 
 template<typename T, typename ScalarT>

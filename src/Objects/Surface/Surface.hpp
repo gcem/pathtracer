@@ -1,3 +1,16 @@
+/**
+ * @file Surface.hpp
+ * @author Cem Gundogdu
+ * @brief Interface for surfaces that can be hit by rays
+ * @version 1.0
+ * @date 2021-04-05
+ *
+ * @copyright Copyright (c) 2021
+ *
+ */
+
+#pragma once
+
 #include ""
 #include "Config.hpp"
 
@@ -6,9 +19,10 @@ class Surface
 {
 public:
     /**
-     * @brief Finds the intersection of given ray with this surface. If there is
-     * an intersection, returns the t value and sets normalOut. Otherwise
-     * returns -1.
+     * @brief Finds the intersection of given ray with this surface.
+     *
+     * If there is an intersection, returns the t value and sets normalOut.
+     * Otherwise returns -1.
      *
      * If return value is not -1, then it is a positive number t such that
      * ray.origin + t * ray.direction is on this surface.
