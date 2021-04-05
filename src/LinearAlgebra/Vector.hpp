@@ -9,6 +9,8 @@
  *
  */
 
+#pragma once
+
 #include "Config.hpp"
 #include <cmath>
 
@@ -165,9 +167,27 @@ public:
      */
     bool operator!=(const Vec3Template<T, ScalarT>& other) const;
 
+    /**
+     * @name Components
+     *
+     */
+    ///@{
+    /**
+     * x, y, z components of the vector
+     */
     T x, y, z;
+    ///@}
 
+    /**
+     * @brief Type of x, y, z components of the matrix
+     *
+     */
     using ComponentType = T;
+
+    /**
+     * @brief Type of the scalar used in multiplication, subtraction etc.
+     *
+     */
     using ScalarType = ScalarT;
 };
 

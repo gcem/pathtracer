@@ -77,7 +77,17 @@ public:
      */
     ColumnT operator*(const ColumnT& vec) const;
 
+    /**
+     * @name Columns
+     *
+     */
+    ///@{
+    /**
+     * @brief Column of the matrix
+     *
+     */
     ColumnT col1, col2, col3;
+    ///@}
 };
 
 template<typename ColumnT>
@@ -138,7 +148,21 @@ Mat3Template<ColumnT>::operator*(const Mat3Template<ColumnT>& other) const
     return { *this * other.col1, *this * other.col2, *this * other.col3 };
 }
 
+/**
+ * @brief 3 by 3 matrix using configured floating point type
+ *
+ */
 using Mat3 = Mat3Template<Vec3>;
+
+/**
+ * @brief 3 by 3 matrix using float
+ *
+ */
 using Mat3f = Mat3Template<Vec3f>;
+
+/**
+ * @brief 3 by 3 matrix using double
+ *
+ */
 using Mat3d = Mat3Template<Vec3d>;
 } // namespace LinearAlgebra

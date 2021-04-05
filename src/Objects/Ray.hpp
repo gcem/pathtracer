@@ -14,6 +14,10 @@
 #include "Vector.hpp"
 
 namespace PathTracer {
+/**
+ * @brief Ray with an origin and direction
+ *
+ */
 class Ray
 {
 public:
@@ -31,6 +35,20 @@ public:
      */
     Ray(LinearAlgebra::Vec3 origin, LinearAlgebra::Vec3 direction);
 
-    LinearAlgebra::Vec3 origin, direction;
+    /**
+     * @brief Origin (source) of the ray
+     *
+     */
+    LinearAlgebra::Vec3 origin;
+
+    /**
+     * @brief Direction of the ray
+     *
+     * Usually a unit vector but not necessary. Should point in the direction
+     * that this ray is extends to. Ray represents *positive* multiples of
+     * direction added to origin.
+     *
+     */
+    LinearAlgebra::Vec3 direction;
 };
 } // namespace PathTracer
