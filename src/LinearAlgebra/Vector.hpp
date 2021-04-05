@@ -133,6 +133,17 @@ public:
     Vec3Template<T, ScalarT>& operator-=(const Vec3Template<T, ScalarT>&);
 
     /**
+     * @brief Component-wise multiplication
+     *
+     * Multiply each component of the vectors. Algebraically meaningless but may
+     * be useful if this class is used to hold colors.
+     *
+     * @tparam ScalarT
+     * @return Vec3Template<T, ScalarT>
+     */
+    Vec3Template<T, ScalarT> operator*(const Vec3Template<T, ScalarT>&) const;
+
+    /**
      * @brief Right-handed cross product
      *
      * @param other
@@ -307,6 +318,13 @@ Vec3Template<T, ScalarT>::operator-=(const Vec3Template<T, ScalarT>& other)
     y -= other.y;
     z -= other.z;
     return *this;
+}
+
+template<typename T, typename ScalarT>
+Vec3Template<T, ScalarT>
+Vec3Template<T, ScalarT>::operator*(const Vec3Template<T, ScalarT>& other) const
+{
+    return { x * other.x, y * other.y, z * other.z };
 }
 
 template<typename T, typename ScalarT>

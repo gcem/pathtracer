@@ -24,10 +24,10 @@ class Camera
     /**
      * @brief Creates a ray from camera to pixel (x, y)
      *
-     * @param x x-coordinate of the pixel, leftmost pixel being 0 and rightmost
-     * pixel being width - 1
-     * @param y y-coordinate of the pixel, top row being 0 and bottom row being
-     * height - 1
+     * Top-left pixel is (0, 0). Bottom-right pixel is (width - 1, height - 1).
+     *
+     * @param x x-coordinate of the pixel
+     * @param y y-coordinate of the pixel
      * @return Ray Ray from Camera's position to pixel (x, y). Direction of the
      * ray is a unit vector.
      */
@@ -52,16 +52,6 @@ protected:
            LinearAlgebra::Vec3 position,
            int width,
            int height);
-
-    /**
-     * @brief Vector pointing to right side
-     *
-     * Calculates the vector pointing to the right side, using up and gaze
-     * vectors.
-     *
-     * @return LinearAlgebra::Vec3 Unit vector pointing to the right side
-     */
-    LinearAlgebra::Vec3 right() const;
 
     /**
      * @name Resolution

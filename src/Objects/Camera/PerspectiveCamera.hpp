@@ -23,6 +23,7 @@ namespace PathTracer {
  */
 class PerspectiveCamera : public Camera
 {
+public:
     /**
      * @brief Construct a new Perspective Camera object
      *
@@ -48,15 +49,17 @@ class PerspectiveCamera : public Camera
                       float left,
                       float right,
                       float bottom,
-                      float top);
+                      float top,
+                      float near,
+                      float far);
 
     /**
      * @brief Creates a ray from camera to pixel (x, y) on the image plane
      *
-     * @param x x-coordinate of the pixel, leftmost pixel being 0 and rightmost
-     * pixel being width - 1
-     * @param y y-coordinate of the pixel, top row being 0 and bottom row being
-     * height - 1
+     * Top-left pixel is (0, 0). Bottom-right pixel is (width - 1, height - 1).
+     *
+     * @param x x-coordinate of the pixel
+     * @param y y-coordinate of the pixel
      * @return Ray Ray from Camera's position to pixel (x, y). Direction of the
      * ray is a unit vector.
      */
@@ -76,5 +79,53 @@ protected:
      */
     float left, right, bottom, top;
     ///@}
+
+    /**
+     * @brief Near plane distance
+     *
+     * Only used to find out what left, right, bottom, top mean. Objects closer
+     * than near plane will also be drawn.
+     *
+     */
+    float near;
+
+    /**
+     * @brief Far plane distance
+     *
+     * Will not be used by the Camera itself. We save this in case I/O
+     * operations need it later.
+     *
+     */
+    float far;
+
+    /**
+     * @brief Vector pointing to right neighbor pixel
+     *
+     * Vector pointing to right, calculated using up and gaze vectors. Its norm
+     * is equal to the width of one pixel on the image plane.
+     *
+     * If you add this to a vector pointing to pixel (x, y), you get to (x + 1,
+     * y)
+     *
+     */
+    LinearAlgebra::Vec3 rightPixel;
+
+    /**
+     * @brief Vector pointing to the bottom neighbor pixel
+     *
+     * Vector pointing to bottom (-up direction). Its norm is equal to the
+     * height of one pixel on the image plane.
+     *
+     * If you add this to a vector pointing to pixel (x, y), you get to (x, y +
+     * 1)
+     *
+     */
+    LinearAlgebra::Vec3 bottomPixel;
+
+    /**
+     * @brief Vector from position of camera to the center of top-left pixel
+     *
+     */
+    LinearAlgebra::Vec3 topLeft;
 };
 }

@@ -180,5 +180,15 @@ TEST(VectorTest, Normalize)
     LinearAlgebra::Test::EXPECT_VECTOR_EQ(
       { 0.267261241912424, 0.534522483824849, 0.801783725737273 }, nor);
 }
+
+TEST(VectorTest, ComponentMultiplication)
+{
+    Vec3 vec1{ 3, -2.5, 4 };
+    Vec3 vec2{ 4, 7, -5 };
+    auto result = vec1 * vec2;
+    EXPECT_EQ(12, result.x);
+    EXPECT_EQ(-17.5, result.y);
+    EXPECT_EQ(-20, result.z);
+}
 }
 }
