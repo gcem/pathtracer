@@ -1,7 +1,7 @@
 /**
- * @file Surface.hpp
+ * @file Sphere.hpp
  * @author Cem Gundogdu
- * @brief Interface for surfaces that can be hit by rays
+ * @brief
  * @version 1.0
  * @date 2021-04-05
  *
@@ -11,21 +11,23 @@
 
 #pragma once
 
-#include "Config.hpp"
-#include "Material.hpp"
 #include "Ray.hpp"
-#include "Vector.hpp"
+#include "Surface.hpp"
 
 namespace PathTracer {
-/**
- * @brief Can be hit by rays, has a material
- *
- */
-class Surface
+class Sphere : public Surface
 {
 public:
     /**
-     * @brief Finds the intersection of given ray with this surface.
+     * @brief Construct a new Sphere object
+     *
+     * @param center
+     * @param radius
+     */
+    Sphere(LinearAlgebra::Vec3 center, FloatT radius, Material material);
+
+    /**
+     * @brief Finds the closest intersection of given ray with this Sphere.
      *
      * If there is an intersection, returns the t value and sets normalOut.
      * Otherwise returns -1.
@@ -39,21 +41,20 @@ public:
      * @return FloatT t for the closest intersection with ray, -1 if there is no
      * intersection.
      */
-    virtual FloatT intersect(const Ray& ray,
-                             LinearAlgebra::Vec3& normalOut) const = 0;
-
-    /**
-     * @brief Material of this Surface
-     *
-     */
-    const Material material;
+    FloatT intersect(const Ray& ray,
+                     LinearAlgebra::Vec3& normalOut) const override;
 
 protected:
     /**
-     * @brief Sets the material of Surface
+     * @brief Center
      *
-     * @param material
      */
-    Surface(Material material);
+    LinearAlgebra::Vec3 center;
+
+    /**
+     * @brief Radius
+     *
+     */
+    float radius;
 };
 }
