@@ -2,3 +2,6 @@
 #define PathTracer_VERSION_MAJOR @PathTracer_VERSION_MAJOR@
 #define PathTracer_VERSION_MINOR @PathTracer_VERSION_MINOR@
 // clang-format on
+
+// TODO: add cmake option to change this to double
+using FloatT = float;

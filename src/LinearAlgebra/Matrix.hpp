@@ -12,7 +12,7 @@ namespace LinearAlgebra {
 template<typename ColumnT>
 class Mat3Template
 {
-  public:
+public:
     /**
      * @brief Construct a new identity matrix
      *

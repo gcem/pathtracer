@@ -5,7 +5,7 @@
 namespace PathTracer {
 class Ray
 {
-  public:
+public:
     /**
      * @brief Construct a new Ray object at the origin
      *

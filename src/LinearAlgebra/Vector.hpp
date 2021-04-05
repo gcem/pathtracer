@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Config.hpp"
 #include <cmath>
 
 namespace LinearAlgebra {
@@ -13,7 +14,7 @@ namespace LinearAlgebra {
 template<typename T, typename ScalarT>
 class Vec3Template
 {
-  public:
+public:
     /**
      * @brief Construct a zero-vector
      *
@@ -161,7 +162,7 @@ class Vec3Template
     using ScalarType = ScalarT;
 };
 
-using Vec3 = Vec3Template<float, float>;
+using Vec3 = Vec3Template<FloatT, FloatT>;
 using Vec3f = Vec3Template<float, float>;
 using Vec3d = Vec3Template<double, double>;
 using Vec3i = Vec3Template<int, float>;

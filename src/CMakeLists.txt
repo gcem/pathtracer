@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(COMPILER)
 
-configure_file(Config.h.in Config.h)
+configure_file(Config.hpp.in Config.hpp)
 
 enable_testing()
 

@@ -2,5 +2,6 @@
 BasedOnStyle: Mozilla
 IndentWidth: '4'
 UseTab: Never
+AccessModifierOffset: '-4'
 
 ...
