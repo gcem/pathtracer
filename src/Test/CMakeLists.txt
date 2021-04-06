@@ -1,5 +1,7 @@
 include(GoogleTest)
-add_executable(PathTracerUnitTests VectorTest.cpp MatrixTest.cpp RayTest.cpp CameraTest.cpp)
+add_executable(PathTracerUnitTests
+    VectorTest.cpp MatrixTest.cpp RayTest.cpp CameraTest.cpp
+    TriangleTest.cpp)
 
 target_link_libraries(PathTracerUnitTests
     PUBLIC

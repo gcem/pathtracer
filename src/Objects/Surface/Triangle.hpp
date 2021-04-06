@@ -29,9 +29,9 @@ public:
      * @param vertex2
      * @param vertex3
      */
-    Triangle(LinearAlgebra::Vec3 vertex1,
-             LinearAlgebra::Vec3 vertex2,
-             LinearAlgebra::Vec3 vertex3);
+    Triangle(const LinearAlgebra::Vec3& vertex1,
+             const LinearAlgebra::Vec3& vertex2,
+             const LinearAlgebra::Vec3& vertex3);
 
     /**
      * @brief Finds the closest intersection of given ray with this triangle.
@@ -73,6 +73,6 @@ protected:
      * triangle
      *
      */
-    LinearAlgebra::Vec3 normalVector;
+    LinearAlgebra::Vec3 normal;
 };
 }
