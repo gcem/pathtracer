@@ -28,7 +28,9 @@ public:
      * @param center
      * @param radius
      */
-    Sphere(LinearAlgebra::Vec3 center, FloatT radius, Material material);
+    Sphere(const LinearAlgebra::Vec3& center,
+           FloatT radius,
+           const Material& material);
 
     /**
      * @brief Finds the closest intersection of given ray with this Sphere.

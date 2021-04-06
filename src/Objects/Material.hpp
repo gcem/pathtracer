@@ -44,18 +44,18 @@ public:
      * @brief RGB values of ambient color
      *
      */
-    const LinearAlgebra::Vec3 ambient;
+    LinearAlgebra::Vec3 ambient;
 
     /**
      * @brief RGB values of diffuse color
      *
      */
-    const LinearAlgebra::Vec3 diffuse;
+    LinearAlgebra::Vec3 diffuse;
 
     /**
      * @brief RGB values of specular color
      *
      */
-    const LinearAlgebra::Vec3 specular;
+    LinearAlgebra::Vec3 specular;
 };
 }

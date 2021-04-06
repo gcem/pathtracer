@@ -54,6 +54,6 @@ protected:
      *
      * @param material
      */
-    Surface(Material material);
+    Surface(const Material& material);
 };
 }

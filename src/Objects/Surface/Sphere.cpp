@@ -1,7 +1,9 @@
 #include "Sphere.hpp"
 
 namespace PathTracer {
-Sphere::Sphere(LinearAlgebra::Vec3 center, FloatT radius, Material material)
+Sphere::Sphere(const LinearAlgebra::Vec3& center,
+               FloatT radius,
+               const Material& material)
   : Surface(material)
   , center(center)
   , radius(radius)

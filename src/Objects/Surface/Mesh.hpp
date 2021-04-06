@@ -38,8 +38,8 @@ public:
      * @param material
      */
     Mesh(const std::vector<LinearAlgebra::Vec3>& vertices,
-         const std::vector<int> indices,
-         Material material);
+         const std::vector<int>& indices,
+         const Material& material);
 
     /**
      * @brief Finds the intersection of given ray with this mesh.
