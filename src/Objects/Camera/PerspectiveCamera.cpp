@@ -2,7 +2,8 @@
 #include "Config.hpp"
 
 namespace Objects {
-PerspectiveCamera::PerspectiveCamera(LinearAlgebra::Vec3 gaze,
+PerspectiveCamera::PerspectiveCamera(std::string imageName,
+                                     LinearAlgebra::Vec3 gaze,
                                      LinearAlgebra::Vec3 up,
                                      LinearAlgebra::Vec3 position,
                                      int width,
@@ -13,7 +14,7 @@ PerspectiveCamera::PerspectiveCamera(LinearAlgebra::Vec3 gaze,
                                      float top,
                                      float near,
                                      float far)
-  : Camera(gaze, up, position, width, height)
+  : Camera(imageName, gaze, up, position, width, height)
   , left(left)
   , right(right)
   , bottom(bottom)

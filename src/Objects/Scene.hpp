@@ -29,18 +29,24 @@ public:
      * @brief Cameras
      *
      */
-    std::vector<std::unique_ptr<Camera>> cameras;
+    std::vector<std::shared_ptr<Camera>> cameras;
 
     /**
      * @brief Surfaces that intersect with rays
      *
      */
-    std::vector<std::unique_ptr<Surface>> surfaces;
+    std::vector<std::shared_ptr<Surface>> surfaces;
 
     /**
      * @brief Point lights
      *
      */
     std::vector<PointLight> lights;
+
+    /**
+     * @brief RGB components of background color
+     *
+     */
+    LinearAlgebra::Vec3 backgroundColor;
 };
 }

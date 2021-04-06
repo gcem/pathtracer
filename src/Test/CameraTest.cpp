@@ -4,12 +4,23 @@
 
 namespace Objects {
 namespace Test {
+TEST(PerspectiveCameraTest, FileName)
+{
+    LinearAlgebra::Vec3 gaze{ 0, 0, -5.5 };
+    LinearAlgebra::Vec3 up{ 0, 8, 0 };
+    LinearAlgebra::Vec3 pos{ 1, 2, 3 };
+    PerspectiveCamera cam(
+      "someFile.name", {}, {}, {}, 1, 1, -4, 4, -3, 3, 1, 20);
+
+    EXPECT_EQ("someFile.name", cam.imageName());
+}
+
 TEST(PerspectiveCameraTest, SingleRay)
 {
     LinearAlgebra::Vec3 gaze{ 0, 0, -5.5 };
     LinearAlgebra::Vec3 up{ 0, 8, 0 };
     LinearAlgebra::Vec3 pos{ 1, 2, 3 };
-    PerspectiveCamera cam(gaze, up, pos, 1, 1, -4, 4, -3, 3, 1, 20);
+    PerspectiveCamera cam("", gaze, up, pos, 1, 1, -4, 4, -3, 3, 1, 20);
 
     auto ray = cam.castRay(0, 0);
     EXPECT_EQ(pos, ray.origin);
@@ -23,7 +34,7 @@ TEST(PerspectiveCameraTest, ManyRays)
     LinearAlgebra::Vec3 gaze{ 0, 0, -5 };
     LinearAlgebra::Vec3 up{ 0, 8, 0 };
     LinearAlgebra::Vec3 pos{ 1, 2, 3 };
-    PerspectiveCamera cam(gaze, up, pos, 3, 3, -3, 3, -3, 3, 1, 20);
+    PerspectiveCamera cam("", gaze, up, pos, 3, 3, -3, 3, -3, 3, 1, 20);
 
     auto topRight = cam.castRay(2, 0);
     auto bottomLeft = cam.castRay(0, 2);

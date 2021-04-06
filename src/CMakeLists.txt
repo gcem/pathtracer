@@ -14,6 +14,7 @@ add_subdirectory(LinearAlgebra)
 add_subdirectory(Objects)
 add_subdirectory(Parser)
 add_subdirectory(Test)
+add_subdirectory(3rdParty)
 
 add_executable(PathTracer main.cpp)
 

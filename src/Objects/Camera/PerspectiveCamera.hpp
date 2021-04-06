@@ -27,6 +27,7 @@ public:
     /**
      * @brief Construct a new Perspective Camera object
      *
+     * @param imageName Name of image file this camera should create
      * @param gaze Front vector
      * @param up Up vector
      * @param position Position of the camera
@@ -41,7 +42,8 @@ public:
      * @param top Distance of top edge of the image plane to the intersection of
      * gaze and the plane
      */
-    PerspectiveCamera(LinearAlgebra::Vec3 gaze,
+    PerspectiveCamera(std::string imageName,
+                      LinearAlgebra::Vec3 gaze,
                       LinearAlgebra::Vec3 up,
                       LinearAlgebra::Vec3 position,
                       int width,

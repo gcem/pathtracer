@@ -13,6 +13,7 @@
 
 #include "Ray.hpp"
 #include "Vector.hpp"
+#include <string>
 
 namespace Objects {
 /**
@@ -21,6 +22,7 @@ namespace Objects {
  */
 class Camera
 {
+public:
     /**
      * @brief Creates a ray from camera to pixel (x, y)
      *
@@ -33,6 +35,8 @@ class Camera
      */
     virtual Ray castRay(int x, int y) const = 0;
 
+    std::string imageName() const;
+
 protected:
     /**
      * @brief Construct a new Camera object
@@ -41,13 +45,15 @@ protected:
      * direction doesn't change. A new up vector is calculated using
      * Gramm-Schmidth orthogonalization.
      *
+     * @param imageName Name of image file this camera should create
      * @param gaze Front vector
      * @param up Up vector
      * @param position Position of the camera
      * @param width Resulotion of the created image in horizontal direction
      * @param height Resulotion of the created image in vertical direction
      */
-    Camera(LinearAlgebra::Vec3 gaze,
+    Camera(std::string imageName,
+           LinearAlgebra::Vec3 gaze,
            LinearAlgebra::Vec3 up,
            LinearAlgebra::Vec3 position,
            int width,
@@ -88,5 +94,11 @@ protected:
      *
      */
     LinearAlgebra::Vec3 position;
+
+    /**
+     * @brief Name of image file this camera should create
+     *
+     */
+    std::string fileName;
 };
 }
