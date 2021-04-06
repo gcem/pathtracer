@@ -30,21 +30,32 @@ public:
     Material();
 
     /**
+     * @brief Construct a Material object with given colors
+     *
+     * @param ambient
+     * @param diffuse
+     * @param specular
+     */
+    Material(const LinearAlgebra::Vec3& ambient,
+             const LinearAlgebra::Vec3& diffuse,
+             const LinearAlgebra::Vec3& specular);
+
+    /**
      * @brief RGB values of ambient color
      *
      */
-    LinearAlgebra::Vec3 ambient;
+    const LinearAlgebra::Vec3 ambient;
 
     /**
      * @brief RGB values of diffuse color
      *
      */
-    LinearAlgebra::Vec3 diffuse;
+    const LinearAlgebra::Vec3 diffuse;
 
     /**
      * @brief RGB values of specular color
      *
      */
-    LinearAlgebra::Vec3 specular;
+    const LinearAlgebra::Vec3 specular;
 };
 }

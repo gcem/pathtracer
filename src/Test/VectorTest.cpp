@@ -173,6 +173,13 @@ TEST(VectorTest, Norm)
     EXPECT_FLOAT_EQ(6.164414002968977, vec.norm());
 }
 
+TEST(VectorTest, SquaredNorm)
+{
+    Vec3 vec{ 2, 7, 16.2 };
+    auto sqNorm = vec.squaredNorm();
+    EXPECT_FLOAT_EQ(315.44, sqNorm);
+}
+
 TEST(VectorTest, Normalize)
 {
     Vec3 vec{ 1, 2, 3 };

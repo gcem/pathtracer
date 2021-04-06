@@ -15,6 +15,10 @@
 #include "Surface.hpp"
 
 namespace PathTracer {
+/**
+ * @brief Can be intersected from inside/outside
+ *
+ */
 class Sphere : public Surface
 {
 public:
@@ -37,7 +41,8 @@ public:
      *
      * @param ray
      * @param normalOut If return value is not -1, then this is set to the
-     * surface normal at intersection point. Otherwise unmodified.
+     * surface normal at intersection point. Otherwise unmodified. Normal always
+     * points away from center.
      * @return FloatT t for the closest intersection with ray, -1 if there is no
      * intersection.
      */
@@ -55,6 +60,6 @@ protected:
      * @brief Radius
      *
      */
-    float radius;
+    FloatT radius;
 };
 }
