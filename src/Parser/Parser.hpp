@@ -24,6 +24,12 @@ namespace Parser {
 class Parser
 {
 public:
-    virtual Scene parse(std::istream file) const = 0;
+    /**
+     * @brief Parses the given file to create a Scene object
+     *
+     * @param file Input file of appropriate format
+     * @return Scene Parsed scene object
+     */
+    virtual PathTracer::Scene parse(std::istream file) const = 0;
 };
 }
