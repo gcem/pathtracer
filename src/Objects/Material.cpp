@@ -1,5 +1,5 @@
 #include "Material.hpp"
-namespace PathTracer {
+namespace Objects {
 Material::Material()
   : Material({ 1, 1, 1 }, { 1, 1, 1 }, { 1, 1, 1 })
 {}

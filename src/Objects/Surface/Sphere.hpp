@@ -14,7 +14,7 @@
 #include "Ray.hpp"
 #include "Surface.hpp"
 
-namespace PathTracer {
+namespace Objects {
 /**
  * @brief Can be intersected from inside/outside
  *

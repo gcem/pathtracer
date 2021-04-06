@@ -14,7 +14,7 @@
 #include "Ray.hpp"
 #include "Vector.hpp"
 
-namespace PathTracer {
+namespace Objects {
 /**
  * @brief Casts rays to the desired pixel
  *

@@ -13,7 +13,7 @@
 
 #include "Camera.hpp"
 
-namespace PathTracer {
+namespace Objects {
 /**
  * @brief Generates rays that form a perspective image of the scene
  *

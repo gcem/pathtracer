@@ -2,7 +2,7 @@
 #include <cmath>
 #include <limits>
 
-namespace PathTracer {
+namespace Objects {
 Mesh::Mesh(const std::vector<LinearAlgebra::Vec3>& vertices,
            const std::vector<int>& indices,
            const Material& material)

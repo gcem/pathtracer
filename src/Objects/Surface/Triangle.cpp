@@ -1,7 +1,7 @@
 #include "Triangle.hpp"
 #include "Matrix.hpp"
 
-namespace PathTracer {
+namespace Objects {
 Triangle::Triangle(const LinearAlgebra::Vec3& vertex1,
                    const LinearAlgebra::Vec3& vertex2,
                    const LinearAlgebra::Vec3& vertex3)

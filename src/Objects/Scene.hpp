@@ -17,7 +17,7 @@
 #include <memory>
 #include <vector>
 
-namespace PathTracer {
+namespace Objects {
 /**
  * @brief Has cameras, surfaces and lights
  *

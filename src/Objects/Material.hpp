@@ -13,7 +13,7 @@
 
 #include "Vector.hpp"
 
-namespace PathTracer {
+namespace Objects {
 /**
  * @brief Holds the properties of a material
  *

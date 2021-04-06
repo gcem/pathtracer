@@ -15,7 +15,7 @@
 #include "Ray.hpp"
 #include "Vector.hpp"
 
-namespace PathTracer {
+namespace Objects {
 class Triangle
 {
 public:

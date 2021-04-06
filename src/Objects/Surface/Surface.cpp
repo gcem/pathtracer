@@ -1,5 +1,5 @@
 #include "Surface.hpp"
-namespace PathTracer {
+namespace Objects {
 Surface::Surface(const Material& material)
   : material(material)
 {}

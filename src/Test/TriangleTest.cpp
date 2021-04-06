@@ -2,7 +2,7 @@
 #include "LinearAlgebraTestCommon.hpp"
 #include <gtest/gtest.h>
 
-namespace PathTracer {
+namespace Objects {
 namespace Test {
 
 TEST(TriangleTest, Normal1)

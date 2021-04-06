@@ -17,7 +17,7 @@
 #include "Triangle.hpp"
 #include <vector>
 
-namespace PathTracer {
+namespace Objects {
 /**
  * @brief Mesh of triangles, all having the same material
  *

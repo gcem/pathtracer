@@ -1,7 +1,7 @@
 #include "Material.hpp"
 #include <gtest/gtest.h>
 
-namespace PathTracer {
+namespace Objects {
 namespace Test {
 TEST(MaterialTest, DefaultConstructor)
 {

@@ -13,7 +13,7 @@
 
 #include "Vector.hpp"
 
-namespace PathTracer {
+namespace Objects {
 /**
  * @brief Has a location and intensity per color channel
  *

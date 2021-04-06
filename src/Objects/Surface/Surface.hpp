@@ -16,7 +16,7 @@
 #include "Ray.hpp"
 #include "Vector.hpp"
 
-namespace PathTracer {
+namespace Objects {
 /**
  * @brief Can be hit by rays, has a material
  *

@@ -30,6 +30,6 @@ public:
      * @param file Input file of appropriate format
      * @return Scene Parsed scene object
      */
-    virtual PathTracer::Scene parse(std::istream file) const = 0;
+    virtual Objects::Scene parse(std::istream file) const = 0;
 };
 }

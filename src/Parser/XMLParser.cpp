@@ -1,9 +1,9 @@
 #include "XMLParser.hpp"
 
 namespace Parser {
-PathTracer::Scene
+Objects::Scene
 XMLParser::parse(std::istream file) const
 {
-    return PathTracer::Scene();
+    return Objects::Scene();
 }
 }

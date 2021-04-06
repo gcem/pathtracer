@@ -13,7 +13,7 @@
 
 #include "Vector.hpp"
 
-namespace PathTracer {
+namespace Objects {
 /**
  * @brief Ray with an origin and direction
  *
@@ -51,4 +51,4 @@ public:
      */
     LinearAlgebra::Vec3 direction;
 };
-} // namespace PathTracer
+} // namespace Objects

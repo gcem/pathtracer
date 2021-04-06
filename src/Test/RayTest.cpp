@@ -1,7 +1,7 @@
 #include "Ray.hpp"
 #include <gtest/gtest.h>
 
-namespace PathTracer {
+namespace Objects {
 namespace Test {
 TEST(RayTest, DefaultConstructor)
 {

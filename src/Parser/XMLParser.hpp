@@ -32,6 +32,6 @@ public:
      * @param file Input file of appropriate format
      * @return Scene Parsed scene object
      */
-    PathTracer::Scene parse(std::istream file) const override;
+    Objects::Scene parse(std::istream file) const override;
 };
 }

@@ -1,7 +1,7 @@
 #include "PerspectiveCamera.hpp"
 #include "Config.hpp"
 
-namespace PathTracer {
+namespace Objects {
 PerspectiveCamera::PerspectiveCamera(LinearAlgebra::Vec3 gaze,
                                      LinearAlgebra::Vec3 up,
                                      LinearAlgebra::Vec3 position,
