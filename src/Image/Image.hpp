@@ -99,8 +99,11 @@ protected:
 
 template<typename T>
 Image<T>::Image(int width, int height)
-  : pixels(width * height * 3)
-{}
+  : width(width)
+  , height(height)
+{
+    pixels = std::vector<T>(width * height * 3);
+}
 
 template<typename T>
 std::vector<T>&
@@ -113,7 +116,7 @@ template<typename T>
 LinearAlgebra::Vec3Template<T, FloatT>
 Image<T>::getPixel(int x, int y) const
 {
-    int pos = y * width + x;
+    int pos = (y * width + x) * 3;
     return { pixels[pos], pixels[pos + 1], pixels[pos + 2] };
 }
 
@@ -121,7 +124,7 @@ template<typename T>
 void
 Image<T>::setPixel(int x, int y, LinearAlgebra::Vec3Template<T, FloatT> color)
 {
-    int pos = y * width + x;
+    int pos = (y * width + x) * 3;
     pixels[pos] = color.x;
     pixels[pos + 1] = color.y;
     pixels[pos + 2] = color.z;
