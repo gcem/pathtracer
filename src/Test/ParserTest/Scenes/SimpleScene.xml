@@ -1,0 +1,81 @@
+<Scene>
+    <BackgroundColor>4 1 5</BackgroundColor>
+
+    <ShadowRayEpsilon>13e-2</ShadowRayEpsilon>
+
+    <IntersectionTestEpsilon>18e-1</IntersectionTestEpsilon>
+
+    <Cameras>
+        <Camera id="1">
+            <Position>5 6 7</Position>
+            <Gaze>0 0 -1</Gaze>
+            <Up>0 1 0</Up>
+            <NearPlane>-7 6 -5 4</NearPlane>
+            <NearDistance>1</NearDistance>
+            <ImageResolution>1200 800</ImageResolution>
+            <ImageName>simple.png</ImageName>
+        </Camera>
+        <Camera id="2">
+            <Position>5 6 7</Position>
+            <Gaze>0 0 -1</Gaze>
+            <Up>0 1 0</Up>
+            <NearPlane>-7 6 -5 4</NearPlane>
+            <NearDistance>1</NearDistance>
+            <ImageResolution>1200 800</ImageResolution>
+            <ImageName>simple2.png</ImageName>
+        </Camera>
+    </Cameras>
+
+    <Lights>
+        <AmbientLight>25 35 45.2</AmbientLight>
+        <PointLight id="1">
+            <Position>5 6 7 </Position>
+            <Intensity>1000 2000 30.5</Intensity>
+        </PointLight>
+        <PointLight id="1">
+            <Position>3 2 1 </Position>
+            <Intensity>1000 2000 30.5</Intensity>
+        </PointLight>
+    </Lights>
+
+    <Materials>
+        <Material id="1">
+            <AmbientReflectance>1 2 3</AmbientReflectance>
+            <DiffuseReflectance>4 5 6</DiffuseReflectance>
+            <SpecularReflectance>7 8 9</SpecularReflectance>
+            <PhongExponent>10</PhongExponent>
+        </Material>
+    </Materials>
+
+    <VertexData>
+        -0.5 0.5 -2
+        -0.5 -0.5 -2
+        0.5 -0.5 -2
+        0.5 0.5 -2
+        0.75 0.75 -2
+        1 0.75 -2
+        0.875 1 -2
+        -0.875 1 -2
+    </VertexData>
+
+    <Objects>
+        <Mesh id="1">
+            <Material>1</Material>
+            <Faces>
+                3 1 2
+                1 3 4
+            </Faces>
+        </Mesh>
+        <Triangle id="1">
+            <Material>1</Material>
+            <Indices>
+                5 6 7
+            </Indices>
+        </Triangle>
+        <Sphere id="1">
+            <Material>1</Material>
+            <Center>8</Center>
+            <Radius>0.3</Radius>
+        </Sphere>
+    </Objects>
+</Scene>

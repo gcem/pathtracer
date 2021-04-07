@@ -35,10 +35,12 @@ public:
      * @param ambient
      * @param diffuse
      * @param specular
+     * @param phongExponent
      */
     Material(const LinearAlgebra::Vec3& ambient,
              const LinearAlgebra::Vec3& diffuse,
-             const LinearAlgebra::Vec3& specular);
+             const LinearAlgebra::Vec3& specular,
+             FloatT phongExponent);
 
     /**
      * @brief RGB values of ambient color
@@ -57,5 +59,14 @@ public:
      *
      */
     LinearAlgebra::Vec3 specular;
+
+    /**
+     * @brief Phong exponent
+     *
+     * Determines how shiny the surface looks. If exponent is higher, phong
+     * reflectance decays faster with distance to peak point.
+     *
+     */
+    FloatT phongExponent;
 };
 }

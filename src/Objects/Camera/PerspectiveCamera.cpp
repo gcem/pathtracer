@@ -8,19 +8,18 @@ PerspectiveCamera::PerspectiveCamera(std::string imageName,
                                      LinearAlgebra::Vec3 position,
                                      int width,
                                      int height,
+                                     int samples,
                                      float left,
                                      float right,
                                      float bottom,
                                      float top,
-                                     float near,
-                                     float far)
-  : Camera(imageName, gaze, up, position, width, height)
+                                     float near)
+  : Camera(imageName, gaze, up, position, width, height, samples)
   , left(left)
   , right(right)
   , bottom(bottom)
   , top(top)
   , near(near)
-  , far(far)
 {
     auto rightUnitVector = this->gaze.cross(this->up);
     auto w = right - left;

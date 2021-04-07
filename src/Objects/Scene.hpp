@@ -38,6 +38,12 @@ public:
     std::vector<std::shared_ptr<Surface>> surfaces;
 
     /**
+     * @brief RGB components of ambient light
+     *
+     */
+    LinearAlgebra::Vec3 ambientLight;
+
+    /**
      * @brief Point lights
      *
      */
@@ -48,5 +54,23 @@ public:
      *
      */
     LinearAlgebra::Vec3 backgroundColor;
+
+    /**
+     * @brief Epsilon for calculating shadow rays
+     *
+     * Distance to move in normal direction, before doing intersection tests for
+     * shadows.
+     *
+     */
+    FloatT shadowRayEpsilon = 0.001;
+
+    /**
+     * @brief Epsilon for use in intersection tests
+     *
+     * Makes triangles a bit larger than they already are, so that there is no
+     * space in-between two adjacent triangles.
+     *
+     */
+    FloatT intersectionTestEpsilon = 0.001;
 };
 }

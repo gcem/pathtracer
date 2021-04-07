@@ -35,7 +35,19 @@ public:
      */
     virtual Ray castRay(int x, int y) const = 0;
 
+    /**
+     * @brief Image Name
+     *
+     * @return std::string
+     */
     std::string imageName() const;
+
+    /**
+     * @brief Sample count
+     *
+     * @return int
+     */
+    int samples() const;
 
 protected:
     /**
@@ -57,7 +69,8 @@ protected:
            LinearAlgebra::Vec3 up,
            LinearAlgebra::Vec3 position,
            int width,
-           int height);
+           int height,
+           int samples);
 
     /**
      * @name Resolution
@@ -71,6 +84,12 @@ protected:
     int width;
     int height;
     ///@}
+
+    /**
+     * @brief Sample count
+     *
+     */
+    int sampleCount;
 
     /**
      * @brief Direction that the Camera is facing

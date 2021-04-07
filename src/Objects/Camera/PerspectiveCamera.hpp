@@ -33,6 +33,7 @@ public:
      * @param position Position of the camera
      * @param width Resulotion of the created image in horizontal direction
      * @param height Resulotion of the created image in vertical direction
+     * @param samples Sample count
      * @param left Distance of left edge of the image plane to the intersection
      * of gaze and the plane
      * @param right Distance of right edge of the image plane to the
@@ -41,6 +42,7 @@ public:
      * intersection of gaze and the plane
      * @param top Distance of top edge of the image plane to the intersection of
      * gaze and the plane
+     * @param near Near plane distance in gaze direction
      */
     PerspectiveCamera(std::string imageName,
                       LinearAlgebra::Vec3 gaze,
@@ -48,12 +50,12 @@ public:
                       LinearAlgebra::Vec3 position,
                       int width,
                       int height,
+                      int samples,
                       float left,
                       float right,
                       float bottom,
                       float top,
-                      float near,
-                      float far);
+                      float near);
 
     /**
      * @brief Creates a ray from camera to pixel (x, y) on the image plane
@@ -90,15 +92,6 @@ protected:
      *
      */
     float near;
-
-    /**
-     * @brief Far plane distance
-     *
-     * Will not be used by the Camera itself. We save this in case I/O
-     * operations need it later.
-     *
-     */
-    float far;
 
     /**
      * @brief Vector pointing to right neighbor pixel

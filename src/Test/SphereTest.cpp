@@ -9,11 +9,12 @@ TEST(SphereTest, Material)
     LinearAlgebra::Vec3 amb{ 1, 2, 3 };
     LinearAlgebra::Vec3 dif{ 4, 5, 6 };
     LinearAlgebra::Vec3 spec{ 7, 8, 9 };
-    Material mat(amb, dif, spec);
+    Material mat(amb, dif, spec, 3);
     Sphere sphere(LinearAlgebra::Vec3(), 5, mat);
     EXPECT_EQ(dif, sphere.material.diffuse);
     EXPECT_EQ(amb, sphere.material.ambient);
     EXPECT_EQ(spec, sphere.material.specular);
+    EXPECT_EQ(3, sphere.material.phongExponent);
 }
 
 TEST(SphereTest, Intersection1)

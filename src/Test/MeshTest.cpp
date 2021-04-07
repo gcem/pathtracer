@@ -9,11 +9,12 @@ TEST(MeshTest, Material)
     LinearAlgebra::Vec3 amb{ 1, 2, 3 };
     LinearAlgebra::Vec3 dif{ 4, 5, 6 };
     LinearAlgebra::Vec3 spec{ 7, 8, 9 };
-    Material mat(amb, dif, spec);
+    Material mat(amb, dif, spec, 2.4);
     Mesh mesh({ { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } }, { 0, 1, 2 }, mat);
     EXPECT_EQ(dif, mesh.material.diffuse);
     EXPECT_EQ(amb, mesh.material.ambient);
     EXPECT_EQ(spec, mesh.material.specular);
+    EXPECT_FLOAT_EQ(2.4, mesh.material.phongExponent);
 }
 
 class MeshIntersectionTest : public ::testing::Test
