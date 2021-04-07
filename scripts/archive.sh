@@ -6,4 +6,4 @@
 #
 # output will be placed into build directory
 
-tar --exclude="scenes" --exclude="build" --exclude="doc" -czf build/pathtracer.tar.gz *
+tar --exclude="**/.gitignore" --exclude="scenes" --exclude="build" --exclude="doc" -czf build/pathtracer.tar.gz *
