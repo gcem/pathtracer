@@ -16,6 +16,10 @@
 #include "Vector.hpp"
 
 namespace Objects {
+/**
+ * @brief Triangle with front/back faces
+ *
+ */
 class Triangle
 {
 public:

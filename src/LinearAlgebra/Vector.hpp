@@ -82,7 +82,9 @@ public:
     /**
      * @brief Scalar multiplication, from the left (same as the member function)
      *
-     * @return Vec3Template<T, ScalarT>
+     * @tparam T2
+     * @tparam ScalarT2
+     * @return Vec3Template<T2, ScalarT2>
      */
     template<typename T2, typename ScalarT2>
     friend Vec3Template<T2, ScalarT2> operator*(ScalarT2,
@@ -289,6 +291,13 @@ Vec3Template<T, ScalarT>::operator*(ScalarT s) const
     return { x * s, y * s, z * s };
 }
 
+/**
+ * @brief Scalar multiplication, from the left (same as the member function)
+ *
+ * @tparam T2
+ * @tparam ScalarT2
+ * @return Vec3Template<T2, ScalarT2>
+ */
 template<typename T, typename ScalarT>
 Vec3Template<T, ScalarT>
 operator*(ScalarT s, Vec3Template<T, ScalarT> vec)

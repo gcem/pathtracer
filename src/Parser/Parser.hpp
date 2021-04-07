@@ -42,6 +42,10 @@ public:
     Objects::Scene getScene();
 
 protected:
+    /**
+     * @brief Scene being generated
+     *
+     */
     Objects::Scene scene;
 };
 }

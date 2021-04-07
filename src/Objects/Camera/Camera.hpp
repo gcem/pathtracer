@@ -63,6 +63,7 @@ protected:
      * @param position Position of the camera
      * @param width Resulotion of the created image in horizontal direction
      * @param height Resulotion of the created image in vertical direction
+     * @param samples Sample count
      */
     Camera(std::string imageName,
            LinearAlgebra::Vec3 gaze,

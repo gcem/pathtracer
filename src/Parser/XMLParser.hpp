@@ -30,7 +30,7 @@ public:
     XMLParser();
 
     /**
-     * @brief Parses the given XML file to create a Scene object
+     * @brief Parse the given XML file to create a Scene object
      *
      * XML file is the format used in METU. It has tags for Scene Epsilon,
      * Cameras, Point Lights, Vertices, Surfaces (Mesh, Triangle, Sphere),
@@ -44,45 +44,184 @@ public:
     bool parse(std::istream& file) override;
 
 protected:
+    /**
+     * @brief Parse a string with 3 numbers as a 3-component vector
+     *
+     * @tparam T Vector type
+     * @param text Text to be parsed
+     * @return T Resulting vector
+     */
     template<typename T = LinearAlgebra::Vec3>
     T readSingleVector(std::string text);
+
+    /**
+     * @brief Convert a string with numbers to vector array, making groups of 3
+     *
+     * Converts the string "1 2 3 4 5 6" to an array with {1, 2, 3} and {4, 5,
+     * 6}.
+     *
+     * @param text
+     * @param oneIndexed Whether the resulting vector should have dummy
+     * vector at position 0
+     * @return std::vector<LinearAlgebra::Vec3>
+     */
     std::vector<LinearAlgebra::Vec3> readVectorArray(std::string text,
                                                      bool oneIndexed = false);
 
+    /**
+     * @brief Convert a string to a type that supports istream::operator>>
+     *
+     * @tparam T Expected type
+     * @param text Text to be parsed
+     * @return T Resulting object
+     */
     template<typename T>
     T readSingleValue(std::string text);
 
+    /**
+     * @brief Convert string to vector
+     *
+     * Converts a string with a list of items to vector of a type that supports
+     * istream::operator>>.
+     *
+     * @tparam T Expected element type
+     * @param text Text to be parsed
+     * @return std::vector<T> Resulting vector
+     */
     template<typename T>
     std::vector<T> readArray(std::string text);
 
     /**
-     * @brief Parses the node that contains entire file content
+     * @brief Parse the node that contains entire file content
      *
-     * Parses the part of file between <Scene> </Scene> tags, which is the
+     * Parses the part of file between \<Scene\> \</Scene\> tags, which is the
      * entire scene.
      *
      * @param sceneNode
-     * @param scene Object that will be modified after parsing
      * @return Objects::Scene
      */
     virtual void parseSceneNode(rapidxml::xml_node<char>* sceneNode);
 
+    /**
+     * @brief Read epsilon values
+     *
+     * Parses \<ShadowRayEpsilon\> and \<IntersectionTestEpsilon\> tags inside
+     * the given \<Scene\> node.
+     *
+     * @param sceneNode
+     */
     virtual void parseEpsilons(rapidxml::xml_node<char>* sceneNode);
+
+    /**
+     * @brief Parse \<BackgroundColor\> node
+     *
+     * @param colorNode
+     */
     virtual void parseBackgroundColor(rapidxml::xml_node<char>* colorNode);
+
+    /**
+     * @brief Parse \<Cameras\> node
+     *
+     * @param camerasNode
+     */
     virtual void parseCameras(rapidxml::xml_node<char>* camerasNode);
+
+    /**
+     * @brief Parse \<Camera\> node
+     *
+     * @param cameraNode
+     */
     virtual void parseCamera(rapidxml::xml_node<char>* cameraNode);
+
+    /**
+     * @brief Parse \<Lights\> node
+     *
+     * @param lights
+     */
     virtual void parseLights(rapidxml::xml_node<char>* lights);
+
+    /**
+     * @brief Parse \<AmbientLight\> node
+     *
+     * @param ambientLight
+     */
     virtual void parseAmbientLight(rapidxml::xml_node<char>* ambientLight);
+
+    /**
+     * @brief Parse \<PointLight\> node
+     *
+     * @param pointLight
+     */
     virtual void parsePointLight(rapidxml::xml_node<char>* pointLight);
+
+    /**
+     * @brief Parse \<Materials\> node
+     *
+     * @param materials
+     */
     virtual void parseMaterials(rapidxml::xml_node<char>* materials);
+
+    /**
+     * @brief Parse \<Material\> node
+     *
+     * @param material
+     */
     virtual void parseMaterial(rapidxml::xml_node<char>* material);
-    virtual void parseVertexData(rapidxml::xml_node<char>* vertices);
+
+    /**
+     * @brief Parse \<VertexData\> node
+     *
+     * Saves the vertices in vertices array of this class. prepends a vector so
+     * that the resulting vector is 1-indexed.
+     *
+     * @param vertexData
+     */
+    virtual void parseVertexData(rapidxml::xml_node<char>* vertexData);
+
+    /**
+     * @brief Parse \<Objects\> node
+     *
+     * @param surfaces
+     */
     virtual void parseSurfaces(rapidxml::xml_node<char>* surfaces);
+
+    /**
+     * @brief Parse \<Mesh\> node
+     *
+     * @param mesh
+     */
     virtual void parseMesh(rapidxml::xml_node<char>* mesh);
+
+    /**
+     * @brief Parse \<Triangle\> node
+     *
+     * Creates a mesh with a single triangle
+     *
+     * @param triangle
+     */
     virtual void parseTriangle(rapidxml::xml_node<char>* triangle);
+
+    /**
+     * @brief Parse \<Sphere\> node
+     *
+     * @param sphere
+     */
     virtual void parseSphere(rapidxml::xml_node<char>* sphere);
 
+    /**
+     * @brief Coordinates of vertices
+     *
+     * Must be one-indexed due to the format used at METU.
+     *
+     */
     std::vector<LinearAlgebra::Vec3> vertices;
+
+    /**
+     * @brief Materials in the scene
+     *
+     * Must be one-indexed due to the format used at METU.
+     *
+     */
     std::vector<Objects::Material> materials;
 };
 

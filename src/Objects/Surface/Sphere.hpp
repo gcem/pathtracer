@@ -27,6 +27,7 @@ public:
      *
      * @param center
      * @param radius
+     * @param material
      */
     Sphere(const LinearAlgebra::Vec3& center,
            FloatT radius,
