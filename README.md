@@ -14,9 +14,11 @@ cmake ../src
 cmake --build .
 ```
 
+Commands in the following sections should be run in `build` directory.
+
 # Usage
 ```
-./PathTracer scene.xml
+./PathTracerApp scene.xml
 ```
 
 # Testing
@@ -38,4 +40,4 @@ In the base directory:
 doxygen
 ```
 Then view `doc/index.html` with a browser. You can experiment with other doxygen
-options. Configuration is written in Doxyfile.
+options. Configuration is written in `Doxyfile`.

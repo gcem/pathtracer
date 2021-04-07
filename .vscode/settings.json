@@ -63,6 +63,8 @@
         "thread": "cpp",
         "cinttypes": "cpp",
         "valarray": "cpp",
-        "*.in": "cpp"
+        "*.in": "cpp",
+        "any": "cpp",
+        "variant": "cpp"
     }
 }

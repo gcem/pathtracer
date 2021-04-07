@@ -11,6 +11,7 @@ target_link_libraries(PathTracerUnitTests
 )
 
 add_subdirectory(ParserTest)
+add_subdirectory(ImageTest)
 add_subdirectory(Mocks)
 
 gtest_discover_tests(PathTracerUnitTests)
