@@ -14,12 +14,13 @@ add_subdirectory(LinearAlgebra)
 add_subdirectory(Objects)
 add_subdirectory(Parser)
 add_subdirectory(Image)
+add_subdirectory(PathTracer)
 add_subdirectory(Test)
 add_subdirectory(3rdParty)
 
 add_executable(PathTracerApp main.cpp)
 
-target_link_libraries(PathTracerApp PUBLIC LinearAlgebra Objects)
+target_link_libraries(PathTracerApp PUBLIC LinearAlgebra Objects PathTracer Parser)
 
 target_include_directories(PathTracerApp PUBLIC
     "${PROJECT_BINARY_DIR}"

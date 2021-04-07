@@ -11,9 +11,14 @@
 
 #pragma once
 
-#include "Objects.hpp"
+#include "Ray.hpp"
+#include "Scene.hpp"
 
 namespace PathTracer {
+/**
+ * @brief Creates images from a Scene object
+ *
+ */
 class PathTracer
 {
 public:
@@ -28,7 +33,29 @@ public:
      *
      * @param scene A scene with at least one camera
      */
-    void trace(Objects::Scene scene);
+    virtual void trace(Objects::Scene& scene);
+
+    /**
+     * @brief Find the color seen by given ray
+     *
+     * @return LinearAlgebra::Vec3
+     */
+    virtual LinearAlgebra::Vec3 rayColor(const Objects::Ray& ray,
+                                         Objects::Scene& scene);
+
+    /**
+     * @brief Finds if the given point is illuminated by a point light
+     *
+     * @param point Point on a surface, after moving epsilon units away from the
+     * surface
+     * @param light
+     * @param scene
+     * @return true There is no object between this point and light
+     * @return false There is a surface in-between
+     */
+    virtual bool lightVisible(const LinearAlgebra::Vec3& point,
+                              const Objects::PointLight& light,
+                              const Objects::Scene& scene);
 
 protected:
     /**
@@ -36,7 +63,5 @@ protected:
      *
      */
     Objects::Scene scene;
-
-    
 };
 }

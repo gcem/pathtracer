@@ -8,6 +8,18 @@ Camera::imageName() const
 }
 
 int
+Camera::getWidth() const
+{
+    return width;
+}
+
+int
+Camera::getHeight() const
+{
+    return height;
+}
+
+int
 Camera::samples() const
 {
     return sampleCount;

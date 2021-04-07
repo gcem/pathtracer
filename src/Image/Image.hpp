@@ -1,3 +1,16 @@
+/**
+ * @file Image.hpp
+ * @author Cem Gundogdu
+ * @brief RGB image with arbitrary pixel type
+ * @version 1.0
+ * @date 2021-04-07
+ *
+ * @copyright Copyright (c) 2021
+ *
+ */
+
+#pragma once
+
 #include "Vector.hpp"
 #include <vector>
 

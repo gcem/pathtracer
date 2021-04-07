@@ -36,7 +36,7 @@ Triangle::intersect(const Ray& ray, FloatT epsilon) const
     auto detT = LinearAlgebra::Mat3(rhs, edge21, edge31).determinant();
     auto t = detT / detA;
 
-    if (t <= -epsilon)
+    if (t <= 0)
         return -1;
 
     auto detB = LinearAlgebra::Mat3(ray.direction, rhs, edge31).determinant();

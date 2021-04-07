@@ -107,7 +107,11 @@ XMLParser::parseCamera(rapidxml::xml_node<char>* cameraNode)
       readArray<int>(cameraNode->first_node("ImageResolution")->value());
     auto samplesNode = cameraNode->first_node("NumSamples");
     auto samples = samplesNode ? readSingleValue<int>(samplesNode->value()) : 1;
+
+    // trim image name
     std::string imageName = cameraNode->first_node("ImageName")->value();
+    imageName.erase(0, imageName.find_first_not_of(' '));
+    imageName.erase(imageName.find_last_not_of(' ') + 1);
 
     auto cam = std::shared_ptr<Objects::Camera>(
       new Objects::PerspectiveCamera(imageName,
@@ -174,8 +178,9 @@ XMLParser::parseMaterial(rapidxml::xml_node<char>* material)
       readSingleVector(material->first_node("DiffuseReflectance")->value());
     auto specular =
       readSingleVector(material->first_node("SpecularReflectance")->value());
+    auto phongNode = material->first_node("PhongExponent");
     auto phongExponent =
-      readSingleValue<FloatT>(material->first_node("PhongExponent")->value());
+      phongNode ? readSingleValue<FloatT>(phongNode->value()) : 1;
     materials.push_back(
       Objects::Material(ambient, diffuse, specular, phongExponent));
 }

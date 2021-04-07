@@ -43,6 +43,20 @@ public:
     std::string imageName() const;
 
     /**
+     * @brief Width of the image to be created
+     *
+     * @return int
+     */
+    int getWidth() const;
+
+    /**
+     * @brief Height of the image to be created
+     *
+     * @return int
+     */
+    int getHeight() const;
+
+    /**
      * @brief Sample count
      *
      * @return int
