@@ -1,3 +1,16 @@
+/**
+ * @file PNGExporter.hpp
+ * @author Cem Gundogdu
+ * @brief
+ * @version 1.0
+ * @date 2021-04-07
+ *
+ * @copyright Copyright (c) 2021
+ *
+ */
+
+#pragma once
+
 #include "ImageExporter.hpp"
 #include <string>
 
