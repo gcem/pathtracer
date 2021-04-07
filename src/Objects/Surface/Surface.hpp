@@ -36,11 +36,14 @@ public:
      * @param ray
      * @param normalOut If return value is not -1, then this is set to the
      * surface normal at intersection point. Otherwise unmodified.
+     * @param epsilon Allowed precision error to use in intersection tests.
+     * Usually makes surfaces larger than they are (or smaller if negative)
      * @return FloatT t for the closest intersection with ray, -1 if there is no
      * intersection.
      */
     virtual FloatT intersect(const Ray& ray,
-                             LinearAlgebra::Vec3& normalOut) const = 0;
+                             LinearAlgebra::Vec3& normalOut,
+                             FloatT epsilon = 0) const = 0;
 
     /**
      * @brief Material of this Surface

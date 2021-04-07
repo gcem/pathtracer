@@ -41,10 +41,12 @@ public:
      * the triangle.
      *
      * @param ray
+     * @param epsilon Baricentric coordinates are allowed to be in the range
+     * (-epsilon, 1 + epsilon) instead of (0, 1)
      * @return FloatT t for the closest intersection with ray, -1 if there is no
      * intersection.
      */
-    FloatT intersect(const Ray& ray) const;
+    FloatT intersect(const Ray& ray, FloatT epsilon = 0) const;
 
     /**
      * @brief Normal vector
