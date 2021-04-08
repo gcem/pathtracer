@@ -82,4 +82,4 @@ Also, I will postpone multi-threading till the very end, unless rendering times 
 
 This image was rendered by the first ray tracer I have ever written - in 2019. It took 37 seconds to produce this output. A year after that, I took CENG477 and my ray tracer in that course could render much more complicated scenes in a few hundred milliseconds. Here I am, planning a complex project with more capabilities. One can't see their progress without looking back and remembering their old work. This alone is a good reason to keep a blog.
 
-[about]: /about/
+[about]: /pathtracer/about/

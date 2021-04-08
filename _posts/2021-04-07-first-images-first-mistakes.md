@@ -117,11 +117,11 @@ I believe this was because I had unit tests for all of the code I had written in
 
 Also, when I coded the main path tracer logic, I wanted to see the results immediately, so I skipped Test-Driven Development for that class. If I hadn't done so, I guess I wouldn't have had the bugs in the [Two Spheres](#sphere-scene) scene either.
 
-So, I am glad I wrote those tests. As I write this post, there are more than 60 unit tests, that run automatically each time I push something to a branch on GitHub ([Test Results](gh-test-results)).
+So, I am glad I wrote those tests. As I write this post, there are more than 60 unit tests, that run automatically each time I push something to a branch on GitHub ([Test Results][gh-test-results]).
 
 # More images
 
-I would like to end this post with some other rendering results from my final ray tracer. Thanks to Akif Üslü, we can convert [Blender](blender) scenes to our XML format. Some of these scenes are shared by Akif.
+I would like to end this post with some other rendering results from my final ray tracer. Thanks to Akif Üslü, we can convert [Blender][blender] scenes to our XML format. Some of these scenes are shared by Akif.
 
 {% include gallery caption="Some renders by my ray tracer for Assignment 1." %}
 
