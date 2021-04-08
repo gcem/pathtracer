@@ -61,5 +61,14 @@ TEST(TriangleTest, Miss)
     auto t = tri.intersect(ray);
     EXPECT_EQ(t, -1);
 }
+
+TEST(TriangleTest, NoEpsilonForT)
+{
+    Triangle tri({ -1, -1, 0 }, { 1, -1, 0 }, { 0, 1, 0 });
+    Ray ray({ 0, 0, -0.2 }, { 0, 0, -1 });
+
+    auto t = tri.intersect(ray, 30);
+    EXPECT_EQ(-1, t) << "t should not depend on epsilon";
+}
 }
 }
