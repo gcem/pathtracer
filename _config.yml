@@ -7,41 +7,48 @@
 #
 # For technical reasons, this file is *NOT* reloaded automatically when you use
 # 'bundle exec jekyll serve'. If you change this file, please restart the server process.
-#
-# If you need help with YAML syntax, here are some quick references for you: 
-# https://learn-the-web.algonquindesign.ca/topics/markdown-yaml-cheat-sheet/#yaml
-# https://learnxinyminutes.com/docs/yaml/
-#
+
 # Site settings
 # These are used to personalize your new site. If you look in the HTML files,
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-
-title: Path Tracer
-email: cem.gundogdu@metu.edu.tr
+title: MM
+email:
 description: >- # this means to ignore newlines until "baseurl:"
-  My blog page for the Path Tracer I will write for Advanced Ray Tracing
-  course at Middle East Technical University.
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
-# twitter_username:
-github_username:  gcem
+  Write an awesome description for your new site here. You can edit this
+  line in _config.yml. It will appear in your document head meta (for
+  Google search results) and in your feed.xml site description.
+twitter_username: username
+github_username: username
 minimal_mistakes_skin: default
 search: true
 
 # Build settings
-# theme: minima
 markdown: kramdown
 remote_theme: mmistakes/minimal-mistakes
+# Outputting
 permalink: /:categories/:title/
 paginate: 5 # amount of posts to show
 paginate_path: /page:num/
-timezone: Asia/Istanbul
+timezone: # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
 include:
   - _pages
 
+# Exclude from processing.
+# The following items will not be processed, by default. Create a custom list
+# to override the default setting.
+# exclude:
+#   - Gemfile
+#   - Gemfile.lock
+#   - node_modules
+#   - vendor/bundle/
+#   - vendor/cache/
+#   - vendor/gems/
+#   - vendor/ruby/
+
+# Plugins (previously gems:)
 plugins:
   - jekyll-paginate
   - jekyll-sitemap
@@ -50,37 +57,35 @@ plugins:
   - jemoji
   - jekyll-include-cache
 
-
 author:
-  name   : "Cem Gundogdu"
-  avatar : "/assets/images/me.jpg"
-  bio    : "Third year (more precisely, 3.0417th year) computer engineering student at METU."
+  name   : "First Lastname"
+  avatar : "/assets/images/bio-photo.jpg"
+  bio    : "My awesome biography constrained to a sentence or two goes here."
   links:
     - label: "Website"
       icon: "fas fa-fw fa-link"
-      url: "http://cemgundogdu.com/"
-    - label: "E-mail"
-      icon: "fa fa-envelope "
-      url: "mailto:cem.gundogdu@metu.edu.tr"
+      url: "https://"
+    - label: "Twitter"
+      icon: "fab fa-fw fa-twitter-square"
+      url: "https://twitter.com/"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
-      url: "https://github.com/gcem"
-    - label: "LinkedIn"
-      icon: "fab fa-fw fa-linkedin"
-      url: "https://linkedin.com/in/cem-gundogdu"
+      url: "https://github.com/"
+    - label: "Instagram"
+      icon: "fab fa-fw fa-instagram"
+      url: "https://instagram.com/"
 
 footer:
   links:
-  - label: "E-mail"
-    icon: "fa fa-envelope "
-    url: "mailto:cem.gundogdu@metu.edu.tr"
-  - label: "GitHub"
-    icon: "fab fa-fw fa-github"
-    url: "https://github.com/gcem"
-  - label: "LinkedIn"
-    icon: "fab fa-fw fa-instagram"
-    url: "https://linkedin.com/in/cem-gundogdu"
-
+    - label: "Twitter"
+      icon: "fab fa-fw fa-twitter-square"
+      url: "https://twitter.com/"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/"
+    - label: "Instagram"
+      icon: "fab fa-fw fa-instagram"
+      url: "https://instagram.com/"
 
 defaults:
   # _posts
@@ -108,23 +113,3 @@ category_archive:
 tag_archive:
   type: liquid
   path: /tags/
-
-# Exclude from processing.
-# The following items will not be processed, by default.
-# Any item listed under the `exclude:` key here will be automatically added to
-# the internal "default list".
-#
-# Excluded items can be processed by explicitly listing the directories or
-# their entries' file path in the `include:` list.
-#
-# exclude:
-#   - .sass-cache/
-#   - .jekyll-cache/
-#   - gemfiles/
-#   - Gemfile
-#   - Gemfile.lock
-#   - node_modules/
-#   - vendor/bundle/
-#   - vendor/cache/
-#   - vendor/gems/
-#   - vendor/ruby/
