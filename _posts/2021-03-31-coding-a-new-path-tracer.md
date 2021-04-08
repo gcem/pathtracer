@@ -1,15 +1,11 @@
 ---
-title: "Coding a new Path Tracer"
+title: "Coding a new path tracer"
 date: 2021-03-31 12:36:53 +0300
 categories: pathtracer
 tags: planning testing documentation
 header:
-
     overlay_image: /assets/images/spheres.png
     caption: "Sphere scene from my old ray tracer"
-
-excerpt_separator: <!--more-->
-author_profile: true
 ---
 
 For the Advanced Ray Tracing (CENG 795) course at METU, I will be coding a path tracer this term.

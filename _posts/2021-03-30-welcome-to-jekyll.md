@@ -4,7 +4,6 @@ date:   2021-03-30 12:36:53 +0300
 excerpt_separator: <!--more-->
 categories: blogging
 tags: jekyll github blogging setup
-author_profile: true
 search: false
 ---
 I have set up a simple Jekyll website with "minimal mistakes" theme. It is hosted by GitHub.

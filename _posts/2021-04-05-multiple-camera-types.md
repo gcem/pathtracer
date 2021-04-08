@@ -1,5 +1,5 @@
 ---
-title: "Multiple Camera Types"
+title: "Multiple camera types"
 date: 2021-04-05 09:30:00 +0300
 categories: camera pathtracer
 tags: planning camera perspective orthogonal panorama fisheye
@@ -7,8 +7,6 @@ header:
     overlay_filter: 0.5
     overlay_image: /assets/images/cameras.png
     caption: "Perspective and orthogonal projection"
-excerpt_separator: <!--more-->
-author_profile: true
 ---
 
 I have decided to make the Camera type abstract, to support multiple camera types.
