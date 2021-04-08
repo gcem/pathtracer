@@ -52,7 +52,7 @@ auto specular = material.specular *
                 pow(normal.dot(mid), material.phongExponent);
 ```
 
-The problem is that I had forgotten to multiply these values with light intensity. Adding
+The problem was that I had forgotten to multiply these values with light intensity. Adding
 
 {% highlight c++ %}
 * light.intensity
@@ -125,7 +125,7 @@ I would like to end this post with some other rendering results from my final ra
 
 {% include gallery caption="Some renders by my ray tracer for Assignment 1." %}
 
-Since I wrote this for the first assignment, there were no acceleration structures for meshes. I haven't added multithreading either. So, these scenes took a long time to render. For example, the one with METU logo took 49 seconds on my machine. I will share more time measurements when I write about acceleration structures. Until then!
+Since I have coded this ray tracer for the first assignment, there were no acceleration structures for meshes. I haven't added multithreading either. So, these scenes took a long time to render. For example, the one with METU logo took 49 seconds on my machine. I will share more time measurements when I write about acceleration structures. Until then!
 
 [gh-test-results]: https://github.com/gcem/pathtracer/actions
 [blender]: https://www.blender.org/
