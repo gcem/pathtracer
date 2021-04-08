@@ -56,8 +56,8 @@ The problem is that I had forgotten to multiply these values with light intensit
 
 {% highlight c++ %}
 * light.intensity
-* {% endhighlight %}
-* 
+{% endhighlight %}
+
 to both equations resulted in a different rendering result.
 
 ### White spheres
