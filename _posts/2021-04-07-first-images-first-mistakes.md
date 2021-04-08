@@ -119,6 +119,8 @@ Also, when I coded the main path tracer logic, I wanted to see the results immed
 
 So, I am glad I wrote those tests. As I write this post, there are more than 60 unit tests, that run automatically each time I push something to a branch on GitHub ([Test Results](gh-test-results)).
 
+# More images
+
 I would like to end this post with some other rendering results from my final ray tracer. Thanks to Akif Üslü, we can convert [Blender](blender) scenes to our XML format. Some of these scenes are shared by Akif.
 
 {% include gallery caption="Some renders by my ray tracer for Assignment 1." %}

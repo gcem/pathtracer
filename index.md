@@ -10,7 +10,7 @@ feature_row:
     alt: "windmill"
     title: "Windmill"
     excerpt: "Windmill scene, one of my first renders."
-    url: "/pathtracer/first-images-first-mistakes/#final-words"
+    url: "/pathtracer/first-images-first-mistakes/#more-images"
     btn_label: "Other Renders"
     btn_class: "btn--inverse"
   - image_path: /assets/images/spheres_sq.png
