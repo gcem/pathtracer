@@ -31,7 +31,7 @@ Rays originate at cells of a rectangular grid. They are all sent in a direction 
 
 ## Panorama
 
-Instead of a plane, image surface should be on a sphere. Rays can start at a single point, or from the line through the center of the cylinder (the axis of symmetry of the cylinder). When we take a panorama with an ordinary camera, we are doing the first one, but I wonder how the second would look.
+Instead of a plane, image surface should be on a cylinder. Rays can start at a single point, or from the line through the center of the cylinder (the axis of symmetry of the cylinder). When we take a panorama with an ordinary camera, we are doing the first one, but I wonder how the second would look.
 
 ## Fish eye and other spherical images
 
