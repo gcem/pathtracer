@@ -2,8 +2,8 @@
 title:  "My first Jekyll blog post!"
 date:   2021-03-30 12:36:53 +0300
 excerpt_separator: <!--more-->
-categories: jekyll github blog
-tags: blogging setup
+categories: blogging
+tags: jekyll github blogging setup
 author_profile: true
 search: false
 ---

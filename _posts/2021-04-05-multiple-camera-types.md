@@ -2,7 +2,7 @@
 title: "Multiple Camera Types"
 date: 2021-04-05 09:30:00 +0300
 categories: camera pathtracer
-tags: camera perspective orthogonal panorama fisheye
+tags: planning camera perspective orthogonal panorama fisheye
 header:
     overlay_filter: 0.5
     overlay_image: /assets/images/cameras.png

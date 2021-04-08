@@ -2,7 +2,7 @@
 title: "Coding a new Path Tracer"
 date: 2021-03-31 12:36:53 +0300
 categories: pathtracer
-tags: planning design camera surface testing documentation
+tags: planning testing documentation
 header:
 
     overlay_image: /assets/images/spheres.png
