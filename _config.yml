@@ -23,6 +23,7 @@ email: "cem.gundogdu@metu.edu.tr"
 description: >- # this means to ignore newlines until "baseurl:"
   My blog page for the Path Tracer I will write for Advanced Ray Tracing
   course at Middle East Technical University.
+baseurl: "/pathtracer"
 # twitter_username:
 github_username:  gcem
 minimal_mistakes_skin: default
