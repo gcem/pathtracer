@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <chrono>
 #include <cmath>
+#include <iostream>
 #include <limits>
 
 namespace PathTracer {
@@ -13,6 +14,7 @@ void
 PathTracer::trace(Objects::Scene& scene)
 {
     for (auto camera : scene.cameras) {
+        auto imageStartTime = std::chrono::system_clock::now();
         int w = camera->getWidth();
         int h = camera->getHeight();
         Image::Image<unsigned char> image(w, h);
@@ -49,6 +51,13 @@ PathTracer::trace(Objects::Scene& scene)
         exporter.exportImage(image, camera->imageName());
         exporter.exportImage(timeImageNormalized,
                              camera->imageName() + "_time.png");
+
+        auto imageEndTime = std::chrono::system_clock::now();
+        std::cout << camera->imageName() << " took "
+                  << std::chrono::duration_cast<std::chrono::milliseconds>(
+                       imageEndTime - imageStartTime)
+                       .count()
+                  << " ms" << std::endl;
     }
 }
 
