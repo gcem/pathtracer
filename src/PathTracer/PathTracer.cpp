@@ -145,8 +145,7 @@ PathTracer::createTimeImage(const std::vector<std::vector<int>>& times,
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
             unsigned char normalizedTime = times[y][x] * multiplier;
-            image.setPixel(
-              x, y, { normalizedTime, normalizedTime, normalizedTime });
+            image.setPixel(x, y, { normalizedTime, 0, 0 });
         }
     }
 
