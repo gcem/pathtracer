@@ -2,6 +2,7 @@
 #include "Image.hpp"
 #include "PNGExporter.hpp"
 #include <algorithm>
+#include <chrono>
 #include <cmath>
 #include <limits>
 
@@ -16,8 +17,13 @@ PathTracer::trace(Objects::Scene& scene)
         int h = camera->getHeight();
         Image::Image<unsigned char> image(w, h);
 
+        // time it takes to draw each pixel
+        auto pixelTimes = std::vector<std::vector<int>>(h, std::vector<int>(w));
+        int maxTime = 0;
+
         for (int y = 0; y < h; y++) {
             for (int x = 0; x < w; x++) {
+                auto startTime = std::chrono::system_clock::now();
                 auto ray = camera->castRay(x, y);
                 auto color = rayColor(ray, scene);
 
@@ -27,11 +33,22 @@ PathTracer::trace(Objects::Scene& scene)
                   { (unsigned char)std::clamp(color.x, 0.f, 255.f),
                     (unsigned char)std::clamp(color.y, 0.f, 255.f),
                     (unsigned char)std::clamp(color.z, 0.f, 255.f) });
+                auto endTime = std::chrono::system_clock::now();
+
+                int microseconds =
+                  std::chrono::duration_cast<std::chrono::microseconds>(
+                    endTime - startTime)
+                    .count();
+                maxTime = std::max(maxTime, microseconds);
+                pixelTimes[y][x] = microseconds;
             }
         }
+        auto timeImageNormalized = createTimeImage(pixelTimes, maxTime);
 
         Image::PNGExporter exporter;
         exporter.exportImage(image, camera->imageName());
+        exporter.exportImage(timeImageNormalized,
+                             camera->imageName() + "_time.png");
     }
 }
 
@@ -105,5 +122,25 @@ PathTracer::lightVisible(const LinearAlgebra::Vec3& point,
             return false;
     }
     return true;
+}
+
+Image::Image<unsigned char>
+PathTracer::createTimeImage(const std::vector<std::vector<int>>& times,
+                            int maxTime)
+{
+    int width = times[0].size();
+    int height = times.size();
+    float multiplier = 255.f / maxTime;
+
+    Image::Image<unsigned char> image(width, height);
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            unsigned char normalizedTime = times[y][x] * multiplier;
+            image.setPixel(
+              x, y, { normalizedTime, normalizedTime, normalizedTime });
+        }
+    }
+
+    return image;
 }
 }

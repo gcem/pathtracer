@@ -18,7 +18,7 @@ namespace Image {
 /**
  * @brief Holds an RGB image
  *
- * @tparam T Red, green, blue components of a pixel
+ * @tparam T Type of each of red, green, blue components of a pixel
  */
 template<typename T>
 class Image
@@ -33,6 +33,8 @@ public:
      * @param height
      */
     Image(int width, int height);
+
+    typedef LinearAlgebra::Vec3Template<T, FloatT> PixelT;
 
     /**
      * @brief Reference to underlying array

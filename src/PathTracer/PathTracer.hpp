@@ -11,6 +11,7 @@
 
 #pragma once
 
+#include "Image.hpp"
 #include "Ray.hpp"
 #include "Scene.hpp"
 
@@ -63,5 +64,19 @@ protected:
      *
      */
     Objects::Scene scene;
+
+    /**
+     * @brief Creates an image where the pixel that took the longest time is
+     * white
+     *
+     * Linearly maps the time range (0, maxTime) to color range (0, 255)
+     *
+     * @param times Pixel times where source[y][x] is the time to draw (x, y).
+     * Unit is not important. This vector MUST be nonempty.
+     * @return Image::Image<unsigned int> Normalized image
+     */
+    Image::Image<unsigned char> createTimeImage(
+      const std::vector<std::vector<int>>& times,
+      int maxTime);
 };
 }
