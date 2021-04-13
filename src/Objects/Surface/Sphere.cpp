@@ -47,4 +47,25 @@ Sphere::intersect(const Ray& ray,
     normalOut = (ray.origin + ray.direction * t - center).normalize();
     return t;
 }
+
+bool
+Sphere::intersectsBefore(const Ray& ray, FloatT maxT, FloatT epsilon) const
+{
+    // see intersect() for an explanation of this calculation
+
+    auto a = ray.direction.squaredNorm();
+    auto b = 2 * ray.direction.dot(ray.origin - center);
+    auto c = (ray.origin - center).squaredNorm() - radius * radius;
+
+    auto delta = b * b - 4 * a * c;
+
+    if (delta < 0)
+        return false;
+
+    auto t = (-b - sqrt(delta)) / (2 * a);
+    if (t <= 0)
+        t = (-b + sqrt(delta)) / (2 * a);
+
+    return t > 0 && t < maxT;
+}
 }

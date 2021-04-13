@@ -54,6 +54,39 @@ Triangle::intersect(const Ray& ray, FloatT epsilon) const
     return t;
 }
 
+bool
+Triangle::intersectsBefore(const Ray& ray, FloatT maxT, FloatT epsilon) const
+{
+    // see intersect() for an explanation of this calculation
+
+    auto edge21 = v1 - v2;
+    auto edge31 = v1 - v3;
+    auto rhs = v1 - ray.origin;
+
+    auto detA =
+      LinearAlgebra::Mat3(ray.direction, edge21, edge31).determinant();
+
+    auto detT = LinearAlgebra::Mat3(rhs, edge21, edge31).determinant();
+    auto t = detT / detA;
+
+    if (t <= 0 || t >= maxT)
+        return false;
+
+    auto detB = LinearAlgebra::Mat3(ray.direction, rhs, edge31).determinant();
+    auto beta = detB / detA;
+
+    if (beta <= -epsilon || beta >= 1 + epsilon)
+        return false;
+
+    auto detC = LinearAlgebra::Mat3(ray.direction, edge21, rhs).determinant();
+    auto gamma = detC / detA;
+
+    if (gamma <= -epsilon || beta + gamma >= 1 + epsilon)
+        return false;
+
+    return true;
+}
+
 LinearAlgebra::Vec3
 Triangle::getNormal() const
 {

@@ -125,9 +125,7 @@ PathTracer::lightVisible(const LinearAlgebra::Vec3& point,
     // than the light, t > 1 means the surface is behind the light
 
     for (auto surface : scene.surfaces) {
-        LinearAlgebra::Vec3 normal;
-        auto t = surface->intersect(ray, normal, scene.intersectionTestEpsilon);
-        if (t != -1 && t < 1)
+        if (surface->intersectsBefore(ray, 1))
             return false;
     }
     return true;
