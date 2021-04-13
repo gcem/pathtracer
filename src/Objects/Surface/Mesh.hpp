@@ -63,6 +63,22 @@ public:
                      LinearAlgebra::Vec3& normalOut,
                      FloatT epsilon = 0) const override;
 
+    /**
+     * @brief Finds if ray intersects this mesh with a t value lower than
+     * maxT
+     *
+     * Looks for an intersection with t in range (0, maxT)
+     *
+     * @param ray
+     * @param maxT Upper limit of t value for intersection test to succeed
+     * (exclusive)
+     * @return true There is a triangle closer than t
+     * @return false There is no such triangle
+     */
+    bool intersectsBefore(const Ray& ray,
+                          FloatT maxT,
+                          FloatT epsilon = 0) const override;
+
 protected:
     /**
      * @brief Triangles in this mesh

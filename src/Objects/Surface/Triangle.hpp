@@ -53,6 +53,24 @@ public:
     FloatT intersect(const Ray& ray, FloatT epsilon = 0) const;
 
     /**
+     * @brief Finds if ray intersects this triangle with a t value lower than
+     * maxT
+     *
+     * Looks for an intersection with t in range (0, maxT)
+     *
+     * @param ray
+     * @param maxT Upper limit of t value for intersection test to succeed
+     * (exclusive)
+     * @param epsilon Baricentric coordinates are allowed to be in the range
+     * (-epsilon, 1 + epsilon) instead of (0, 1)
+     * @return true This triangle is closer than t
+     * @return false There is no intersection in this range
+     */
+    bool intersectsBefore(const Ray& ray,
+                          FloatT maxT,
+                          FloatT epsilon = 0) const;
+
+    /**
      * @brief Normal vector
      *
      * @return LinearAlgebra::Vec3 Unit normal vector, facing the front side

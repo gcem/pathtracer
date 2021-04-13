@@ -46,6 +46,22 @@ public:
                              FloatT epsilon = 0) const = 0;
 
     /**
+     * @brief Finds if ray intersects this surface with a t value lower than
+     * maxT
+     *
+     * Looks for an intersection with t in range (0, maxT)
+     *
+     * @param ray
+     * @param maxT Upper limit of t value for intersection test to succeed
+     * (exclusive)
+     * @return true There is an intersection closer than t
+     * @return false There is no such intersection
+     */
+    virtual bool intersectsBefore(const Ray& ray,
+                                  FloatT maxT,
+                                  FloatT epsilon = 0) const = 0;
+
+    /**
      * @brief Material of this Surface
      *
      */

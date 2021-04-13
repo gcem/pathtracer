@@ -30,4 +30,15 @@ Mesh::intersect(const Ray& ray,
     }
     return minT < std::numeric_limits<FloatT>::infinity() ? minT : -1;
 }
+
+bool
+Mesh::intersectsBefore(const Ray& ray, FloatT maxT, FloatT epsilon) const
+{
+    for (auto& triangle : triangles) {
+        if (triangle.intersectsBefore(ray, maxT, epsilon))
+            return true;
+    }
+
+    return false;
+}
 }
