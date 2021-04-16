@@ -14,6 +14,7 @@
 #include "Image.hpp"
 #include "Ray.hpp"
 #include "Scene.hpp"
+#include <atomic>
 
 namespace PathTracer {
 /**
@@ -58,32 +59,6 @@ public:
 
 protected:
     /**
-     * @brief Scene currently being rendered
-     *
-     */
-    std::shared_ptr<Objects::Scene> scene;
-
-    /**
-     * @brief Camera whose output is currently being rendered
-     *
-     * Points to a camera in the scene object
-     *
-     */
-    Objects::Camera* camera;
-
-    /**
-     * @brief Image created so far
-     *
-     */
-    Image::Image<unsigned char> image;
-
-    /**
-     * @brief Time it took to draw each pixel, in microseconds
-     *
-     */
-    std::vector<std::vector<int>> times;
-
-    /**
      * @brief Creates an image where the pixel that took the longest time is
      * white
      *
@@ -123,5 +98,69 @@ protected:
      * @param y y-coordinate (0-indexed, increases towards bottom)
      */
     virtual void tracePixel(int x, int y);
+
+    /**
+     * @brief Renders the next tile that is not processed, until all tiles are
+     * done
+     *
+     * Renders tile numbered nextTile until there are no more tiles.
+     *
+     */
+    void traceTilesInThread();
+
+    /**
+     * @brief Scene currently being rendered
+     *
+     */
+    std::shared_ptr<Objects::Scene> scene;
+
+    /**
+     * @brief Camera whose output is currently being rendered
+     *
+     * Points to a camera in the scene object
+     *
+     */
+    Objects::Camera* camera;
+
+    /**
+     * @brief Image created so far
+     *
+     */
+    Image::Image<unsigned char> image;
+
+    /**
+     * @brief Time it took to draw each pixel, in microseconds
+     *
+     */
+    std::vector<std::vector<int>> times;
+
+    /**
+     * @brief Next tile to be processed by a thread
+     *
+     * Zero-indexed. Tiles are numbered from left to right, and then top to
+     * bottom.
+     *
+     */
+    std::atomic<int> nextTile;
+
+    /**
+     * @name Tile Count
+     *
+     * These are used for multithreading
+     *
+     */
+    ///@{
+    /**
+     * @brief Total number of tiles that should be rendered, in x-direction
+     *
+     */
+    int tilesX;
+
+    /**
+     * @brief Total number of tiles that should be rendered, in y-direction
+     *
+     */
+    int tilesY;
+    ///@}
 };
 }

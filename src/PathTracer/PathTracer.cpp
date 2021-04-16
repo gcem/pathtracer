@@ -6,6 +6,7 @@
 #include <cmath>
 #include <iostream>
 #include <limits>
+#include <thread>
 
 namespace PathTracer {
 PathTracer::PathTracer()
@@ -24,11 +25,24 @@ PathTracer::trace(std::shared_ptr<Objects::Scene> scenePtr)
         image = Image::Image<unsigned char>(w, h);
         times = std::vector<std::vector<int>>(h, std::vector<int>(w));
 
+#ifdef MULTITHREADED
+        tilesX = (w + TILE_SIZE - 1) / TILE_SIZE; // round up
+        tilesY = (h + TILE_SIZE - 1) / TILE_SIZE; // round up
+        nextTile = 0;
+        int threadCount = std::thread::hardware_concurrency();
+        std::vector<std::thread> threads(threadCount);
+        for (int i = 0; i < threadCount; i++) {
+            threads[i] = std::thread(&PathTracer::traceTilesInThread, this);
+        }
+        for (auto& thread : threads)
+            thread.join();
+#else
         for (int y = 0; y < h; y++) {
             for (int x = 0; x < w; x++) {
                 tracePixel(x, y);
             }
         }
+#endif
         auto timeImageNormalized = createTimeImage();
 
         Image::PNGExporter exporter;
@@ -124,6 +138,11 @@ PathTracer::createTimeImage() const
     int height = times.size();
 
     int maxTime = getMaxTime();
+    if (!maxTime) {
+        // should not happen
+        std::cout << "All time measurements are 0" << std::endl;
+        maxTime++;
+    }
 
     Image::Image<unsigned char> timeImage(width, height);
     for (int y = 0; y < height; y++) {
@@ -180,5 +199,29 @@ PathTracer::tracePixel(int x, int y)
       std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime)
         .count();
     times[y][x] = microseconds;
+}
+
+void
+PathTracer::traceTilesInThread()
+{
+    for (;;) {
+        int myTile = nextTile.fetch_add(1);
+        if (myTile >= tilesX * tilesY)
+            // no more tiles
+            return;
+
+        int xLeft = (myTile % tilesX) * TILE_SIZE;
+        int yTop = (myTile / tilesX) * TILE_SIZE;
+        int xRight =
+          std::min(xLeft + TILE_SIZE, camera->getWidth()); // exclusive
+        int yBottom =
+          std::min(yTop + TILE_SIZE, camera->getHeight()); // exclusive
+
+        for (int y = yTop; y < yBottom; y++) {
+            for (int x = xLeft; x < xRight; x++) {
+                tracePixel(x, y);
+            }
+        }
+    }
 }
 }
