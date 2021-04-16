@@ -44,8 +44,8 @@ structures in place.
 
 | Scene           | Initial rendering time (ms) | Time after optimizations (ms) |
 | :-------------- | :-------------------------- | :---------------------------- |
-| bunny.xml       | 22303                       | a                             |
-| scienceTree.xml | 51304                       |                               |
+| bunny.xml       | 22303                       | 22319                         |
+| scienceTree.xml | 51304                       | 49629                         |
 | berserker.xml   | 52731                       |                               |
 | car.xml         | 196688                      |                               |
 | low_poly.xml    | 159910                      |                               |
