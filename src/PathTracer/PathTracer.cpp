@@ -149,7 +149,10 @@ PathTracer::createTimeImage() const
         for (int x = 0; x < width; x++) {
             // integer division!
             unsigned char normalizedTime = times[y][x] * 255 / maxTime;
-            timeImage.setPixel(x, y, { normalizedTime, 0, 0 });
+
+            // normalizedTime can be higher than 255. see getMaxTime()
+            timeImage.setPixel(
+              x, y, { std::min<unsigned char>(255, normalizedTime), 0, 0 });
         }
     }
 
@@ -165,6 +168,20 @@ PathTracer::getMaxTime() const
     int maxTime = 0;
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
+            // ignore isolated pixels with very high time. they are probably
+            // noise
+            int neighborCount = 0;
+            if (times[y][x] > 1.2 * times[y][std::max(0, x - 1)])
+                neighborCount++;
+            if (times[y][x] > 1.2 * times[y][std::min(width - 1, x + 1)])
+                neighborCount++;
+            if (times[y][x] > 1.2 * times[std::max(0, y - 1)][x])
+                neighborCount++;
+            if (times[y][x] > 1.2 * times[std::min(height - 1, y + 1)][x])
+                neighborCount++;
+            if (neighborCount >= 3)
+                continue;
+
             maxTime = std::max(maxTime, times[y][x]);
         }
     }
