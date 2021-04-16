@@ -1,5 +1,5 @@
 ---
-title: "Multithreading and visualizing rendering time"
+title: "Multithreading and visualizing rendering times"
 date: 2021-04-16 16:10:00 +0300
 categories: multithreading pathtracer
 tags: multithreading visualization
@@ -112,8 +112,8 @@ that pixel. This is very probable since I am now using all 8 hardware threads
 available. Here is such an example:
 
 {% include figure image_path="assets/images/windmill_time_bad.png" alt="windmill
-with isolated pixels" caption="Rendering times of Windmill scene, with isolated
-bright pixels" %}
+with isolated pixels" caption="Rendering times of Windmill scene drawn black, with
+isolated bright pixels" %}
 
 To avoid this issue, I have made the code ignore pixels that took significantly
 longer than three of their four immediate neighbors. These are the results for
@@ -130,4 +130,4 @@ time to render. I expect the background to become completely black, when I imple
 decent acceleration structure. Also, I expect to see a cube around the meshes when I 
 add a single bounding box to them.
 
-[original-images]: /posts/
+[original-images]: /pathtracer/first-images-first-mistakes/#more-images
