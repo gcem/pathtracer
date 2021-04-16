@@ -6,6 +6,13 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(COMPILER)
 
+option(MULTITHREADED "Make use of multiple cores" ON)
+
+# force single thread for debugging configurations
+if (${CMAKE_BUILD_TYPE})
+    set(MULTITHREADED OFF)
+endif()
+
 configure_file(Config.hpp.in Config.hpp)
 
 enable_testing()

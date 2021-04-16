@@ -10,15 +10,15 @@ class PathTracerTest
 
 TEST_F(PathTracerTest, TimeImageNormalization)
 {
-    std::vector<std::vector<int>> times = { { 20, 40, 50 }, { 60, 100, 55 } };
-    auto result = createTimeImage(times, 100);
-    EXPECT_EQ(Image::Image<unsigned char>::PixelT(51, 51, 51),
+    times = { { 20, 40, 50 }, { 60, 100, 55 } };
+    auto result = createTimeImage();
+    EXPECT_EQ(Image::Image<unsigned char>::PixelT(51, 0, 0),
               result.getPixel(0, 0));
-    EXPECT_EQ(Image::Image<unsigned char>::PixelT(102, 102, 102),
+    EXPECT_EQ(Image::Image<unsigned char>::PixelT(102, 0, 0),
               result.getPixel(1, 0));
-    EXPECT_EQ(Image::Image<unsigned char>::PixelT(140, 140, 140),
+    EXPECT_EQ(Image::Image<unsigned char>::PixelT(140, 0, 0),
               result.getPixel(2, 1)); // 140 = 55 / 100 * 255
-    EXPECT_EQ(Image::Image<unsigned char>::PixelT(255, 255, 255),
+    EXPECT_EQ(Image::Image<unsigned char>::PixelT(255, 0, 0),
               result.getPixel(1, 1));
 }
 }

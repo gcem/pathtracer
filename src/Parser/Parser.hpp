@@ -39,13 +39,13 @@ public:
      *
      * @return Objects::Scene
      */
-    Objects::Scene getScene();
+    std::shared_ptr<Objects::Scene> getScene();
 
 protected:
     /**
      * @brief Scene being generated
      *
      */
-    Objects::Scene scene;
+    std::shared_ptr<Objects::Scene> scene;
 };
 }

@@ -1,7 +1,7 @@
 #include "Parser.hpp"
 
 namespace Parser {
-Objects::Scene
+std::shared_ptr<Objects::Scene>
 Parser::getScene()
 {
     return scene;

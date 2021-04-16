@@ -34,15 +34,14 @@ public:
      *
      * @param scene A scene with at least one camera
      */
-    virtual void trace(Objects::Scene& scene);
+    virtual void trace(std::shared_ptr<Objects::Scene> scene);
 
     /**
      * @brief Find the color seen by given ray
      *
      * @return LinearAlgebra::Vec3
      */
-    virtual LinearAlgebra::Vec3 rayColor(const Objects::Ray& ray,
-                                         Objects::Scene& scene);
+    virtual LinearAlgebra::Vec3 rayColor(const Objects::Ray& ray);
 
     /**
      * @brief Finds if the given point is illuminated by a point light
@@ -55,15 +54,34 @@ public:
      * @return false There is a surface in-between
      */
     virtual bool lightVisible(const LinearAlgebra::Vec3& point,
-                              const Objects::PointLight& light,
-                              const Objects::Scene& scene);
+                              const Objects::PointLight& light);
 
 protected:
     /**
      * @brief Scene currently being rendered
      *
      */
-    Objects::Scene scene;
+    std::shared_ptr<Objects::Scene> scene;
+
+    /**
+     * @brief Camera whose output is currently being rendered
+     *
+     * Points to a camera in the scene object
+     *
+     */
+    Objects::Camera* camera;
+
+    /**
+     * @brief Image created so far
+     *
+     */
+    Image::Image<unsigned char> image;
+
+    /**
+     * @brief Time it took to draw each pixel, in microseconds
+     *
+     */
+    std::vector<std::vector<int>> times;
 
     /**
      * @brief Creates an image where the pixel that took the longest time is
@@ -71,12 +89,39 @@ protected:
      *
      * Linearly maps the time range (0, maxTime) to color range (0, 255)
      *
-     * @param times Pixel times where source[y][x] is the time to draw (x, y).
-     * Unit is not important. This vector MUST be nonempty.
      * @return Image::Image<unsigned int> Normalized image
      */
-    Image::Image<unsigned char> createTimeImage(
-      const std::vector<std::vector<int>>& times,
-      int maxTime);
+    Image::Image<unsigned char> createTimeImage() const;
+
+    /**
+     * @brief Maximum value in the times matrix
+     *
+     * @return int Maximum time it took a pixel to render, in microseconds
+     */
+    int getMaxTime() const;
+
+    /**
+     * @brief Finds the pixel colors in a given *width by height* tile
+     *
+     * Top-left corner of the tile is the pixel (x, y). This function finds all
+     * colors, measures times, updates image and times fields of the class.
+     *
+     * @param xMin x-coordinate of top-left pixel (0-indexed, increases towards
+     * right)
+     * @param yMin y-coordinate of top-left pixel (0-indexed, increases towards
+     * bottom)
+     * @param width number of pixels in the tile in horizontal direction
+     * @param height number of pixels in the tile in vertical direction
+     */
+    virtual void traceTile(int xMin, int yMin, int width, int height);
+
+    /**
+     * @brief Calculates the color of pixel (x, y) and updates the image and
+     * times fields
+     *
+     * @param x x-coordinate (0-indexed, increases towards right)
+     * @param y y-coordinate (0-indexed, increases towards bottom)
+     */
+    virtual void tracePixel(int x, int y);
 };
 }

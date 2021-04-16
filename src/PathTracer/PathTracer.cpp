@@ -8,44 +8,28 @@
 #include <limits>
 
 namespace PathTracer {
-PathTracer::PathTracer() {}
+PathTracer::PathTracer()
+  : image(0, 0)
+{}
 
 void
-PathTracer::trace(Objects::Scene& scene)
+PathTracer::trace(std::shared_ptr<Objects::Scene> scenePtr)
 {
-    for (auto camera : scene.cameras) {
+    scene = scenePtr;
+    for (auto cam : scene->cameras) {
         auto imageStartTime = std::chrono::system_clock::now();
+        camera = cam.get();
         int w = camera->getWidth();
         int h = camera->getHeight();
-        Image::Image<unsigned char> image(w, h);
-
-        // time it takes to draw each pixel
-        auto pixelTimes = std::vector<std::vector<int>>(h, std::vector<int>(w));
-        int maxTime = 0;
+        image = Image::Image<unsigned char>(w, h);
+        times = std::vector<std::vector<int>>(h, std::vector<int>(w));
 
         for (int y = 0; y < h; y++) {
             for (int x = 0; x < w; x++) {
-                auto startTime = std::chrono::system_clock::now();
-                auto ray = camera->castRay(x, y);
-                auto color = rayColor(ray, scene);
-
-                image.setPixel(
-                  x,
-                  y,
-                  { (unsigned char)std::clamp(color.x, 0.f, 255.f),
-                    (unsigned char)std::clamp(color.y, 0.f, 255.f),
-                    (unsigned char)std::clamp(color.z, 0.f, 255.f) });
-                auto endTime = std::chrono::system_clock::now();
-
-                int microseconds =
-                  std::chrono::duration_cast<std::chrono::microseconds>(
-                    endTime - startTime)
-                    .count();
-                maxTime = std::max(maxTime, microseconds);
-                pixelTimes[y][x] = microseconds;
+                tracePixel(x, y);
             }
         }
-        auto timeImageNormalized = createTimeImage(pixelTimes, maxTime);
+        auto timeImageNormalized = createTimeImage();
 
         Image::PNGExporter exporter;
         exporter.exportImage(image, camera->imageName());
@@ -62,16 +46,16 @@ PathTracer::trace(Objects::Scene& scene)
 }
 
 LinearAlgebra::Vec3
-PathTracer::rayColor(const Objects::Ray& ray, Objects::Scene& scene)
+PathTracer::rayColor(const Objects::Ray& ray)
 {
     FloatT minT = std::numeric_limits<FloatT>::infinity();
     LinearAlgebra::Vec3 normal;
     Objects::Material material;
 
-    for (auto surface : scene.surfaces) {
+    for (auto surface : scene->surfaces) {
         LinearAlgebra::Vec3 tmpNormal;
         FloatT t =
-          surface->intersect(ray, tmpNormal, scene.intersectionTestEpsilon);
+          surface->intersect(ray, tmpNormal, scene->intersectionTestEpsilon);
         if (t != -1 && t < minT) {
             minT = t;
             normal = tmpNormal;
@@ -87,11 +71,11 @@ PathTracer::rayColor(const Objects::Ray& ray, Objects::Scene& scene)
             normal = normal * -1;
 
         LinearAlgebra::Vec3 hitPoint =
-          ray.origin + ray.direction * minT + normal * scene.shadowRayEpsilon;
-        LinearAlgebra::Vec3 color = scene.ambientLight * material.ambient;
+          ray.origin + ray.direction * minT + normal * scene->shadowRayEpsilon;
+        LinearAlgebra::Vec3 color = scene->ambientLight * material.ambient;
 
-        for (auto& light : scene.lights) {
-            if (lightVisible(hitPoint, light, scene)) {
+        for (auto& light : scene->lights) {
+            if (lightVisible(hitPoint, light)) {
                 auto lightDir = light.position - hitPoint;
                 auto lightDist = lightDir.norm();
                 lightDir = lightDir / lightDist;
@@ -110,13 +94,12 @@ PathTracer::rayColor(const Objects::Ray& ray, Objects::Scene& scene)
 
         return color;
     } else
-        return scene.backgroundColor;
+        return scene->backgroundColor;
 }
 
 bool
 PathTracer::lightVisible(const LinearAlgebra::Vec3& point,
-                         const Objects::PointLight& light,
-                         const Objects::Scene& scene)
+                         const Objects::PointLight& light)
 {
     auto lightDir = light.position - point;
     auto ray = Objects::Ray(point, lightDir);
@@ -124,9 +107,10 @@ PathTracer::lightVisible(const LinearAlgebra::Vec3& point,
     // lightDir is not normalized. this way, t < 1 means a surface is closer
     // than the light, t > 1 means the surface is behind the light
 
-    for (auto surface : scene.surfaces) {
+    for (auto surface : scene->surfaces) {
         LinearAlgebra::Vec3 normal;
-        auto t = surface->intersect(ray, normal, scene.intersectionTestEpsilon);
+        auto t =
+          surface->intersect(ray, normal, scene->intersectionTestEpsilon);
         if (t != -1 && t < 1)
             return false;
     }
@@ -134,21 +118,67 @@ PathTracer::lightVisible(const LinearAlgebra::Vec3& point,
 }
 
 Image::Image<unsigned char>
-PathTracer::createTimeImage(const std::vector<std::vector<int>>& times,
-                            int maxTime)
+PathTracer::createTimeImage() const
 {
     int width = times[0].size();
     int height = times.size();
-    float multiplier = 255.f / maxTime;
 
-    Image::Image<unsigned char> image(width, height);
+    int maxTime = getMaxTime();
+
+    Image::Image<unsigned char> timeImage(width, height);
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
-            unsigned char normalizedTime = times[y][x] * multiplier;
-            image.setPixel(x, y, { normalizedTime, 0, 0 });
+            // integer division!
+            unsigned char normalizedTime = times[y][x] * 255 / maxTime;
+            timeImage.setPixel(x, y, { normalizedTime, 0, 0 });
         }
     }
 
-    return image;
+    return timeImage;
+}
+
+int
+PathTracer::getMaxTime() const
+{
+    int width = times[0].size();
+    int height = times.size();
+
+    int maxTime = 0;
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            maxTime = std::max(maxTime, times[y][x]);
+        }
+    }
+    return maxTime;
+}
+
+void
+PathTracer::traceTile(int xMin, int yMin, int width, int height)
+{
+    for (int y = yMin; y < yMin + height; y++) {
+        for (int x = xMin; x < xMin + width; x++) {
+            tracePixel(x, y);
+        }
+    }
+}
+
+void
+PathTracer::tracePixel(int x, int y)
+{
+    auto startTime = std::chrono::system_clock::now();
+    auto ray = camera->castRay(x, y);
+    auto color = rayColor(ray);
+
+    image.setPixel(x,
+                   y,
+                   { (unsigned char)std::clamp(color.x, 0.f, 255.f),
+                     (unsigned char)std::clamp(color.y, 0.f, 255.f),
+                     (unsigned char)std::clamp(color.z, 0.f, 255.f) });
+    auto endTime = std::chrono::system_clock::now();
+
+    int microseconds =
+      std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime)
+        .count();
+    times[y][x] = microseconds;
 }
 }

@@ -25,6 +25,7 @@ XMLParser::parse(std::istream& file)
         std::cout << error.what() << std::endl;
         return false;
     }
+    scene = std::make_shared<Objects::Scene>();
     auto sceneNode = doc.first_node("Scene");
     parseSceneNode(sceneNode);
     return true;
@@ -63,17 +64,17 @@ XMLParser::parseEpsilons(rapidxml::xml_node<char>* sceneNode)
 {
     auto shadow = sceneNode->first_node("ShadowRayEpsilon");
     if (shadow)
-        scene.shadowRayEpsilon = readSingleValue<FloatT>(shadow->value());
+        scene->shadowRayEpsilon = readSingleValue<FloatT>(shadow->value());
     auto intersection = sceneNode->first_node("IntersectionTestEpsilon");
     if (intersection)
-        scene.intersectionTestEpsilon =
+        scene->intersectionTestEpsilon =
           readSingleValue<FloatT>(intersection->value());
 }
 
 void
 XMLParser::parseBackgroundColor(rapidxml::xml_node<char>* colorNode)
 {
-    scene.backgroundColor = readSingleVector(colorNode->value());
+    scene->backgroundColor = readSingleVector(colorNode->value());
 }
 
 void
@@ -126,7 +127,7 @@ XMLParser::parseCamera(rapidxml::xml_node<char>* cameraNode)
                                      planeLRBU[2],
                                      planeLRBU[3],
                                      planeNear));
-    scene.cameras.push_back(cam);
+    scene->cameras.push_back(cam);
 }
 
 void
@@ -144,7 +145,7 @@ XMLParser::parseLights(rapidxml::xml_node<char>* lights)
 void
 XMLParser::parseAmbientLight(rapidxml::xml_node<char>* ambientLight)
 {
-    scene.ambientLight = readSingleVector(ambientLight->value());
+    scene->ambientLight = readSingleVector(ambientLight->value());
 }
 
 void
@@ -153,7 +154,7 @@ XMLParser::parsePointLight(rapidxml::xml_node<char>* pointLight)
     auto pos = readSingleVector(pointLight->first_node("Position")->value());
     auto intensity =
       readSingleVector(pointLight->first_node("Intensity")->value());
-    scene.lights.push_back(Objects::PointLight(pos, intensity));
+    scene->lights.push_back(Objects::PointLight(pos, intensity));
 }
 
 void
@@ -218,7 +219,7 @@ XMLParser::parseMesh(rapidxml::xml_node<char>* meshNode)
     auto indices = readArray<int>(meshNode->first_node("Faces")->value());
     auto mesh = std::shared_ptr<Objects::Surface>(
       new Objects::Mesh(vertices, indices, materials[materialIndex]));
-    scene.surfaces.push_back(mesh);
+    scene->surfaces.push_back(mesh);
 }
 
 void
@@ -231,7 +232,7 @@ XMLParser::parseTriangle(rapidxml::xml_node<char>* triangle)
     // create a mesh with a single triangle
     auto mesh = std::shared_ptr<Objects::Surface>(
       new Objects::Mesh(vertices, indices, materials[materialIndex]));
-    scene.surfaces.push_back(mesh);
+    scene->surfaces.push_back(mesh);
 }
 
 void
@@ -246,6 +247,6 @@ XMLParser::parseSphere(rapidxml::xml_node<char>* sphereNode)
 
     auto sphere = std::shared_ptr<Objects::Surface>(new Objects::Sphere(
       vertices[centerIndex], radius, materials[materialIndex]));
-    scene.surfaces.push_back(sphere);
+    scene->surfaces.push_back(sphere);
 }
 }
