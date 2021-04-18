@@ -44,13 +44,15 @@ public:
      * If returned t value is not -1, then ray.origin + ray.direction * t is on
      * the triangle.
      *
+     * Baricentric coordinates are allowed to be in the range
+     * (-epsilon, 1 + epsilon) instead of (0, 1), where epsilon is
+     * intersectionTestEpsilon in Surface class.
+     *
      * @param ray
-     * @param epsilon Baricentric coordinates are allowed to be in the range
-     * (-epsilon, 1 + epsilon) instead of (0, 1)
      * @return FloatT t for the closest intersection with ray, -1 if there is no
      * intersection.
      */
-    FloatT intersect(const Ray& ray, FloatT epsilon = 0) const;
+    FloatT intersect(const Ray& ray) const;
 
     /**
      * @brief Normal vector

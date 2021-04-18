@@ -1,5 +1,6 @@
 #include "Triangle.hpp"
 #include "LinearAlgebraTestCommon.hpp"
+#include "Surface.hpp"
 #include <gtest/gtest.h>
 
 namespace Objects {
@@ -67,8 +68,23 @@ TEST(TriangleTest, NoEpsilonForT)
     Triangle tri({ -1, -1, 0 }, { 1, -1, 0 }, { 0, 1, 0 });
     Ray ray({ 0, 0, -0.2 }, { 0, 0, -1 });
 
-    auto t = tri.intersect(ray, 30);
+    Surface::intersectionTestEpsilon = 30;
+    auto t = tri.intersect(ray);
     EXPECT_EQ(-1, t) << "t should not depend on epsilon";
+}
+
+TEST(TriangleTest, IntersectionTestEpsilon)
+{
+    Triangle tri({ -1, -1, 0 }, { 1, -1, 0 }, { 0, 1, 0 });
+    Ray ray({ 0, -1.1, -5 }, { 0, 0, 1 });
+
+    Surface::intersectionTestEpsilon = 0;
+    auto t = tri.intersect(ray);
+    EXPECT_EQ(-1, t);
+
+    Surface::intersectionTestEpsilon = 1.3;
+    t = tri.intersect(ray);
+    EXPECT_FLOAT_EQ(5, t) << "epsilon from Surface should be used";
 }
 }
 }

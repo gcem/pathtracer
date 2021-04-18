@@ -16,13 +16,11 @@ Mesh::Mesh(const std::vector<LinearAlgebra::Vec3>& vertices,
 }
 
 FloatT
-Mesh::intersect(const Ray& ray,
-                LinearAlgebra::Vec3& normalOut,
-                FloatT epsilon) const
+Mesh::intersect(const Ray& ray, LinearAlgebra::Vec3& normalOut) const
 {
     FloatT minT = std::numeric_limits<FloatT>::infinity();
     for (auto& triangle : triangles) {
-        auto t = triangle.intersect(ray, epsilon);
+        auto t = triangle.intersect(ray);
         if (t != -1 && t < minT) {
             minT = t;
             normalOut = triangle.getNormal();

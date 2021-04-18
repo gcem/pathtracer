@@ -17,6 +17,8 @@ void
 PathTracer::trace(std::shared_ptr<Objects::Scene> scenePtr)
 {
     scene = scenePtr;
+    Objects::Surface::intersectionTestEpsilon = scene->intersectionTestEpsilon;
+
     for (auto cam : scene->cameras) {
         auto imageStartTime = std::chrono::system_clock::now();
         camera = cam.get();
@@ -68,8 +70,7 @@ PathTracer::rayColor(const Objects::Ray& ray)
 
     for (auto surface : scene->surfaces) {
         LinearAlgebra::Vec3 tmpNormal;
-        FloatT t =
-          surface->intersect(ray, tmpNormal, scene->intersectionTestEpsilon);
+        FloatT t = surface->intersect(ray, tmpNormal);
         if (t != -1 && t < minT) {
             minT = t;
             normal = tmpNormal;
@@ -123,8 +124,7 @@ PathTracer::lightVisible(const LinearAlgebra::Vec3& point,
 
     for (auto surface : scene->surfaces) {
         LinearAlgebra::Vec3 normal;
-        auto t =
-          surface->intersect(ray, normal, scene->intersectionTestEpsilon);
+        auto t = surface->intersect(ray, normal);
         if (t != -1 && t < 1)
             return false;
     }

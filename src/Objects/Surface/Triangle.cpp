@@ -1,5 +1,6 @@
 #include "Triangle.hpp"
 #include "Matrix.hpp"
+#include "Surface.hpp"
 
 namespace Objects {
 Triangle::Triangle(const LinearAlgebra::Vec3& vertex1,
@@ -13,7 +14,7 @@ Triangle::Triangle(const LinearAlgebra::Vec3& vertex1,
 }
 
 FloatT
-Triangle::intersect(const Ray& ray, FloatT epsilon) const
+Triangle::intersect(const Ray& ray) const
 {
     /**
      * We solve the equation
@@ -42,13 +43,15 @@ Triangle::intersect(const Ray& ray, FloatT epsilon) const
     auto detB = LinearAlgebra::Mat3(ray.direction, rhs, edge31).determinant();
     auto beta = detB / detA;
 
-    if (beta <= -epsilon || beta >= 1 + epsilon)
+    if (beta <= -Surface::intersectionTestEpsilon ||
+        beta >= 1 + Surface::intersectionTestEpsilon)
         return -1;
 
     auto detC = LinearAlgebra::Mat3(ray.direction, edge21, rhs).determinant();
     auto gamma = detC / detA;
 
-    if (gamma <= -epsilon || beta + gamma >= 1 + epsilon)
+    if (gamma <= -Surface::intersectionTestEpsilon ||
+        beta + gamma >= 1 + Surface::intersectionTestEpsilon)
         return -1;
 
     return t;

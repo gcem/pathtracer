@@ -10,9 +10,7 @@ Sphere::Sphere(const LinearAlgebra::Vec3& center,
 {}
 
 FloatT
-Sphere::intersect(const Ray& ray,
-                  LinearAlgebra::Vec3& normalOut,
-                  FloatT epsilon) const
+Sphere::intersect(const Ray& ray, LinearAlgebra::Vec3& normalOut) const
 {
     /**
      * Solve the equation
