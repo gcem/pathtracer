@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(COMPILER)
 
 option(MULTITHREADED "Make use of multiple cores" ON)
+option(USE_DOUBLE "Use double precision floating point numbers" OFF)
 
 # force single thread for debugging configurations
 if (${CMAKE_BUILD_TYPE})

@@ -4,9 +4,13 @@
 // clang-format on
 
 #cmakedefine MULTITHREADED
+#cmakedefine USE_DOUBLE
 
-// TODO: add cmake option to change this to double
+#ifdef USE_DOUBLE
+using FloatT = double;
+#else
 using FloatT = float;
+#endif
 
 // in characters
 #define MAX_SCENE_FILE_SIZE 10000000
