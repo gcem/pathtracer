@@ -11,10 +11,12 @@
 
 #pragma once
 
+#include "AccelerationStructure.hpp"
 #include "Config.hpp"
 #include "Ray.hpp"
 #include "Surface.hpp"
 #include "Triangle.hpp"
+#include <memory>
 #include <vector>
 
 namespace Objects {
@@ -36,10 +38,14 @@ public:
      * @param indices An index vector. Groups of three indices corresponds to a
      * triangle
      * @param material
+     * @param accelerationStructure An empty acceleration structure that will be
+     * built using the triangles in this mesh
      */
     Mesh(const std::vector<LinearAlgebra::Vec3>& vertices,
          const std::vector<int>& indices,
-         const Material& material);
+         const Material& material,
+         std::unique_ptr<AccelerationStructures::AccelerationStructure>
+           accelerationStructure);
 
     /**
      * @brief Finds the intersection of given ray with this mesh.
@@ -62,9 +68,9 @@ public:
 
 protected:
     /**
-     * @brief Triangles in this mesh
+     * @brief Acceleration structure that provides intersection tests
      *
      */
-    std::vector<Triangle> triangles;
+    std::unique_ptr<AccelerationStructures::AccelerationStructure> acc;
 };
 }

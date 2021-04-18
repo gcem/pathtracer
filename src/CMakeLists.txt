@@ -19,6 +19,7 @@ enable_testing()
 
 add_subdirectory(LinearAlgebra)
 add_subdirectory(Objects)
+add_subdirectory(AccelerationStructures)
 add_subdirectory(Parser)
 add_subdirectory(Image)
 add_subdirectory(PathTracer)

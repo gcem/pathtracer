@@ -1,4 +1,5 @@
 #include "XMLParser.hpp"
+#include "BruteForce.hpp"
 #include "Config.hpp"
 #include "Mesh.hpp"
 #include "PerspectiveCamera.hpp"
@@ -217,8 +218,9 @@ XMLParser::parseMesh(rapidxml::xml_node<char>* meshNode)
     auto materialIndex =
       readSingleValue<int>(meshNode->first_node("Material")->value());
     auto indices = readArray<int>(meshNode->first_node("Faces")->value());
-    auto mesh = std::shared_ptr<Objects::Surface>(
-      new Objects::Mesh(vertices, indices, materials[materialIndex]));
+    auto acc = std::make_unique<AccelerationStructures::BruteForce>();
+    auto mesh = std::shared_ptr<Objects::Surface>(new Objects::Mesh(
+      vertices, indices, materials[materialIndex], std::move(acc)));
     scene->surfaces.push_back(mesh);
 }
 
@@ -230,8 +232,9 @@ XMLParser::parseTriangle(rapidxml::xml_node<char>* triangle)
     auto indices = readArray<int>(triangle->first_node("Indices")->value());
 
     // create a mesh with a single triangle
-    auto mesh = std::shared_ptr<Objects::Surface>(
-      new Objects::Mesh(vertices, indices, materials[materialIndex]));
+    auto acc = std::make_unique<AccelerationStructures::BruteForce>();
+    auto mesh = std::shared_ptr<Objects::Surface>(new Objects::Mesh(
+      vertices, indices, materials[materialIndex], std::move(acc)));
     scene->surfaces.push_back(mesh);
 }
 
