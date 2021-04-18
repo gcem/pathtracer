@@ -1,6 +1,8 @@
 #include "XMLParser.hpp"
+#include "BoundingBox.hpp"
 #include "BruteForce.hpp"
 #include "Config.hpp"
+#include "GlobalOptions.hpp"
 #include "Mesh.hpp"
 #include "PerspectiveCamera.hpp"
 #include "Sphere.hpp"
@@ -218,7 +220,19 @@ XMLParser::parseMesh(rapidxml::xml_node<char>* meshNode)
     auto materialIndex =
       readSingleValue<int>(meshNode->first_node("Material")->value());
     auto indices = readArray<int>(meshNode->first_node("Faces")->value());
-    auto acc = std::make_unique<AccelerationStructures::BruteForce>();
+    std::unique_ptr<AccelerationStructures::AccelerationStructure> acc;
+    switch (Options::globalOptions.accelerationStructure) {
+        case Options::AccelerationStructureEnum::BruteForce:
+            acc = std::make_unique<AccelerationStructures::BruteForce>();
+            break;
+        case Options::AccelerationStructureEnum::BoundingBox:
+            acc = std::make_unique<AccelerationStructures::BoundingBox>();
+            break;
+            // case Options::AccelerationStructureEnum::BoundingVolumeHierarchy:
+            //     acc = std::make_unique<
+            //       AccelerationStructures::BoundingVolumeHierarchy>();
+            //     break;
+    }
     auto mesh = std::shared_ptr<Objects::Surface>(new Objects::Mesh(
       vertices, indices, materials[materialIndex], std::move(acc)));
     scene->surfaces.push_back(mesh);

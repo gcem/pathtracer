@@ -18,3 +18,7 @@ using FloatT = float;
 // number of pixels on one edge of a tile (tiles are TILE_SIZE x TILE_SIZE).
 // must be at least 2.
 #define TILE_SIZE 16
+
+// number of triangles for which a recursive acceleration structure should
+// switch to brute force
+#define BRUTE_FORCE_THRESHOLD 6

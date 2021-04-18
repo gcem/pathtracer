@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(PathTracer VERSION 1.0)
+project(PathTracer VERSION 1.1)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -16,6 +16,9 @@ endif()
 
 configure_file(Config.hpp.in Config.hpp)
 
+add_library(Options INTERFACE)
+target_include_directories(Options INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
+
 enable_testing()
 
 add_subdirectory(LinearAlgebra)
@@ -29,7 +32,7 @@ add_subdirectory(3rdParty)
 
 add_executable(PathTracerApp main.cpp)
 
-target_link_libraries(PathTracerApp PUBLIC LinearAlgebra Objects PathTracer Parser)
+target_link_libraries(PathTracerApp PUBLIC LinearAlgebra Objects PathTracer Parser Options)
 
 target_include_directories(PathTracerApp PUBLIC
     "${PROJECT_BINARY_DIR}"
