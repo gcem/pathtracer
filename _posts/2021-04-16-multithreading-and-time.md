@@ -130,4 +130,4 @@ time to render. I expect the background to become completely black, when I imple
 decent acceleration structure. Also, I expect to see a cube around the meshes when I 
 add a single bounding box to them.
 
-[original-images]: /pathtracer/first-images-first-mistakes/#more-images
+[original-images]: /pathtracer/pathtracer/first-images-first-mistakes/#more-images
