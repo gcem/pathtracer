@@ -3,6 +3,10 @@
 #include "LinearAlgebraTestCommon.hpp"
 #include <gtest/gtest.h>
 
+// TODO: after extracting the intersection detection logic to
+// AccelerationStructure interface, many of these tests have become tests for
+// BruteForce class. I should separate them from mesh tests.
+
 namespace Objects {
 namespace Test {
 TEST(MeshTest, Material)

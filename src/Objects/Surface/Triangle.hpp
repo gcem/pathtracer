@@ -61,7 +61,6 @@ public:
      */
     LinearAlgebra::Vec3 getNormal() const;
 
-protected:
     /**
      * @name Vertices
      *
@@ -71,9 +70,10 @@ protected:
      * @brief Vertices in counterclockwise order
      *
      */
-    LinearAlgebra::Vec3 v1, v2, v3;
+    const LinearAlgebra::Vec3 v1, v2, v3;
     ///@}
 
+protected:
     /**
      * @brief Normal vector
      *
