@@ -221,7 +221,7 @@ XMLParser::parseMesh(rapidxml::xml_node<char>* meshNode)
       readSingleValue<int>(meshNode->first_node("Material")->value());
     auto indices = readArray<int>(meshNode->first_node("Faces")->value());
     std::unique_ptr<AccelerationStructures::AccelerationStructure> acc;
-    switch (Options::globalOptions.accelerationStructure) {
+    switch (Options::accelerationStructure) {
         case Options::AccelerationStructureEnum::BruteForce:
             acc = std::make_unique<AccelerationStructures::BruteForce>();
             break;

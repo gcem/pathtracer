@@ -21,10 +21,7 @@ enum AccelerationStructureEnum
     BoundingVolumeHierarchy
 };
 
-inline struct
-{
-    // TODO: change the default to BVH
-    AccelerationStructureEnum accelerationStructure = BoundingBox;
-    std::string sceneFileName;
-} globalOptions;
+// TODO: change the default to BVH
+inline AccelerationStructureEnum accelerationStructure = BoundingBox;
+inline std::string sceneFileName;
 }
