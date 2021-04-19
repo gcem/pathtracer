@@ -62,4 +62,12 @@ Triangle::getNormal() const
 {
     return normal;
 }
+
+FloatT
+Triangle::area() const
+{
+    // caching the area during normal calculation is possible but I won't query
+    // the area very often
+    return (v2 - v1).cross(v3 - v1).norm();
+}
 }

@@ -62,6 +62,13 @@ public:
     LinearAlgebra::Vec3 getNormal() const;
 
     /**
+     * @brief Surface area of the triangle
+     *
+     * @return FloatT
+     */
+    FloatT area() const;
+
+    /**
      * @name Vertices
      *
      */

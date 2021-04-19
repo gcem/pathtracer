@@ -14,14 +14,15 @@
 #include <string>
 
 namespace Options {
-enum AccelerationStructureEnum
+enum class AccelerationStructureEnum
 {
     BruteForce,
     BoundingBox,
-    BoundingVolumeHierarchy
+    BoundingVolumeHierarchy,
+    KDTree
 };
 
-// TODO: change the default to BVH
-inline AccelerationStructureEnum accelerationStructure = BoundingBox;
+inline AccelerationStructureEnum accelerationStructure =
+  AccelerationStructureEnum::BoundingVolumeHierarchy;
 inline std::string sceneFileName;
 }

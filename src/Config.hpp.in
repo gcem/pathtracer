@@ -13,7 +13,7 @@ using FloatT = float;
 #endif
 
 // in characters
-#define MAX_SCENE_FILE_SIZE 10000000
+#define MAX_SCENE_FILE_SIZE 100000000
 
 // number of pixels on one edge of a tile (tiles are TILE_SIZE x TILE_SIZE).
 // must be at least 2.

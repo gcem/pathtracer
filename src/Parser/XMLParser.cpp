@@ -4,10 +4,12 @@
 #include "BruteForce.hpp"
 #include "Config.hpp"
 #include "GlobalOptions.hpp"
+#include "KDTree.hpp"
 #include "Mesh.hpp"
 #include "PerspectiveCamera.hpp"
 #include "Sphere.hpp"
 #include "rapidxml.hpp"
+#include <chrono>
 #include <cstring>
 #include <iostream>
 #include <sstream>
@@ -19,6 +21,7 @@ XMLParser::XMLParser() {}
 bool
 XMLParser::parse(std::istream& file)
 {
+    auto startTime = std::chrono::system_clock::now();
     std::vector<char> content(MAX_SCENE_FILE_SIZE);
     file.read(&content.front(), MAX_SCENE_FILE_SIZE - 1);
     rapidxml::xml_document<char> doc;
@@ -32,6 +35,12 @@ XMLParser::parse(std::istream& file)
     scene = std::make_shared<Objects::Scene>();
     auto sceneNode = doc.first_node("Scene");
     parseSceneNode(sceneNode);
+    auto endTime = std::chrono::system_clock::now();
+    std::cout << "Scene was created in "
+              << std::chrono::duration_cast<std::chrono::milliseconds>(
+                   endTime - startTime)
+                   .count()
+              << " ms" << std::endl;
     return true;
 }
 
@@ -232,6 +241,9 @@ XMLParser::parseMesh(rapidxml::xml_node<char>* meshNode)
         case Options::AccelerationStructureEnum::BoundingVolumeHierarchy:
             acc = std::make_unique<
               AccelerationStructures::BoundingVolumeHierarchy>();
+            break;
+        case Options::AccelerationStructureEnum::KDTree:
+            acc = std::make_unique<AccelerationStructures::KDTree>();
             break;
     }
     auto mesh = std::shared_ptr<Objects::Surface>(new Objects::Mesh(

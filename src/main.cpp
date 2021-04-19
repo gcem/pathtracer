@@ -23,6 +23,9 @@ parserFunction(int key, char* arg, argp_state* state)
             else if (strcmp(arg, "bvh") == 0)
                 Options::accelerationStructure =
                   Options::AccelerationStructureEnum::BoundingVolumeHierarchy;
+            else if (strcmp(arg, "kd") == 0)
+                Options::accelerationStructure =
+                  Options::AccelerationStructureEnum::KDTree;
             else {
                 std::cout << "Unknown accelerator type \"" << arg << '"'
                           << std::endl;
@@ -64,7 +67,7 @@ parseArguments(int argc, char* argv[])
           0,
           "Acceleration structure to use with triangle meshes. Possible values "
           "are bf (brute force), bb (bounding box), bvh (bounding volume "
-          "hierarchy)." },
+          "hierarchy), kd(k-d tree)." },
         0
     };
     argpParser = { options, parserFunction, "SCENE-FILE", 0, 0, 0 };

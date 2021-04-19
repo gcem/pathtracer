@@ -37,6 +37,9 @@ public:
      * Materials and things I can't remember now. This can always be extended as
      * we will be adding more capabilities to the path tracer.
      *
+     * Also prints the time it took to create the scene. This is useful for
+     * measuring the effect of acceleration structures.
+     *
      * @param file Input file of appropriate format
      * @return true On success
      * @return false If file could not be parsed

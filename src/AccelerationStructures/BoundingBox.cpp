@@ -62,7 +62,7 @@ BoundingBox::hitsBoundingBox(const Objects::Ray& ray) const
     FloatT tMin = std::max(txMin, std::max(tyMin, tzMin));
     FloatT tMax = std::min(txMax, std::min(tyMax, tzMax));
 
-    return tMin < tMax;
+    return tMin <= tMax;
 }
 
 FloatT
@@ -103,7 +103,7 @@ BoundingBox::intersectBoundingBox(const Objects::Ray& ray) const
     FloatT tMin = std::max(txMin, std::max(tyMin, tzMin));
     FloatT tMax = std::min(txMax, std::min(tyMax, tzMax));
 
-    if (tMin >= tMax)
+    if (tMin > tMax)
         // no intersection
         return -1;
     if (tMin < 0)
