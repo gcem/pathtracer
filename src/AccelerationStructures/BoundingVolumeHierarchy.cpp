@@ -1,4 +1,5 @@
 #include "BoundingVolumeHierarchy.hpp"
+#include <iostream>
 
 namespace AccelerationStructures {
 FloatT
@@ -21,8 +22,6 @@ BoundingVolumeHierarchy::build(std::vector<Objects::Triangle>&& triangles)
         return;
     }
 
-    std::vector<Objects::Triangle> lowTriangles, highTriangles;
-
     // divide on longest side of the bounding box
     FloatT xLen = xMax - xMin;
     FloatT yLen = yMax - yMin;
@@ -35,67 +34,83 @@ BoundingVolumeHierarchy::build(std::vector<Objects::Triangle>&& triangles)
     // least makes the tree balanced.
     bool toLeft = false;
 
-    if (xLen > yLen && xLen > zLen) {
-        // divide on x
-        middle = (xMin + xMax) / 2;
-        for (auto& triangle : triangles) {
-            if (triangle.v1.x < middle && triangle.v2.x < middle &&
-                triangle.v3.x < middle)
-                lowTriangles.push_back(triangle);
-            else if (triangle.v1.x > middle && triangle.v2.x > middle &&
-                     triangle.v3.x > middle)
-                highTriangles.push_back(triangle);
-            else {
-                if (toLeft)
+    // we choose the longest axis, but if it results in a bad division, we
+    // will try other axes before switching to brute force. hence the for loop
+    for (int i = 0; i < 3; i++) {
+        std::vector<Objects::Triangle> lowTriangles, highTriangles;
+
+        if (xLen > yLen && xLen > zLen) {
+            // divide on x
+            middle = (xMin + xMax) / 2;
+            for (auto& triangle : triangles) {
+                if (triangle.v1.x < middle && triangle.v2.x < middle &&
+                    triangle.v3.x < middle)
                     lowTriangles.push_back(triangle);
-                else
+                else if (triangle.v1.x > middle && triangle.v2.x > middle &&
+                         triangle.v3.x > middle)
                     highTriangles.push_back(triangle);
-                toLeft = !toLeft;
+                else {
+                    if (toLeft)
+                        lowTriangles.push_back(triangle);
+                    else
+                        highTriangles.push_back(triangle);
+                    toLeft = !toLeft;
+                }
             }
+            // for the next iteration
+            xLen = 0;
+        } else if (yLen > zLen) {
+            // divide on y
+            middle = (yMin + yMax) / 2;
+            for (auto& triangle : triangles) {
+                if (triangle.v1.y < middle && triangle.v2.y < middle &&
+                    triangle.v3.y < middle)
+                    lowTriangles.push_back(triangle);
+                else if (triangle.v1.y > middle && triangle.v2.y > middle &&
+                         triangle.v3.y > middle)
+                    highTriangles.push_back(triangle);
+                else {
+                    if (toLeft)
+                        lowTriangles.push_back(triangle);
+                    else
+                        highTriangles.push_back(triangle);
+                    toLeft = !toLeft;
+                }
+            }
+            // for the next iteration
+            yLen = 0;
+        } else {
+            // divide on z
+            middle = (zMin + zMax) / 2;
+            for (auto& triangle : triangles) {
+                if (triangle.v1.z < middle && triangle.v2.z < middle &&
+                    triangle.v3.z < middle)
+                    lowTriangles.push_back(triangle);
+                else if (triangle.v1.z > middle && triangle.v2.z > middle &&
+                         triangle.v3.z > middle)
+                    highTriangles.push_back(triangle);
+                else {
+                    if (toLeft)
+                        lowTriangles.push_back(triangle);
+                    else
+                        highTriangles.push_back(triangle);
+                    toLeft = !toLeft;
+                }
+            }
+            // for the next iteration
+            zLen = 0;
         }
-    } else if (yLen > zLen) {
-        // divide on y
-        middle = (yMin + yMax) / 2;
-        for (auto& triangle : triangles) {
-            if (triangle.v1.y < middle && triangle.v2.y < middle &&
-                triangle.v3.y < middle)
-                lowTriangles.push_back(triangle);
-            else if (triangle.v1.y > middle && triangle.v2.y > middle &&
-                     triangle.v3.y > middle)
-                highTriangles.push_back(triangle);
-            else {
-                if (toLeft)
-                    lowTriangles.push_back(triangle);
-                else
-                    highTriangles.push_back(triangle);
-                toLeft = !toLeft;
-            }
-        }
-    } else {
-        // divide on z
-        middle = (zMin + zMax) / 2;
-        for (auto& triangle : triangles) {
-            if (triangle.v1.z < middle && triangle.v2.z < middle &&
-                triangle.v3.z < middle)
-                lowTriangles.push_back(triangle);
-            else if (triangle.v1.z > middle && triangle.v2.z > middle &&
-                     triangle.v3.z > middle)
-                highTriangles.push_back(triangle);
-            else {
-                if (toLeft)
-                    lowTriangles.push_back(triangle);
-                else
-                    highTriangles.push_back(triangle);
-                toLeft = !toLeft;
-            }
+        if (lowTriangles.size() && highTriangles.size()) {
+            left = std::make_unique<BoundingVolumeHierarchy>();
+            right = std::make_unique<BoundingVolumeHierarchy>();
+            left->build(std::move(lowTriangles));
+            right->build(std::move(highTriangles));
+            break;
         }
     }
-    if (lowTriangles.size() && highTriangles.size()) {
-        left = std::make_unique<BoundingVolumeHierarchy>();
-        right = std::make_unique<BoundingVolumeHierarchy>();
-        left->build(std::move(lowTriangles));
-        right->build(std::move(highTriangles));
-    } else {
+    if (!left) {
+        std::cout << "Switched to brute force with " << triangles.size()
+                  << " triangles\n";
         BruteForce::build(std::move(triangles));
     }
 }

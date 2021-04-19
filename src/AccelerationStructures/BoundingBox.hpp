@@ -46,7 +46,7 @@ public:
      *
      * @param triangles Triangles in this acceleration structure. The vector
      * will be destroyed by this function. Use std::move to convert vector to
-     * an rvalue.
+     * an rvalue. Must be nonempty.
      */
     void build(std::vector<Objects::Triangle>&& triangles) override;
 
@@ -77,7 +77,8 @@ protected:
     /**
      * @brief Set the limits of bounding box
      *
-     * @param triangles Triangles that should be inside this bounding box
+     * @param triangles Triangles that should be inside this bounding box. Must
+     * be nonempty.
      */
     void createBoundingBox(const std::vector<Objects::Triangle>& triangles);
 

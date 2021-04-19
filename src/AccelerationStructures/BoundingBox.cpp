@@ -115,6 +115,9 @@ BoundingBox::intersectBoundingBox(const Objects::Ray& ray) const
 void
 BoundingBox::createBoundingBox(const std::vector<Objects::Triangle>& triangles)
 {
+    xMin = xMax = triangles.front().v1.x;
+    yMin = yMax = triangles.front().v1.y;
+    zMin = zMax = triangles.front().v1.z;
     for (auto& triangle : triangles) {
         xMin = std::min(xMin, triangle.v1.x);
         xMin = std::min(xMin, triangle.v2.x);
