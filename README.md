@@ -21,7 +21,7 @@ Commands in the following sections should be run in `build` directory.
 # Usage
 
 ```
-./PathTracerApp scene.xml
+./PathTracerApp --help
 ```
 
 # Testing
