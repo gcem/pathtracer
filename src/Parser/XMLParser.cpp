@@ -1,5 +1,6 @@
 #include "XMLParser.hpp"
 #include "BoundingBox.hpp"
+#include "BoundingVolumeHierarchy.hpp"
 #include "BruteForce.hpp"
 #include "Config.hpp"
 #include "GlobalOptions.hpp"
@@ -228,10 +229,10 @@ XMLParser::parseMesh(rapidxml::xml_node<char>* meshNode)
         case Options::AccelerationStructureEnum::BoundingBox:
             acc = std::make_unique<AccelerationStructures::BoundingBox>();
             break;
-            // case Options::AccelerationStructureEnum::BoundingVolumeHierarchy:
-            //     acc = std::make_unique<
-            //       AccelerationStructures::BoundingVolumeHierarchy>();
-            //     break;
+        case Options::AccelerationStructureEnum::BoundingVolumeHierarchy:
+            acc = std::make_unique<
+              AccelerationStructures::BoundingVolumeHierarchy>();
+            break;
     }
     auto mesh = std::shared_ptr<Objects::Surface>(new Objects::Mesh(
       vertices, indices, materials[materialIndex], std::move(acc)));

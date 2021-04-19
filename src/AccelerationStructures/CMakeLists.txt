@@ -1,4 +1,4 @@
-add_library(AccelerationStructures BruteForce.cpp BoundingBox.cpp)
+add_library(AccelerationStructures BruteForce.cpp BoundingBox.cpp BoundingVolumeHierarchy.cpp)
 
 target_include_directories(AccelerationStructures INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 

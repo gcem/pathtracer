@@ -62,6 +62,26 @@ protected:
     bool hitsBoundingBox(const Objects::Ray& ray) const;
 
     /**
+     * @brief Checks for intersection with bounding box
+     *
+     * This is for use by derived classes. This class doesn't need the t value.
+     * Maybe I will need to make this public later.
+     *
+     * @param ray
+     * @return If the ray doesn't hit the box or the box is behind the ray, -1.
+     * If ray's origin is inside the box, 0. Otherwise t at the entry point to
+     * the box.
+     */
+    FloatT intersectBoundingBox(const Objects::Ray& ray) const;
+
+    /**
+     * @brief Set the limits of bounding box
+     *
+     * @param triangles Triangles that should be inside this bounding box
+     */
+    void createBoundingBox(const std::vector<Objects::Triangle>& triangles);
+
+    /**
      * @name Limits
      *
      */
