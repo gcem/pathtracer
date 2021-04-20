@@ -13,9 +13,9 @@ In my Path Tracer, I have added the option to use a single Bounding Box, a
 Bounding Volume Hierarchy, a k-d tree or just Brute Force intersection tests.
 
 As I had written in [visualizing acceleration structures][visualizing-acc], my
-Path Tracer also outputs the rendering time of each pixel. Along with different
-acceleration structures and different thresholds, these images provide a beautiful 
-demonstration of how they work. Let's start with some images. Performance measurements 
+Path Tracer also outputs the rendering time of each pixel. These images provide 
+a beautiful demonstration of how different acceleration structures with different 
+thresholds work. Let's start with some images. Performance measurements 
 will follow later.
 
 # Pixel rendering times
