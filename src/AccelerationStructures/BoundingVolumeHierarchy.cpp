@@ -1,4 +1,5 @@
 #include "BoundingVolumeHierarchy.hpp"
+#include "AccelerationStructureConstants.hpp"
 #include <iostream>
 
 namespace AccelerationStructures {
@@ -17,7 +18,7 @@ BoundingVolumeHierarchy::build(std::vector<Objects::Triangle>&& triangles)
 {
     createBoundingBox(triangles);
 
-    if (triangles.size() <= BRUTE_FORCE_THRESHOLD) {
+    if (triangles.size() <= BVH_BRUTE_FORCE_THRESHOLD) {
         BruteForce::build(std::move(triangles));
         return;
     }

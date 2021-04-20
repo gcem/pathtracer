@@ -1,4 +1,5 @@
 #include "KDTreeNode.hpp"
+#include "AccelerationStructureConstants.hpp"
 #include <algorithm>
 
 namespace AccelerationStructures {
@@ -208,7 +209,7 @@ KDTreeNode::intersect(const Objects::Ray& ray,
 void
 KDTreeNode::build(std::vector<Objects::Triangle>&& triangles, Axis divisionAxis)
 {
-    if (triangles.size() <= BRUTE_FORCE_THRESHOLD) {
+    if (triangles.size() <= KD_BRUTE_FORCE_THRESHOLD) {
         BruteForce::build(std::move(triangles));
         return;
     }

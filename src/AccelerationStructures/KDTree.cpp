@@ -1,4 +1,5 @@
 #include "KDTree.hpp"
+#include "AccelerationStructureConstants.hpp"
 namespace AccelerationStructures {
 FloatT
 KDTree::intersect(const Objects::Ray& ray, LinearAlgebra::Vec3& normalOut) const
@@ -13,7 +14,7 @@ KDTree::intersect(const Objects::Ray& ray, LinearAlgebra::Vec3& normalOut) const
 void
 KDTree::build(std::vector<Objects::Triangle>&& triangles)
 {
-    if (triangles.size() <= BRUTE_FORCE_THRESHOLD) {
+    if (triangles.size() <= KD_BRUTE_FORCE_THRESHOLD) {
         BoundingBox::build(std::move(triangles));
         return;
     }
