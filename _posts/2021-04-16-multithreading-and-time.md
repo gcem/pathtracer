@@ -81,6 +81,10 @@ So, I have arbitrarily chosen the tile size to be 16x16. I will come back and
 add new columns to this table when I implement an acceleration structure. Until
 then, this is how single-threaded compares to 8-threaded on the brute-force approach.
 
+**Note from 19.04.2021:** After implementing BVH, I have changed tile size to
+8, 16, 32 and couldn't see much of a difference.
+{: .notice--info}
+
 | Scene           | No multithreading | 16x16 tiles |
 | :-------------- | :---------------- | :---------- |
 | bunny.xml       | 22303             | 4253        |
