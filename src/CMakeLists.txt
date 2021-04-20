@@ -4,7 +4,6 @@ project(PathTracer VERSION 1.1)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
-set(COMPILER)
 
 option(MULTITHREADED "Make use of multiple cores" ON)
 option(USE_DOUBLE "Use double precision floating point numbers" OFF)

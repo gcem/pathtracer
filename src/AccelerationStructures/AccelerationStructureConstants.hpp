@@ -13,7 +13,7 @@
 
 namespace AccelerationStructures {
 
-constexpr int KD_BRUTE_FORCE_THRESHOLD = 64;
+constexpr int KD_BRUTE_FORCE_THRESHOLD = 128;
 constexpr int BVH_BRUTE_FORCE_THRESHOLD = 8;
 
 }
