@@ -15,7 +15,7 @@
 #include <memory>
 
 namespace AccelerationStructures {
-class KDTreeNode : public BruteForce
+class KDTreeNode : protected BruteForce
 {
 public:
     enum class Axis
@@ -34,12 +34,14 @@ public:
      * @param ray Ray to test intersection with
      * @param normalOut If return value is not -1, set to the surface normal at
      * intersection point
+     * @param maxT t value at which we leave the box
      * @return FloatT If there was no intersection in front of the ray, -1.
      * Else, a positive t value such that origin + t * direction is on the
      * closest triangle
      */
     FloatT intersect(const Objects::Ray& ray,
-                     LinearAlgebra::Vec3& normalOut) const override;
+                     LinearAlgebra::Vec3& normalOut,
+                     FloatT maxT) const;
 
     /**
      * @brief Builds the acceleration structure from a vector of triangles
@@ -86,12 +88,5 @@ protected:
     std::unique_ptr<KDTreeNode> right;
 
     ///@}
-
-private:
-    /**
-     * @brief Made private so that consumers don't use accidentally
-     *
-     */
-    using BruteForce::build;
 };
 }

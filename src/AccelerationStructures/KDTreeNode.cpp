@@ -5,7 +5,8 @@
 namespace AccelerationStructures {
 FloatT
 KDTreeNode::intersect(const Objects::Ray& ray,
-                      LinearAlgebra::Vec3& normalOut) const
+                      LinearAlgebra::Vec3& normalOut,
+                      FloatT maxT) const
 {
     if (!left)
         return BruteForce::intersect(ray, normalOut);
@@ -16,22 +17,25 @@ KDTreeNode::intersect(const Objects::Ray& ray,
                 // coordinates are increasing
                 if (ray.origin.x > divisionPlane)
                     // origin at the upper side
-                    return right->intersect(ray, normalOut);
+                    return right->intersect(ray, normalOut, maxT);
 
                 LinearAlgebra::Vec3 leftNormal, rightNormal;
                 FloatT planeT =
                   (divisionPlane - ray.origin.x) / ray.direction.x;
 
-                FloatT leftT = left->intersect(ray, leftNormal);
+                if (planeT >= maxT)
+                    return left->intersect(ray, normalOut, maxT);
+
+                FloatT leftT = left->intersect(ray, leftNormal, maxT);
                 if (leftT == -1)
-                    return right->intersect(ray, normalOut);
+                    return right->intersect(ray, normalOut, maxT);
 
                 if (leftT <= planeT) {
                     normalOut = leftNormal;
                     return leftT;
                 }
 
-                FloatT rightT = right->intersect(ray, rightNormal);
+                FloatT rightT = right->intersect(ray, rightNormal, maxT);
                 if (rightT == -1 || leftT < rightT) {
                     normalOut = leftNormal;
                     return leftT;
@@ -43,22 +47,25 @@ KDTreeNode::intersect(const Objects::Ray& ray,
                 // coordinates are decreasing
                 if (ray.origin.x <= divisionPlane)
                     // origin at the upper side
-                    return left->intersect(ray, normalOut);
+                    return left->intersect(ray, normalOut, maxT);
 
                 LinearAlgebra::Vec3 leftNormal, rightNormal;
                 FloatT planeT =
                   (divisionPlane - ray.origin.x) / ray.direction.x;
 
-                FloatT rightT = right->intersect(ray, rightNormal);
+                if (planeT >= maxT)
+                    return right->intersect(ray, normalOut, maxT);
+
+                FloatT rightT = right->intersect(ray, rightNormal, maxT);
                 if (rightT == -1)
-                    return left->intersect(ray, normalOut);
+                    return left->intersect(ray, normalOut, maxT);
 
                 if (rightT <= planeT) {
                     normalOut = rightNormal;
                     return rightT;
                 }
 
-                FloatT leftT = left->intersect(ray, leftNormal);
+                FloatT leftT = left->intersect(ray, leftNormal, maxT);
                 if (leftT == -1 || rightT < leftT) {
                     normalOut = rightNormal;
                     return rightT;
@@ -69,9 +76,9 @@ KDTreeNode::intersect(const Objects::Ray& ray,
             } else {
                 // parallel to division plane
                 if (ray.origin.x <= divisionPlane)
-                    return left->intersect(ray, normalOut);
+                    return left->intersect(ray, normalOut, maxT);
                 else
-                    return right->intersect(ray, normalOut);
+                    return right->intersect(ray, normalOut, maxT);
             }
             break;
         case Axis::y:
@@ -79,22 +86,25 @@ KDTreeNode::intersect(const Objects::Ray& ray,
                 // coordinates are increasing
                 if (ray.origin.y > divisionPlane)
                     // origin at the upper side
-                    return right->intersect(ray, normalOut);
+                    return right->intersect(ray, normalOut, maxT);
 
                 LinearAlgebra::Vec3 leftNormal, rightNormal;
                 FloatT planeT =
                   (divisionPlane - ray.origin.y) / ray.direction.y;
 
-                FloatT leftT = left->intersect(ray, leftNormal);
+                if (planeT >= maxT)
+                    return left->intersect(ray, normalOut, maxT);
+
+                FloatT leftT = left->intersect(ray, leftNormal, maxT);
                 if (leftT == -1)
-                    return right->intersect(ray, normalOut);
+                    return right->intersect(ray, normalOut, maxT);
 
                 if (leftT <= planeT) {
                     normalOut = leftNormal;
                     return leftT;
                 }
 
-                FloatT rightT = right->intersect(ray, rightNormal);
+                FloatT rightT = right->intersect(ray, rightNormal, maxT);
                 if (rightT == -1 || leftT < rightT) {
                     normalOut = leftNormal;
                     return leftT;
@@ -106,22 +116,25 @@ KDTreeNode::intersect(const Objects::Ray& ray,
                 // coordinates are decreasing
                 if (ray.origin.y <= divisionPlane)
                     // origin at the upper side
-                    return left->intersect(ray, normalOut);
+                    return left->intersect(ray, normalOut, maxT);
 
                 LinearAlgebra::Vec3 leftNormal, rightNormal;
                 FloatT planeT =
                   (divisionPlane - ray.origin.y) / ray.direction.y;
 
-                FloatT rightT = right->intersect(ray, rightNormal);
+                if (planeT >= maxT)
+                    return right->intersect(ray, normalOut, maxT);
+
+                FloatT rightT = right->intersect(ray, rightNormal, maxT);
                 if (rightT == -1)
-                    return left->intersect(ray, normalOut);
+                    return left->intersect(ray, normalOut, maxT);
 
                 if (rightT <= planeT) {
                     normalOut = rightNormal;
                     return rightT;
                 }
 
-                FloatT leftT = left->intersect(ray, leftNormal);
+                FloatT leftT = left->intersect(ray, leftNormal, maxT);
                 if (leftT == -1 || rightT < leftT) {
                     normalOut = rightNormal;
                     return rightT;
@@ -132,9 +145,9 @@ KDTreeNode::intersect(const Objects::Ray& ray,
             } else {
                 // parallel to division plane
                 if (ray.origin.y <= divisionPlane)
-                    return left->intersect(ray, normalOut);
+                    return left->intersect(ray, normalOut, maxT);
                 else
-                    return right->intersect(ray, normalOut);
+                    return right->intersect(ray, normalOut, maxT);
             }
             break;
         case Axis::z:
@@ -142,22 +155,25 @@ KDTreeNode::intersect(const Objects::Ray& ray,
                 // coordinates are increasing
                 if (ray.origin.z > divisionPlane)
                     // origin at the upper side
-                    return right->intersect(ray, normalOut);
+                    return right->intersect(ray, normalOut, maxT);
 
                 LinearAlgebra::Vec3 leftNormal, rightNormal;
                 FloatT planeT =
                   (divisionPlane - ray.origin.z) / ray.direction.z;
 
-                FloatT leftT = left->intersect(ray, leftNormal);
+                if (planeT >= maxT)
+                    return left->intersect(ray, normalOut, maxT);
+
+                FloatT leftT = left->intersect(ray, leftNormal, maxT);
                 if (leftT == -1)
-                    return right->intersect(ray, normalOut);
+                    return right->intersect(ray, normalOut, maxT);
 
                 if (leftT <= planeT) {
                     normalOut = leftNormal;
                     return leftT;
                 }
 
-                FloatT rightT = right->intersect(ray, rightNormal);
+                FloatT rightT = right->intersect(ray, rightNormal, maxT);
                 if (rightT == -1 || leftT < rightT) {
                     normalOut = leftNormal;
                     return leftT;
@@ -169,22 +185,25 @@ KDTreeNode::intersect(const Objects::Ray& ray,
                 // coordinates are decreasing
                 if (ray.origin.z <= divisionPlane)
                     // origin at the upper side
-                    return left->intersect(ray, normalOut);
+                    return left->intersect(ray, normalOut, maxT);
 
                 LinearAlgebra::Vec3 leftNormal, rightNormal;
                 FloatT planeT =
                   (divisionPlane - ray.origin.z) / ray.direction.z;
 
-                FloatT rightT = right->intersect(ray, rightNormal);
+                if (planeT >= maxT)
+                    return right->intersect(ray, normalOut, maxT);
+
+                FloatT rightT = right->intersect(ray, rightNormal, maxT);
                 if (rightT == -1)
-                    return left->intersect(ray, normalOut);
+                    return left->intersect(ray, normalOut, maxT);
 
                 if (rightT <= planeT) {
                     normalOut = rightNormal;
                     return rightT;
                 }
 
-                FloatT leftT = left->intersect(ray, leftNormal);
+                FloatT leftT = left->intersect(ray, leftNormal, maxT);
                 if (leftT == -1 || rightT < leftT) {
                     normalOut = rightNormal;
                     return rightT;
@@ -195,9 +214,9 @@ KDTreeNode::intersect(const Objects::Ray& ray,
             } else {
                 // parallel to division plane
                 if (ray.origin.z <= divisionPlane)
-                    return left->intersect(ray, normalOut);
+                    return left->intersect(ray, normalOut, maxT);
                 else
-                    return right->intersect(ray, normalOut);
+                    return right->intersect(ray, normalOut, maxT);
             }
             break;
         default:

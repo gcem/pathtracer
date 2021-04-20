@@ -55,6 +55,16 @@ public:
 
 protected:
     /**
+     * @brief Maximum t value for which ray is inside the bounding box
+     *
+     * This function assumes ray hits the bounding box.
+     *
+     * @param ray
+     * @return FloatT
+     */
+    FloatT getMaxT(const Objects::Ray& ray) const;
+
+    /**
      * @brief Root of the tree if exists
      *
      */
