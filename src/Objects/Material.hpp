@@ -17,10 +17,19 @@ namespace Objects {
 /**
  * @brief Holds the properties of a material
  *
+ * @todo Maybe I should create separate classes for different material types
  */
 class Material
 {
 public:
+    enum class Type
+    {
+        Default,
+        Dielectric,
+        Conductor,
+        Mirror
+    };
+
     /**
      * @brief Construct a default Material object
      *
@@ -30,17 +39,36 @@ public:
     Material();
 
     /**
-     * @brief Construct a Material object with given colors
+     * @brief Construct a Material object with given properties
+     *
+     * Default values don't make much sense. Set values explicitly if you will
+     * ever use them.
      *
      * @param ambient
      * @param diffuse
      * @param specular
      * @param phongExponent
+     * @param type
+     * @param mirrorReflectance
+     * @param absorptionCoefficient
+     * @param refractionIndex
+     * @param absorptionIndex
      */
     Material(const LinearAlgebra::Vec3& ambient,
              const LinearAlgebra::Vec3& diffuse,
              const LinearAlgebra::Vec3& specular,
-             FloatT phongExponent);
+             FloatT phongExponent,
+             Type type = Type::Default,
+             const LinearAlgebra::Vec3& mirrorReflectance = {},
+             const LinearAlgebra::Vec3& absorptionCoefficient = {},
+             FloatT refractionIndex = 1,
+             FloatT absorptionIndex = 0);
+
+    /**
+     * @brief Material type (dielectric, conductor etc.)
+     *
+     */
+    Type type;
 
     /**
      * @brief RGB values of ambient color
@@ -68,5 +96,32 @@ public:
      *
      */
     FloatT phongExponent;
+
+    /**
+     * @brief Mirror reflectance coefficients for RGB colors
+     *
+     */
+    LinearAlgebra::Vec3 mirrorReflectance;
+
+    /**
+     * @brief Absorption coefficient for dielectric materials
+     *
+     * Used to attenuate RGB components of the ray as it travels inside the
+     * dielectric.
+     *
+     */
+    LinearAlgebra::Vec3 absorptionCoefficient;
+
+    /**
+     * @brief Refraction index as in physics
+     *
+     */
+    FloatT refractionIndex;
+
+    /**
+     * @brief Absorption index for conductors
+     *
+     */
+    FloatT absorptionIndex;
 };
 }

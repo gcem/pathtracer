@@ -123,6 +123,13 @@ protected:
     virtual void parseBackgroundColor(rapidxml::xml_node<char>* colorNode);
 
     /**
+     * @brief Parse \<MaxRecursionDepth\> node
+     *
+     * @param colorNode Can be nullptr
+     */
+    virtual void parseRecursionDepth(rapidxml::xml_node<char>* colorNode);
+
+    /**
      * @brief Parse \<Cameras\> node
      *
      * @param camerasNode
@@ -210,6 +217,16 @@ protected:
      * @param sphere
      */
     virtual void parseSphere(rapidxml::xml_node<char>* sphere);
+
+    /**
+     * @brief Convert material type string to type enum
+     *
+     * If the given string is unknown, returns the default type.
+     *
+     * @param typeText A string with the type of material
+     * @return Objects::Material::Type
+     */
+    Objects::Material::Type getMaterialTypeEnum(const char* typeText) const;
 
     /**
      * @brief Coordinates of vertices

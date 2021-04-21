@@ -65,6 +65,7 @@ XMLParser::parseSceneNode(rapidxml::xml_node<char>* sceneNode)
 {
     parseEpsilons(sceneNode);
     parseBackgroundColor(sceneNode->first_node("BackgroundColor"));
+    parseRecursionDepth(sceneNode->first_node("MaxRecursionDepth"));
     parseCameras(sceneNode->first_node("Cameras"));
     parseLights(sceneNode->first_node("Lights"));
     parseMaterials(sceneNode->first_node("Materials"));
@@ -88,6 +89,13 @@ void
 XMLParser::parseBackgroundColor(rapidxml::xml_node<char>* colorNode)
 {
     scene->backgroundColor = readSingleVector(colorNode->value());
+}
+
+void
+XMLParser::parseRecursionDepth(rapidxml::xml_node<char>* depthNode)
+{
+    if (depthNode)
+        scene->maxRecursionDepth = readSingleValue<FloatT>(depthNode->value());
 }
 
 void
@@ -186,6 +194,11 @@ XMLParser::parseMaterials(rapidxml::xml_node<char>* materialsNode)
 void
 XMLParser::parseMaterial(rapidxml::xml_node<char>* material)
 {
+    auto typeAttr = material->first_attribute("type");
+    auto type = typeAttr ? getMaterialTypeEnum(typeAttr->value())
+                         : Objects::Material::Type::Default;
+
+    // common attributes for basic shading
     auto ambient =
       readSingleVector(material->first_node("AmbientReflectance")->value());
     auto diffuse =
@@ -193,10 +206,43 @@ XMLParser::parseMaterial(rapidxml::xml_node<char>* material)
     auto specular =
       readSingleVector(material->first_node("SpecularReflectance")->value());
     auto phongNode = material->first_node("PhongExponent");
-    auto phongExponent =
+    FloatT phongExponent =
       phongNode ? readSingleValue<FloatT>(phongNode->value()) : 1;
-    materials.push_back(
-      Objects::Material(ambient, diffuse, specular, phongExponent));
+
+    // mirrors
+    auto mirrorNode = material->first_node("MirrorReflectance");
+    auto mirror = mirrorNode ? readSingleVector(mirrorNode->value())
+                             : LinearAlgebra::Vec3();
+
+    // conductors and dielectrics
+    auto refractionNode = material->first_node("RefractionIndex");
+    auto refraction =
+      refractionNode ? readSingleValue<FloatT>(refractionNode->value()) : 1;
+
+    // conductors
+    auto absorptionIndexNode = material->first_node("AbsorptionIndex");
+    auto absorptionIndex =
+      absorptionIndexNode
+        ? readSingleValue<FloatT>(absorptionIndexNode->value())
+        : 1;
+
+    // dielectrics
+    auto absorptionCoefficientNode =
+      material->first_node("AbsorptionCoefficient");
+    auto absorptionCoefficient =
+      absorptionCoefficientNode
+        ? readSingleVector(absorptionCoefficientNode->value())
+        : LinearAlgebra::Vec3();
+
+    materials.push_back(Objects::Material(ambient,
+                                          diffuse,
+                                          specular,
+                                          phongExponent,
+                                          type,
+                                          mirror,
+                                          absorptionCoefficient,
+                                          refraction,
+                                          absorptionIndex));
 }
 
 void
@@ -278,5 +324,17 @@ XMLParser::parseSphere(rapidxml::xml_node<char>* sphereNode)
     auto sphere = std::shared_ptr<Objects::Surface>(new Objects::Sphere(
       vertices[centerIndex], radius, materials[materialIndex]));
     scene->surfaces.push_back(sphere);
+}
+
+Objects::Material::Type
+XMLParser::getMaterialTypeEnum(const char* typeText) const
+{
+    if (strcmp(typeText, "mirror") == 0)
+        return Objects::Material::Type::Mirror;
+    if (strcmp(typeText, "conductor") == 0)
+        return Objects::Material::Type::Conductor;
+    if (strcmp(typeText, "dielectric") == 0)
+        return Objects::Material::Type::Dielectric;
+    return Objects::Material::Type::Default;
 }
 }

@@ -72,5 +72,14 @@ public:
      *
      */
     FloatT intersectionTestEpsilon = 0.001;
+
+    /**
+     * @brief Maximum recursion depth in each pixel
+     *
+     * In recursive ray tracing, we need to stop at some point to avoid infinite
+     * loops and very deep recursions. This variable limits the recursion depth.
+     *
+     */
+    int maxRecursionDepth = 0;
 };
 }
