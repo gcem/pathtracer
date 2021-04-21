@@ -55,7 +55,7 @@ Let's add a single axis-aligned bounding box around each of the meshes and see h
 times change. If a ray hits the bounding box, each triangle in the mesh is tested as in 
 [Brute force](#brute-force-intersection-tests) method.
 
-{: .notice--success }
+{: .notice--info }
 Berserker consists of multiple meshes.
 
 {% include figure image_path="/assets/images/time/bb/berserker.png" alt="berserker rendering time" caption="Rendering time of Berserker scene using bounding box." %}
@@ -67,7 +67,7 @@ Time taken on the floor (reflection of the boxes) is because of shadow rays.
 
 {% include figure image_path="/assets/images/time/bb/scienceTree.png" alt="science tree rendering time" caption="Rendering time of Science Tree scene using bounding box." %}
 
-{: .notice--success }
+{: .notice--info }
 Windmill consists of multiple meshes.
 
 {% include figure image_path="/assets/images/time/bb/windmill.png" alt="windmill rendering time" caption="Rendering time of Windmill scene using bounding box." %}
@@ -86,7 +86,7 @@ You can also see the "shadows" of the boxes on the floor. These are the actual s
 that would be cast by the bounding box with respect to the light positions in the scene,
 if bounding boxes were visible. The reason is that the shadow rays from floor to the
 lights are hitting the box, only if they are in the shadow of the bounding box. When the
-shadow ray hits the box, we test the triangles inside, thus taking lots of time.
+shadow ray hits the box, we test the triangles inside, and it takes lots of time.
 
 ## Bounding volume hierarchy
 
