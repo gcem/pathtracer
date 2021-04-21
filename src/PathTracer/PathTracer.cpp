@@ -66,7 +66,7 @@ PathTracer::rayColor(const Objects::Ray& ray)
 {
     FloatT minT = std::numeric_limits<FloatT>::infinity();
     LinearAlgebra::Vec3 normal;
-    Objects::Material material;
+    Objects::Surface* closest = nullptr;
 
     for (auto surface : scene->surfaces) {
         LinearAlgebra::Vec3 tmpNormal;
@@ -74,12 +74,13 @@ PathTracer::rayColor(const Objects::Ray& ray)
         if (t != -1 && t < minT) {
             minT = t;
             normal = tmpNormal;
-            material = surface->material;
+            closest = surface.get();
         }
     }
 
-    if (minT < std::numeric_limits<FloatT>::infinity()) {
+    if (closest) {
         // hit a surface
+        auto material = closest->material;
 
         // flip normals until we differentiate between front and back faces
         if (ray.direction.dot(normal) > 0)
