@@ -136,13 +136,20 @@ protected:
      * ray. If remainingRecursions is set to -1, this ray has no meaning on
      * return.
      * @param dielectric Surface that the ray is inside
+     * @param leavingCos Minimum cosine (exclusive) of the angle between ray and
+     * normal for which the ray leaves the dielectric
+     * @param leavingNormal Will be set to the normal pointing outside the
+     * dielectric, if the ray leaves the dielectric
      * @param remainingRecursions Maximum number of reflections to follow inside
-     * the surface. Decremented at each reflection.
+     * the surface. Decremented at each reflection. Set to -1 if the ray can't
+     * leave the surface within the given limit.
      * @return FloatT Distance traveled. If remainingRecursions is set to -1,
      * this has no meaning.
      */
     FloatT leaveDielectric(Objects::Ray& ray,
                            Objects::Surface* dielectric,
+                           FloatT leavingCos,
+                           LinearAlgebra::Vec3& leavingNormal,
                            int& remainingRecursions);
 
     /**

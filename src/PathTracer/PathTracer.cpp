@@ -142,9 +142,58 @@ PathTracer::rayColor(const Objects::Ray& ray, int remainingDepth)
     }
 
     // dielectrics
-    if (material.type ==)
+    if (material.type == Objects::Material::Type::Dielectric &&
+        remainingDepth) {
+        constexpr FloatT VacuumRefractionIndex = 1;
+        FloatT ratio = VacuumRefractionIndex / material.refractionIndex;
+        FloatT dotP = ray.direction.dot(normal);
 
-        return color;
+        // cosine of leaving angle squared
+        FloatT cosSq = 1 - ratio * ratio * (1 - dotP * dotP);
+
+        if (cosSq < 0) {
+            // then there is no transmitted ray.
+            // could add mirror reflection here but then we shoud also allow
+            // nested meshes.
+        } else {
+            auto refractedDirection =
+              ratio * (ray.direction - normal * dotP) - normal * sqrt(cosSq);
+            auto refractedRay =
+              Objects::Ray(hitPoint - 2 * scene->shadowRayEpsilon * normal,
+                           refractedDirection);
+
+            // minimum leaving angle's cosine
+            FloatT minCos = sqrt(1 - ratio * ratio);
+
+            LinearAlgebra::Vec3 leavingNormal;
+            auto distance = leaveDielectric(
+              refractedRay, closest, minCos, leavingNormal, remainingDepth);
+
+            if (remainingDepth >= 0) {
+                leavingNormal = leavingNormal * -1;
+                FloatT leavingDotP = refractedRay.direction.dot(leavingNormal);
+                FloatT leavingCosSq =
+                  1 - 1 / (ratio * ratio) * (1 - leavingDotP * leavingDotP);
+
+                refractedRay.direction =
+                  1 / ratio *
+                    (refractedRay.direction - leavingNormal * leavingDotP) -
+                  leavingNormal * sqrt(leavingCosSq);
+
+                auto baseColor = rayColor(refractedRay, remainingDepth);
+
+                LinearAlgebra::Vec3 attenuationCoefficient = {
+                    (FloatT)exp(-material.absorptionCoefficient.x * distance),
+                    (FloatT)exp(-material.absorptionCoefficient.y * distance),
+                    (FloatT)exp(-material.absorptionCoefficient.z * distance)
+                };
+
+                color += baseColor * attenuationCoefficient;
+            }
+        }
+    }
+
+    return color;
 }
 
 bool
@@ -275,5 +324,40 @@ PathTracer::traceTilesInThread()
             }
         }
     }
+}
+
+FloatT
+PathTracer::leaveDielectric(Objects::Ray& ray,
+                            Objects::Surface* dielectric,
+                            FloatT leavingCos,
+                            LinearAlgebra::Vec3& leavingNormal,
+                            int& remainingRecursions)
+{
+    LinearAlgebra::Vec3 normal;
+    FloatT distance = 0;
+    while (remainingRecursions >= 0) {
+        remainingRecursions--;
+        auto t = dielectric->intersect(ray, normal);
+        if (t == -1) {
+            // normally we must hit the surface but just in case
+            remainingRecursions = -1;
+            return distance;
+        }
+        distance += t;
+
+        if (normal.dot(ray.direction) > leavingCos) {
+            // cosine is larger than leavingCos, so the ray leaves
+            ray.origin =
+              ray.origin + ray.direction * t + normal * scene->shadowRayEpsilon;
+            leavingNormal = normal;
+            return distance;
+        }
+
+        // ray got reflected inside
+        ray.origin =
+          ray.origin + ray.direction * t - normal * scene->shadowRayEpsilon;
+        ray.direction = ray.direction - 2 * normal.dot(ray.direction) * normal;
+    }
+    return distance;
 }
 }

@@ -131,6 +131,27 @@
                     "ignoreFailures": true
                 }
             ]
+        },
+        {
+            "name": "Cornellbox Recursive",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/PathTracerApp",
+            "args": [
+                "${workspaceFolder}/scenes/recursive/cornellbox_recursive.xml"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/build",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Automatische Strukturierung und Einrückung für \"gdb\" aktivieren",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
         }
     ]
 }
