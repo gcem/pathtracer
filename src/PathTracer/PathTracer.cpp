@@ -84,10 +84,6 @@ PathTracer::rayColor(const Objects::Ray& ray, int remainingDepth)
     // hit a surface
     auto material = closest->material;
 
-    // flip normals until we differentiate between front and back faces
-    if (ray.direction.dot(normal) > 0)
-        normal = normal * -1;
-
     LinearAlgebra::Vec3 hitPoint =
       ray.origin + ray.direction * minT + normal * scene->shadowRayEpsilon;
     LinearAlgebra::Vec3 color = scene->ambientLight * material.ambient;
@@ -101,9 +97,12 @@ PathTracer::rayColor(const Objects::Ray& ray, int remainingDepth)
             auto mid = (lightDir - ray.direction).normalize();
             auto intensity = light.intensity / (lightDist * lightDist);
 
-            auto diffuse = material.diffuse * normal.dot(lightDir) * intensity;
+            auto diffuse = material.diffuse *
+                           std::max<FloatT>(0, normal.dot(lightDir)) *
+                           intensity;
             auto specular = material.specular *
-                            pow(normal.dot(mid), material.phongExponent) *
+                            pow(std::max<FloatT>(0, normal.dot(mid)),
+                                material.phongExponent) *
                             intensity;
 
             color += diffuse + specular;
