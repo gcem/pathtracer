@@ -40,9 +40,14 @@ public:
     /**
      * @brief Find the color seen by given ray
      *
+     * @param ray
+     * @param remainingRecursionDepth How many times this function will follow
+     * mirror reflections or refracted rays. Entering and leaving a dielectric
+     * is counted as a single step.
      * @return LinearAlgebra::Vec3
      */
-    virtual LinearAlgebra::Vec3 rayColor(const Objects::Ray& ray);
+    virtual LinearAlgebra::Vec3 rayColor(const Objects::Ray& ray,
+                                         int remainingRecursionDepth);
 
     /**
      * @brief Finds if the given point is illuminated by a point light

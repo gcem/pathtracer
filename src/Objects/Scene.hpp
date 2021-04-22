@@ -80,6 +80,6 @@ public:
      * loops and very deep recursions. This variable limits the recursion depth.
      *
      */
-    int maxRecursionDepth = 0;
+    int maxRecursionDepth = 10;
 };
 }

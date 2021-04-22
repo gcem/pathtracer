@@ -62,7 +62,7 @@ PathTracer::trace(std::shared_ptr<Objects::Scene> scenePtr)
 }
 
 LinearAlgebra::Vec3
-PathTracer::rayColor(const Objects::Ray& ray)
+PathTracer::rayColor(const Objects::Ray& ray, int remainingDepth)
 {
     FloatT minT = std::numeric_limits<FloatT>::infinity();
     LinearAlgebra::Vec3 normal;
@@ -78,39 +78,48 @@ PathTracer::rayColor(const Objects::Ray& ray)
         }
     }
 
-    if (closest) {
-        // hit a surface
-        auto material = closest->material;
-
-        // flip normals until we differentiate between front and back faces
-        if (ray.direction.dot(normal) > 0)
-            normal = normal * -1;
-
-        LinearAlgebra::Vec3 hitPoint =
-          ray.origin + ray.direction * minT + normal * scene->shadowRayEpsilon;
-        LinearAlgebra::Vec3 color = scene->ambientLight * material.ambient;
-
-        for (auto& light : scene->lights) {
-            if (lightVisible(hitPoint, light)) {
-                auto lightDir = light.position - hitPoint;
-                auto lightDist = lightDir.norm();
-                lightDir = lightDir / lightDist;
-                auto mid = (lightDir - ray.direction).normalize();
-                auto intensity = light.intensity / (lightDist * lightDist);
-
-                auto diffuse =
-                  material.diffuse * normal.dot(lightDir) * intensity;
-                auto specular = material.specular *
-                                pow(normal.dot(mid), material.phongExponent) *
-                                intensity;
-
-                color += diffuse + specular;
-            }
-        }
-
-        return color;
-    } else
+    if (!closest)
         return scene->backgroundColor;
+
+    // hit a surface
+    auto material = closest->material;
+
+    // flip normals until we differentiate between front and back faces
+    if (ray.direction.dot(normal) > 0)
+        normal = normal * -1;
+
+    LinearAlgebra::Vec3 hitPoint =
+      ray.origin + ray.direction * minT + normal * scene->shadowRayEpsilon;
+    LinearAlgebra::Vec3 color = scene->ambientLight * material.ambient;
+
+    // diffuse and specular shading
+    for (auto& light : scene->lights) {
+        if (lightVisible(hitPoint, light)) {
+            auto lightDir = light.position - hitPoint;
+            auto lightDist = lightDir.norm();
+            lightDir = lightDir / lightDist;
+            auto mid = (lightDir - ray.direction).normalize();
+            auto intensity = light.intensity / (lightDist * lightDist);
+
+            auto diffuse = material.diffuse * normal.dot(lightDir) * intensity;
+            auto specular = material.specular *
+                            pow(normal.dot(mid), material.phongExponent) *
+                            intensity;
+
+            color += diffuse + specular;
+        }
+    }
+
+    // mirror reflection
+    if (material.type == Objects::Material::Type::Mirror && remainingDepth) {
+        auto reflectedDirection =
+          ray.direction - normal * (2 * normal.dot(ray.direction));
+        auto reflectedRay = Objects::Ray(hitPoint, reflectedDirection);
+        auto reflectedColor = rayColor(reflectedRay, remainingDepth - 1);
+        color += reflectedColor * material.mirrorReflectance;
+    }
+
+    return color;
 }
 
 bool
@@ -204,7 +213,7 @@ PathTracer::tracePixel(int x, int y)
 {
     auto startTime = std::chrono::system_clock::now();
     auto ray = camera->castRay(x, y);
-    auto color = rayColor(ray);
+    auto color = rayColor(ray, scene->maxRecursionDepth);
 
     image.setPixel(x,
                    y,
