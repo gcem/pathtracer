@@ -20,6 +20,13 @@ namespace PathTracer {
 /**
  * @brief Creates images from a Scene object
  *
+ * Assumes there are no nested meshes. That is, when a ray enters a mesh, it
+ * doesn't collide with another mesh until leaving.
+ *
+ * This is currently a Ray Tracer. If lots of things have to change while
+ * transitioning to Path Tracer, this class should be renamed to RayTracer and a
+ * new one should be added.
+ *
  */
 class PathTracer
 {
@@ -42,8 +49,8 @@ public:
      *
      * @param ray
      * @param remainingRecursionDepth How many times this function will follow
-     * mirror reflections or refracted rays. Entering and leaving a dielectric
-     * is counted as a single step.
+     * mirror reflections or refracted rays. Entering a dielectric, leaving it,
+     * and all reflections contribute to the depth.
      * @return LinearAlgebra::Vec3
      */
     virtual LinearAlgebra::Vec3 rayColor(const Objects::Ray& ray,
@@ -112,6 +119,31 @@ protected:
      *
      */
     void traceTilesInThread();
+
+    /**
+     * @brief Finds where a ray leaves the dielectric and the distance it
+     * travels inside
+     *
+     * Takes a ray that is **inside** the mesh. Follows the reflections until
+     * the ray leaves the mesh. Changes the reference parameter to the leaving
+     * ray that is **outside** the mesh, but **not** refracted.
+     *
+     * If the ray doesn't leave the mesh, remainingRecursions is set to -1.
+     *
+     * Assumes there are no other surfaces inside the dielectric.
+     *
+     * @param ray Initially, entering ray. On return, this is set to the leaving
+     * ray. If remainingRecursions is set to -1, this ray has no meaning on
+     * return.
+     * @param dielectric Surface that the ray is inside
+     * @param remainingRecursions Maximum number of reflections to follow inside
+     * the surface. Decremented at each reflection.
+     * @return FloatT Distance traveled. If remainingRecursions is set to -1,
+     * this has no meaning.
+     */
+    FloatT leaveDielectric(Objects::Ray& ray,
+                           Objects::Surface* dielectric,
+                           int& remainingRecursions);
 
     /**
      * @brief Scene currently being rendered

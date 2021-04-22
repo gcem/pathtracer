@@ -118,7 +118,33 @@ PathTracer::rayColor(const Objects::Ray& ray, int remainingDepth)
         color += reflectedColor * material.mirrorReflectance;
     }
 
-    return color;
+    // fresnel reflection on conductors
+    if (material.type == Objects::Material::Type::Conductor && remainingDepth) {
+        auto reflectedDirection =
+          ray.direction - normal * (2 * normal.dot(ray.direction));
+        auto reflectedRay = Objects::Ray(hitPoint, reflectedDirection);
+        auto reflectedColor = rayColor(reflectedRay, remainingDepth - 1);
+
+        FloatT theta = -1 * ray.direction.dot(normal);
+        FloatT squares = material.refractionIndex * material.refractionIndex +
+                         material.absorptionIndex * material.absorptionIndex;
+
+        FloatT cosTheta = normal.dot(reflectedRay.direction);
+        FloatT cosSq = cosTheta * cosTheta;
+        FloatT nCos = 2 * material.refractionIndex * cosTheta;
+
+        // reflectance for s- and p-polarized light
+        FloatT rs = (squares - nCos + cosSq) / (squares + nCos + cosSq);
+        FloatT rp = (squares * cosSq - nCos + 1) / (squares * cosSq + nCos + 1);
+
+        FloatT reflectionRatio = (rs + rp) / 2;
+        color += reflectedColor * reflectionRatio * material.mirrorReflectance;
+    }
+
+    // dielectrics
+    if (material.type ==)
+
+        return color;
 }
 
 bool
