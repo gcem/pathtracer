@@ -9,7 +9,7 @@ option(MULTITHREADED "Make use of multiple cores" ON)
 option(USE_DOUBLE "Use double precision floating point numbers" OFF)
 
 # force single thread for debugging configurations
-if (${CMAKE_BUILD_TYPE})
+if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
     set(MULTITHREADED OFF)
 endif()
 
