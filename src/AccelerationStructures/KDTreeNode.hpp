@@ -35,7 +35,7 @@ public:
      * @param normalOut If return value is not -1, set to the surface normal at
      * intersection point
      * @param maxT t value at which we leave the box
-     * @return FloatT If there was no intersection in front of the ray, -1.
+     * @return If there was no intersection in front of the ray, -1.
      * Else, a positive t value such that origin + t * direction is on the
      * closest triangle
      */

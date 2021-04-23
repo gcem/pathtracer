@@ -50,7 +50,7 @@ public:
     /**
      * @brief Calculates the determinant of this matrix
      *
-     * @return T determinant
+     * @return determinant
      */
     typename ColumnT::ComponentType determinant() const;
 
@@ -73,7 +73,7 @@ public:
      * @brief Matrix-Vector multiplication
      *
      * @param vec
-     * @return ColumnT this * vec
+     * @return this * vec
      */
     ColumnT operator*(const ColumnT& vec) const;
 

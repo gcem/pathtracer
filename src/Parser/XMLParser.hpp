@@ -53,7 +53,7 @@ protected:
      *
      * @tparam T Vector type
      * @param text Text to be parsed
-     * @return T Resulting vector
+     * @return Resulting vector
      */
     template<typename T = LinearAlgebra::Vec3>
     T readSingleVector(std::string text);
@@ -77,7 +77,7 @@ protected:
      *
      * @tparam T Expected type
      * @param text Text to be parsed
-     * @return T Resulting object
+     * @return Resulting object
      */
     template<typename T>
     T readSingleValue(std::string text);

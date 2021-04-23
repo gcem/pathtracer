@@ -30,7 +30,7 @@ public:
      *
      * @param x x-coordinate of the pixel
      * @param y y-coordinate of the pixel
-     * @return Ray Ray from Camera's position to pixel (x, y). Direction of the
+     * @return Ray from Camera's position to pixel (x, y). Direction of the
      * ray is a unit vector.
      */
     virtual Ray castRay(int x, int y) const = 0;

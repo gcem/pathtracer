@@ -83,7 +83,7 @@ protected:
     /**
      * @brief Maximum value in the times matrix
      *
-     * @return int Maximum time it took a pixel to render, in microseconds
+     * @return Maximum time it took a pixel to render, in microseconds
      */
     int getMaxTime() const;
 
@@ -143,7 +143,7 @@ protected:
      * @param remainingRecursions Maximum number of reflections to follow inside
      * the surface. Decremented at each reflection. Set to -1 if the ray can't
      * leave the surface within the given limit.
-     * @return FloatT Distance traveled. If remainingRecursions is set to -1,
+     * @return Distance traveled. If remainingRecursions is set to -1,
      * this has no meaning.
      */
     FloatT leaveDielectric(Objects::Ray& ray,

@@ -43,7 +43,7 @@ public:
      * @param ray
      * @param normalOut If return value is not -1, then this is set to the
      * surface normal at intersection point. Otherwise unmodified.
-     * @return FloatT t for the closest intersection with ray, -1 if there is no
+     * @return t for the closest intersection with ray, -1 if there is no
      * intersection.
      */
     virtual FloatT intersect(const Ray& ray,

@@ -49,7 +49,7 @@ public:
      * intersectionTestEpsilon in Surface class.
      *
      * @param ray
-     * @return FloatT t for the closest intersection with ray, -1 if there is no
+     * @return t for the closest intersection with ray, -1 if there is no
      * intersection.
      */
     FloatT intersect(const Ray& ray) const;
