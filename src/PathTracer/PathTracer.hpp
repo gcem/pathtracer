@@ -133,8 +133,8 @@ protected:
      * Assumes there are no other surfaces inside the dielectric.
      *
      * @param ray Initially, entering ray. On return, this is set to the leaving
-     * ray. If remainingRecursions is set to -1, this ray has no meaning on
-     * return.
+     * ray (outside the dielectric, but not refracted). If remainingRecursions
+     * is set to -1, this ray has no meaning on return.
      * @param dielectric Surface that the ray is inside
      * @param leavingCos Minimum cosine (exclusive) of the angle between ray and
      * normal for which the ray leaves the dielectric
@@ -151,6 +151,58 @@ protected:
                            FloatT leavingCos,
                            LinearAlgebra::Vec3& leavingNormal,
                            int& remainingRecursions);
+
+    /**
+     * @brief Uses Fresnel's formulas to calculate how much of the light is
+     * reflected
+     *
+     * @param rayDirection Direction of the incoming ray inside the current
+     * medium
+     * @param normal Normal of the surface. It should point towards the origin
+     * of the ray (the function assumes the ray hits the front face)
+     * @param refractiveIndex Conductor's refractive index
+     * @param absorptionIndex Conductor's absorption index
+     * @return FloatT
+     */
+    FloatT conductorReflectionRatio(const LinearAlgebra::Vec3& rayDirection,
+                                    const LinearAlgebra::Vec3& normal,
+                                    FloatT refractiveIndex,
+                                    FloatT absorptionIndex);
+
+    /**
+     * @brief Uses Fresnel's formulas to calculate how much of the light is
+     * reflected
+     *
+     * @param rayDirection Direction of the incoming ray inside the current
+     * medium
+     * @param normal Normal of the surface. It should point towards the origin
+     * of the ray (the function assumes the ray hits the front face)
+     * @param dielectricRefractiveIndex Dielectric's refractive index
+     * @param currentRefractiveIndex Refractive index of the current medium
+     * @return FloatT
+     */
+    FloatT dielectricReflectionRatio(const LinearAlgebra::Vec3& rayDirection,
+                                     const LinearAlgebra::Vec3& normal,
+                                     FloatT dielectricRefractiveIndex,
+                                     FloatT currentRefractiveIndex);
+
+    /**
+     * @brief Finds the new direction of a ray inside next media
+     *
+     * If the ray can't enter the next medium, its reflection is returned
+     * instead.
+     *
+     * @param direction
+     * @param normal Must point to the origin of the incoming ray (assumes the
+     * ray hits the front face)
+     * @param currentRefractiveIndex
+     * @param nextRefractiveIndex
+     * @return LinearAlgebra::Vec3
+     */
+    LinearAlgebra::Vec3 refractRay(const LinearAlgebra::Vec3& direction,
+                                   const LinearAlgebra::Vec3& normal,
+                                   FloatT currentRefractiveIndex,
+                                   FloatT nextRefractiveIndex);
 
     /**
      * @brief Scene currently being rendered

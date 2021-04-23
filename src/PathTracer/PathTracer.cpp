@@ -124,43 +124,33 @@ PathTracer::rayColor(const Objects::Ray& ray, int remainingDepth)
           ray.direction - normal * (2 * normal.dot(ray.direction));
         auto reflectedRay = Objects::Ray(hitPoint, reflectedDirection);
         auto reflectedColor = rayColor(reflectedRay, remainingDepth - 1);
-
-        FloatT theta = -1 * ray.direction.dot(normal);
-        FloatT squares = material.refractionIndex * material.refractionIndex +
-                         material.absorptionIndex * material.absorptionIndex;
-
-        FloatT cosTheta = normal.dot(reflectedRay.direction);
-        FloatT cosSq = cosTheta * cosTheta;
-        FloatT nCos = 2 * material.refractionIndex * cosTheta;
-
-        // reflectance for s- and p-polarized light
-        FloatT rs = (squares - nCos + cosSq) / (squares + nCos + cosSq);
-        FloatT rp = (squares * cosSq - nCos + 1) / (squares * cosSq + nCos + 1);
-
-        FloatT reflectionRatio = (rs + rp) / 2;
+        auto reflectionRatio =
+          conductorReflectionRatio(ray.direction,
+                                   normal,
+                                   material.refractionIndex,
+                                   material.absorptionIndex);
         color += reflectedColor * reflectionRatio * material.mirrorReflectance;
     }
 
     // dielectrics
     if (material.type == Objects::Material::Type::Dielectric &&
         remainingDepth) {
-        constexpr FloatT VacuumRefractionIndex = 1;
-        FloatT ratio = VacuumRefractionIndex / material.refractionIndex;
-        FloatT dotP = ray.direction.dot(normal);
+        constexpr FloatT VacuumRefractiveIndex = 1;
 
-        // cosine of leaving angle squared
-        FloatT cosSq = 1 - ratio * ratio * (1 - dotP * dotP);
+        auto refractedDirection = refractRay(ray.direction,
+                                             normal,
+                                             VacuumRefractiveIndex,
+                                             material.refractionIndex);
 
-        if (cosSq < 0) {
-            // then there is no transmitted ray.
-            // could add mirror reflection here but then we shoud also allow
-            // nested meshes.
+        if (refractedDirection.dot(normal) >= 0) {
+            // then there is no transmitted ray. could add mirror reflection
+            // here
         } else {
-            auto refractedDirection =
-              ratio * (ray.direction - normal * dotP) - normal * sqrt(cosSq);
             auto refractedRay =
               Objects::Ray(hitPoint - 2 * scene->shadowRayEpsilon * normal,
                            refractedDirection);
+
+            FloatT ratio = VacuumRefractiveIndex / material.refractionIndex;
 
             // minimum leaving angle's cosine
             FloatT minCos = sqrt(1 - ratio * ratio);
@@ -171,14 +161,10 @@ PathTracer::rayColor(const Objects::Ray& ray, int remainingDepth)
 
             if (remainingDepth >= 0) {
                 leavingNormal = leavingNormal * -1;
-                FloatT leavingDotP = refractedRay.direction.dot(leavingNormal);
-                FloatT leavingCosSq =
-                  1 - 1 / (ratio * ratio) * (1 - leavingDotP * leavingDotP);
-
-                refractedRay.direction =
-                  1 / ratio *
-                    (refractedRay.direction - leavingNormal * leavingDotP) -
-                  leavingNormal * sqrt(leavingCosSq);
+                refractedRay.direction = refractRay(refractedDirection,
+                                                    leavingNormal,
+                                                    material.refractionIndex,
+                                                    VacuumRefractiveIndex);
 
                 auto baseColor = rayColor(refractedRay, remainingDepth);
 
@@ -359,5 +345,56 @@ PathTracer::leaveDielectric(Objects::Ray& ray,
         ray.direction = ray.direction - 2 * normal.dot(ray.direction) * normal;
     }
     return distance;
+}
+
+FloatT
+PathTracer::conductorReflectionRatio(const LinearAlgebra::Vec3& incomingRay,
+                                     const LinearAlgebra::Vec3& normal,
+                                     FloatT refractiveIndex,
+                                     FloatT absorptionIndex)
+{
+    FloatT theta = -1 * incomingRay.dot(normal);
+    FloatT squares =
+      refractiveIndex * refractiveIndex + absorptionIndex * absorptionIndex;
+
+    FloatT cosTheta = -normal.dot(incomingRay);
+    FloatT cosSq = cosTheta * cosTheta;
+    FloatT nCos = 2 * refractiveIndex * cosTheta;
+
+    // reflectance for s- and p-polarized light
+    FloatT rs = (squares - nCos + cosSq) / (squares + nCos + cosSq);
+    FloatT rp = (squares * cosSq - nCos + 1) / (squares * cosSq + nCos + 1);
+
+    FloatT reflectionRatio = (rs + rp) / 2;
+    return reflectionRatio;
+}
+
+FloatT
+PathTracer::dielectricReflectionRatio(const LinearAlgebra::Vec3& incomingRay,
+                                      const LinearAlgebra::Vec3& normal,
+                                      FloatT dielectricRefractiveIndex,
+                                      FloatT currentRefractiveIndex)
+{
+    // TODO
+}
+
+LinearAlgebra::Vec3
+PathTracer::refractRay(const LinearAlgebra::Vec3& direction,
+                       const LinearAlgebra::Vec3& normal,
+                       FloatT currentRefractiveIndex,
+                       FloatT nextRefractiveIndex)
+{
+    FloatT ratio = currentRefractiveIndex / nextRefractiveIndex;
+    FloatT dotP = direction.dot(normal);
+
+    // cosine of leaving angle squared
+    FloatT cosSq = 1 - ratio * ratio * (1 - dotP * dotP);
+
+    if (cosSq < 0) {
+        // then there is no transmitted ray
+        return direction - normal * (2 * normal.dot(direction));
+    } else {
+        return ratio * (direction - normal * dotP) - normal * sqrt(cosSq);
+    }
 }
 }
