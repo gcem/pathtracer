@@ -15,6 +15,9 @@ endif()
 
 configure_file(Config.hpp.in Config.hpp)
 
+add_library(Config INTERFACE)
+target_include_directories(Config INTERFACE ${PROJECT_BINARY_DIR})
+
 add_library(Options INTERFACE)
 target_include_directories(Options INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -31,8 +34,4 @@ add_subdirectory(3rdParty)
 
 add_executable(PathTracerApp main.cpp)
 
-target_link_libraries(PathTracerApp PUBLIC LinearAlgebra Objects PathTracer Parser Options)
-
-target_include_directories(PathTracerApp PUBLIC
-    "${PROJECT_BINARY_DIR}"
-)
+target_link_libraries(PathTracerApp PUBLIC LinearAlgebra Objects PathTracer Parser Options Config)
