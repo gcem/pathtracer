@@ -121,16 +121,19 @@ XMLParser::parseCameras(rapidxml::xml_node<char>* camerasNode)
 void
 XMLParser::parseCamera(rapidxml::xml_node<char>* cameraNode)
 {
+
     LinearAlgebra::Vec3 pos =
       readSingleVector(cameraNode->first_node("Position")->value());
-    LinearAlgebra::Vec3 gaze =
-      readSingleVector(cameraNode->first_node("Gaze")->value());
     LinearAlgebra::Vec3 up =
       readSingleVector(cameraNode->first_node("Up")->value());
-
-    // left right bottom up
-    auto planeLRBU =
-      readArray<FloatT>(cameraNode->first_node("NearPlane")->value());
+    LinearAlgebra::Vec3 gaze;
+    auto gazeNode = cameraNode->first_node("Gaze");
+    if (gazeNode)
+        gaze = readSingleVector(gazeNode->value());
+    else {
+        gaze =
+          readSingleVector(cameraNode->first_node("GazePoint")->value()) - pos;
+    }
     auto planeNear =
       readSingleValue<FloatT>(cameraNode->first_node("NearDistance")->value());
 
@@ -139,6 +142,22 @@ XMLParser::parseCamera(rapidxml::xml_node<char>* cameraNode)
       readArray<int>(cameraNode->first_node("ImageResolution")->value());
     auto samplesNode = cameraNode->first_node("NumSamples");
     auto samples = samplesNode ? readSingleValue<int>(samplesNode->value()) : 1;
+
+    auto typeAttribute = cameraNode->first_attribute("type");
+    std::vector<FloatT> planeLRBU(4);
+
+    if (typeAttribute && strcmp(typeAttribute->value(), "lookAt") == 0) {
+        // degrees
+        auto fovY =
+          readSingleValue<FloatT>(cameraNode->first_node("FovY")->value());
+        FloatT top = planeNear * sin(M_PI / 180.0 / 2 * fovY);
+        FloatT right = top * resolution[0] / resolution[1];
+        planeLRBU = { -right, right, -top, top };
+    } else {
+        // left right bottom up
+        planeLRBU =
+          readArray<FloatT>(cameraNode->first_node("NearPlane")->value());
+    }
 
     // trim image name
     std::string imageName = cameraNode->first_node("ImageName")->value();

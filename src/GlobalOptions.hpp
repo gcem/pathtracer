@@ -25,4 +25,5 @@ enum class AccelerationStructureEnum
 inline AccelerationStructureEnum accelerationStructure =
   AccelerationStructureEnum::BoundingVolumeHierarchy;
 inline std::string sceneFileName;
+inline int minDigits = 0;
 }
