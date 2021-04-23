@@ -3,6 +3,7 @@
 #include "PathTracer.hpp"
 #include "XMLParser.hpp"
 #include <argp.h>
+#include <chrono>
 #include <cstring>
 #include <fstream>
 #include <iostream>
@@ -34,6 +35,10 @@ parserFunction(int key, char* arg, argp_state* state)
             break;
         case 'd':
             Options::minDigits = std::stoi(arg);
+            break;
+        case 'o':
+            Options::outputPrefix = arg;
+            break;
         case ARGP_KEY_ARG:
             // argument for scene file name
             Options::sceneFileName = arg;
@@ -78,6 +83,12 @@ parseArguments(int argc, char* argv[])
           "until there is no scene file with the name. This option sets the "
           "minimum number of digits to use. Current number will be padded with "
           "0's to match the given number of digits. Default is 0." },
+        { "outdir",
+          'o',
+          "prefix",
+          0,
+          "Prefix to add to camera output file names. If this is a directory, "
+          "it should end with a '/' character and the directory must exist." },
         0
     };
     argpParser = { options, parserFunction, "SCENE-FILE", 0, 0, 0 };
@@ -103,8 +114,11 @@ main(int argc, char* argv[])
         PathTracer::PathTracer tracer;
         tracer.trace(scene);
     } else {
-        auto start = Options::sceneFileName.substr(0, indexPosition);
-        auto end = Options::sceneFileName.substr(indexPosition + 1);
+        auto startTime = std::chrono::system_clock::now();
+
+        auto fileNameBeginning =
+          Options::sceneFileName.substr(0, indexPosition);
+        auto fileNameEnd = Options::sceneFileName.substr(indexPosition + 1);
         for (int i = 0;; i++) {
             char fileName[256];
 
@@ -115,17 +129,14 @@ main(int argc, char* argv[])
             snprintf(fileName,
                      sizeof(fileName),
                      formatString.c_str(),
-                     start.c_str(),
+                     fileNameBeginning.c_str(),
                      i,
-                     end.c_str());
+                     fileNameEnd.c_str());
 
             Parser::XMLParser parser;
             bool success = parser.parse(fileName);
             if (!success) {
-                std::cout << "Could not read file \"" << fileName
-                          << "\"\n"
-                             "Terminating loop"
-                          << std::endl;
+                std::cout << "Terminating loop at index " << i << std::endl;
                 break;
             }
 
@@ -133,6 +144,13 @@ main(int argc, char* argv[])
             PathTracer::PathTracer tracer;
             tracer.trace(scene);
         }
+
+        auto endTime = std::chrono::system_clock::now();
+        int totalTime = std::chrono::duration_cast<std::chrono::milliseconds>(
+                          endTime - startTime)
+                          .count();
+        std::cout << "All scenes took " << totalTime / 1000.0 << " seconds"
+                  << std::endl;
     }
 
     return 0;

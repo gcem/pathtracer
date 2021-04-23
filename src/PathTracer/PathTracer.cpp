@@ -1,4 +1,5 @@
 #include "PathTracer.hpp"
+#include "GlobalOptions.hpp"
 #include "Image.hpp"
 #include "PNGExporter.hpp"
 #include <algorithm>
@@ -48,9 +49,11 @@ PathTracer::trace(std::shared_ptr<Objects::Scene> scenePtr)
         auto timeImageNormalized = createTimeImage();
 
         Image::PNGExporter exporter;
-        exporter.exportImage(image, camera->imageName());
+        exporter.exportImage(image,
+                             Options::outputPrefix + camera->imageName());
         exporter.exportImage(timeImageNormalized,
-                             camera->imageName() + "_time.png");
+                             Options::outputPrefix + camera->imageName() +
+                               "_time.png");
 
         auto imageEndTime = std::chrono::system_clock::now();
         std::cout << camera->imageName() << " took "
