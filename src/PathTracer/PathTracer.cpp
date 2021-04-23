@@ -366,11 +366,10 @@ PathTracer::conductorReflectionRatio(const LinearAlgebra::Vec3& incomingRay,
                                      FloatT refractiveIndex,
                                      FloatT absorptionIndex)
 {
-    FloatT theta = -1 * incomingRay.dot(normal);
     FloatT squares =
       refractiveIndex * refractiveIndex + absorptionIndex * absorptionIndex;
 
-    FloatT cosTheta = -normal.dot(incomingRay);
+    FloatT cosTheta = -1 * normal.dot(incomingRay);
     FloatT cosSq = cosTheta * cosTheta;
     FloatT nCos = 2 * refractiveIndex * cosTheta;
 
@@ -388,7 +387,25 @@ PathTracer::dielectricReflectionRatio(const LinearAlgebra::Vec3& incomingRay,
                                       FloatT currentRefractiveIndex,
                                       FloatT dielectricRefractiveIndex)
 {
-    // TODO
+    FloatT cosIncoming = -incomingRay.dot(normal);
+    FloatT ratio = currentRefractiveIndex / dielectricRefractiveIndex;
+    FloatT cosLeaving =
+      sqrt(1 - ratio * ratio * (1 - cosIncoming * cosIncoming));
+
+    // fractional amplitudes for polarizations parallel to and perpendicular to
+    // the plane of incidence
+    FloatT rParallel = (dielectricRefractiveIndex * cosIncoming -
+                        currentRefractiveIndex * cosLeaving) /
+                       (dielectricRefractiveIndex * cosIncoming -
+                        currentRefractiveIndex * cosLeaving);
+    FloatT rPerpendicular = (currentRefractiveIndex * cosIncoming -
+                             dielectricRefractiveIndex * cosLeaving) /
+                            (currentRefractiveIndex * cosIncoming +
+                             dielectricRefractiveIndex * cosLeaving);
+
+    FloatT reflectionRatio =
+      (rParallel * rParallel + rPerpendicular * rPerpendicular) / 2;
+    return reflectionRatio;
 }
 
 LinearAlgebra::Vec3
