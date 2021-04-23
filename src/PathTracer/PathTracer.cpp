@@ -387,7 +387,7 @@ PathTracer::dielectricReflectionRatio(const LinearAlgebra::Vec3& incomingRay,
                                       FloatT currentRefractiveIndex,
                                       FloatT dielectricRefractiveIndex)
 {
-    FloatT cosIncoming = -incomingRay.dot(normal);
+    FloatT cosIncoming = -1 * incomingRay.dot(normal);
     FloatT ratio = currentRefractiveIndex / dielectricRefractiveIndex;
     FloatT cosLeaving =
       sqrt(1 - ratio * ratio * (1 - cosIncoming * cosIncoming));
@@ -396,7 +396,7 @@ PathTracer::dielectricReflectionRatio(const LinearAlgebra::Vec3& incomingRay,
     // the plane of incidence
     FloatT rParallel = (dielectricRefractiveIndex * cosIncoming -
                         currentRefractiveIndex * cosLeaving) /
-                       (dielectricRefractiveIndex * cosIncoming -
+                       (dielectricRefractiveIndex * cosIncoming +
                         currentRefractiveIndex * cosLeaving);
     FloatT rPerpendicular = (currentRefractiveIndex * cosIncoming -
                              dielectricRefractiveIndex * cosLeaving) /
