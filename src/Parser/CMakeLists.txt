@@ -1,4 +1,4 @@
-add_library(Parser XMLParser.cpp Parser.cpp)
+add_library(Parser XMLParser.cpp Parser.cpp PLYReader.cpp)
 
 target_link_libraries(Parser PUBLIC Objects ThirdParty Options)
 
