@@ -177,14 +177,14 @@ protected:
      * medium
      * @param normal Normal of the surface. It should point towards the origin
      * of the ray (the function assumes the ray hits the front face)
-     * @param dielectricRefractiveIndex Dielectric's refractive index
      * @param currentRefractiveIndex Refractive index of the current medium
+     * @param dielectricRefractiveIndex Dielectric's refractive index
      * @return FloatT
      */
     FloatT dielectricReflectionRatio(const LinearAlgebra::Vec3& rayDirection,
                                      const LinearAlgebra::Vec3& normal,
-                                     FloatT dielectricRefractiveIndex,
-                                     FloatT currentRefractiveIndex);
+                                     FloatT currentRefractiveIndex,
+                                     FloatT dielectricRefractiveIndex);
 
     /**
      * @brief Finds the new direction of a ray inside next media

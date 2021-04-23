@@ -137,15 +137,27 @@ PathTracer::rayColor(const Objects::Ray& ray, int remainingDepth)
         remainingDepth) {
         constexpr FloatT VacuumRefractiveIndex = 1;
 
+        auto reflectionRatio =
+          dielectricReflectionRatio(ray.direction,
+                                    normal,
+                                    VacuumRefractiveIndex,
+                                    material.refractionIndex);
+
+        // reflected part
+        auto reflectedRay =
+          Objects::Ray(hitPoint + 2 * scene->shadowRayEpsilon * normal,
+                       ray.direction - 2 * normal.dot(ray.direction) * normal);
+        auto reflectedColor = rayColor(reflectedRay, remainingDepth - 1);
+        color += reflectionRatio * reflectedColor;
+
+        // transmitted (refracted) part
         auto refractedDirection = refractRay(ray.direction,
                                              normal,
                                              VacuumRefractiveIndex,
                                              material.refractionIndex);
 
-        if (refractedDirection.dot(normal) >= 0) {
-            // then there is no transmitted ray. could add mirror reflection
-            // here
-        } else {
+        if (refractedDirection.dot(normal) < 0) {
+            // then there is transmitted ray
             auto refractedRay =
               Objects::Ray(hitPoint - 2 * scene->shadowRayEpsilon * normal,
                            refractedDirection);
@@ -174,7 +186,8 @@ PathTracer::rayColor(const Objects::Ray& ray, int remainingDepth)
                     (FloatT)exp(-material.absorptionCoefficient.z * distance)
                 };
 
-                color += baseColor * attenuationCoefficient;
+                color +=
+                  attenuationCoefficient * (1 - reflectionRatio) * baseColor;
             }
         }
     }
@@ -372,8 +385,8 @@ PathTracer::conductorReflectionRatio(const LinearAlgebra::Vec3& incomingRay,
 FloatT
 PathTracer::dielectricReflectionRatio(const LinearAlgebra::Vec3& incomingRay,
                                       const LinearAlgebra::Vec3& normal,
-                                      FloatT dielectricRefractiveIndex,
-                                      FloatT currentRefractiveIndex)
+                                      FloatT currentRefractiveIndex,
+                                      FloatT dielectricRefractiveIndex)
 {
     // TODO
 }
