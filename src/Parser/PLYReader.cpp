@@ -4,7 +4,7 @@
 #include <iostream>
 
 namespace Parser {
-std::pair<std::vector<int>, std::vector<LinearAlgebra::Vec3>>
+PLYReader::MeshData
 PLYReader::readMesh(std::string fileName)
 {
     happly::PLYData plyIn;
