@@ -9,9 +9,7 @@ namespace Test {
 TEST(XMLParserTest, Simple)
 {
     XMLParser parser;
-
-    std::ifstream stream("Scenes/SimpleScene.xml");
-    auto success = parser.parse(stream);
+    auto success = parser.parse("Scenes/SimpleScene.xml");
 
     EXPECT_TRUE(success);
     auto scene = parser.getScene();
@@ -94,6 +92,24 @@ TEST_F(XMLParserUnitTest, ValueArray)
     EXPECT_EQ(5, arr[0]);
     EXPECT_FLOAT_EQ(-2.3, arr[1]);
     EXPECT_FLOAT_EQ(9.4, arr[5]);
+}
+
+TEST_F(XMLParserUnitTest, DirectoryPrefixAbsolute)
+{
+    setDirectoryPrefix("/abc/def.xml");
+    EXPECT_STRCASEEQ("/abc/", directoryPrefix.c_str());
+}
+
+TEST_F(XMLParserUnitTest, DirectoryPrefixRelative)
+{
+    setDirectoryPrefix("abc/def.xml");
+    EXPECT_STRCASEEQ("abc/", directoryPrefix.c_str());
+}
+
+TEST_F(XMLParserUnitTest, DirectoryPrefixCurrentDirectory)
+{
+    setDirectoryPrefix("def.xml");
+    EXPECT_STRCASEEQ("", directoryPrefix.c_str());
 }
 }
 }

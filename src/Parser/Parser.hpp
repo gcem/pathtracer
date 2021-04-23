@@ -31,11 +31,12 @@ public:
      * Also prints the time it took to create the scene. This is useful for
      * measuring the effect of acceleration structures.
      *
-     * @param file Input file of appropriate format
+     * @param fileName Input file of appropriate format, either relative to
+     * current directory or absolute path
      * @return true On success
      * @return false If file could not be parsed
      */
-    virtual bool parse(std::istream& file) = 0;
+    virtual bool parse(std::string fileName) = 0;
 
     /**
      * @brief Get the Scene object created during parse()

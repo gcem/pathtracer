@@ -80,14 +80,7 @@ main(int argc, char* argv[])
     parseArguments(argc, argv);
 
     Parser::XMLParser parser;
-    auto stream = std::ifstream(std::string(Options::sceneFileName));
-    if (!stream.is_open()) {
-        std::cout << "Could not open file \"" << Options::sceneFileName << '"'
-                  << std::endl;
-        exit(1);
-    }
-
-    bool success = parser.parse(stream);
+    bool success = parser.parse(Options::sceneFileName);
     if (!success) {
         std::cout << "Could not read file \"" << Options::sceneFileName << '"'
                   << std::endl;

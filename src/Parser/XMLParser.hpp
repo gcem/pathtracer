@@ -40,11 +40,12 @@ public:
      * Also prints the time it took to create the scene. This is useful for
      * measuring the effect of acceleration structures.
      *
-     * @param file Input file of appropriate format
+     * @param fileName Input file name, either relative to current directory or
+     * absolute path
      * @return true On success
      * @return false If file could not be parsed
      */
-    bool parse(std::istream& file) override;
+    bool parse(std::string fileName) override;
 
 protected:
     /**
@@ -229,6 +230,14 @@ protected:
     Objects::Material::Type getMaterialTypeEnum(const char* typeText) const;
 
     /**
+     * @brief Find the directory of the scene file and save it to the related
+     * field
+     *
+     * @param sceneFile Absolute or relative path of the scene file
+     */
+    void setDirectoryPrefix(std::string sceneFile);
+
+    /**
      * @brief Coordinates of vertices
      *
      * Must be one-indexed due to the format used at METU.
@@ -243,6 +252,12 @@ protected:
      *
      */
     std::vector<Objects::Material> materials;
+
+    /**
+     * @brief Directory of the scene file. Either ends with '/' or is empty.
+     *
+     */
+    std::string directoryPrefix;
 };
 
 template<typename T>

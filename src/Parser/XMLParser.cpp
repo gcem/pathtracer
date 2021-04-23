@@ -6,11 +6,13 @@
 #include "GlobalOptions.hpp"
 #include "KDTree.hpp"
 #include "Mesh.hpp"
+#include "PLYReader.hpp"
 #include "PerspectiveCamera.hpp"
 #include "Sphere.hpp"
 #include "rapidxml.hpp"
 #include <chrono>
 #include <cstring>
+#include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -19,11 +21,19 @@ namespace Parser {
 XMLParser::XMLParser() {}
 
 bool
-XMLParser::parse(std::istream& file)
+XMLParser::parse(std::string fileName)
 {
     auto startTime = std::chrono::system_clock::now();
+
+    std::ifstream file(fileName);
+    if (!file.is_open()) {
+        std::cout << "Could not open file \"" << fileName << '"' << std::endl;
+        return false;
+    }
+    setDirectoryPrefix(fileName);
     std::vector<char> content(MAX_SCENE_FILE_SIZE);
     file.read(&content.front(), MAX_SCENE_FILE_SIZE - 1);
+
     rapidxml::xml_document<char> doc;
     try {
         doc.parse<0>(&content.front());
@@ -275,7 +285,6 @@ XMLParser::parseMesh(rapidxml::xml_node<char>* meshNode)
 {
     auto materialIndex =
       readSingleValue<int>(meshNode->first_node("Material")->value());
-    auto indices = readArray<int>(meshNode->first_node("Faces")->value());
     std::unique_ptr<AccelerationStructures::AccelerationStructure> acc;
     switch (Options::accelerationStructure) {
         case Options::AccelerationStructureEnum::BruteForce:
@@ -292,9 +301,25 @@ XMLParser::parseMesh(rapidxml::xml_node<char>* meshNode)
             acc = std::make_unique<AccelerationStructures::KDTree>();
             break;
     }
-    auto mesh = std::shared_ptr<Objects::Surface>(new Objects::Mesh(
-      vertices, indices, materials[materialIndex], std::move(acc)));
-    scene->surfaces.push_back(mesh);
+    auto faceNode = meshNode->first_node("Faces");
+    auto plyAttribute = faceNode->first_attribute("plyFile");
+
+    if (plyAttribute) {
+        PLYReader reader;
+        std::string relativeLocation = plyAttribute->value();
+        auto plyData = reader.readMesh(directoryPrefix + relativeLocation);
+        auto mesh = std::shared_ptr<Objects::Surface>(
+          new Objects::Mesh(plyData.vertexPositions,
+                            plyData.indices,
+                            materials[materialIndex],
+                            std::move(acc)));
+        scene->surfaces.push_back(mesh);
+    } else {
+        auto indices = readArray<int>(faceNode->value());
+        auto mesh = std::shared_ptr<Objects::Surface>(new Objects::Mesh(
+          vertices, indices, materials[materialIndex], std::move(acc)));
+        scene->surfaces.push_back(mesh);
+    }
 }
 
 void
@@ -336,5 +361,15 @@ XMLParser::getMaterialTypeEnum(const char* typeText) const
     if (strcmp(typeText, "dielectric") == 0)
         return Objects::Material::Type::Dielectric;
     return Objects::Material::Type::Default;
+}
+
+void
+XMLParser::setDirectoryPrefix(std::string sceneFile)
+{
+    auto pos = sceneFile.find_last_of('/');
+    if (pos == std::string::npos)
+        directoryPrefix = "";
+    else
+        directoryPrefix = sceneFile.substr(0, pos + 1);
 }
 }
